@@ -1,0 +1,20 @@
+{
+  "name": "icpc-community-nusc",
+  "version": "1.0.0",
+  "description": "Official Homepage for ICPC Community NUSC",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "icpc",
+    "nusc",
+    "competitive-programming",
+    "community"
+  ],
+  "author": "ICPC Community NUSC",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^59.16.0"
+  }
+}

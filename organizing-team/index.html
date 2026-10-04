@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICPC Community NUSC | Together We Code, Together We Win</title>
+    <meta name="description" content="Official website of the ICPC Community NUSC — a premier competitive programming platform for algorithms, data structures, and ICPC training." />
+    <meta property="og:title" content="ICPC Community NUSC | Together We Code, Together We Win" />
+    <meta property="og:description" content="Learn. Solve. Compete. Grow with ICPC Community NUSC." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#002e69" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts: Minecraft/Pixel & English Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'red-light': '#ffdad5',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'cream-darker': '#efeeea',
+                        'ink': '#1b1c1a',
+                        'ink-light': '#434751',
+                        'ink-lighter': '#737783',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'pixel': ['Silkscreen', '"Press Start 2P"', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    },
+                    maxWidth: {
+                        'site': '1280px',
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* =============================================
+           PIXEL & MINECRAFT DESIGN SYSTEM
+           ============================================= */
+        * {
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-navy { border: 2px solid #002e69; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+
+        .pixel-shadow { box-shadow: 4px 4px 0px 0px #002e69; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+        .pixel-shadow-ink { box-shadow: 4px 4px 0px 0px #1b1c1a; }
+
+        .pixel-btn {
+            border: 2px solid #1b1c1a;
+            box-shadow: 4px 4px 0px 0px #1b1c1a;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #1b1c1a;
+        }
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #1b1c1a;
+        }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 4px 4px 0px 0px #002e69;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #002e69;
+        }
+        .pixel-btn-gold:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #002e69;
+        }
+
+        .pixel-card {
+            border: 2px solid #1b1c1a;
+            box-shadow: 4px 4px 0px 0px #002e69;
+            transition: all 0.25s ease;
+        }
+        .pixel-card:hover {
+            transform: translate(-2px, -4px);
+            box-shadow: 6px 8px 0px 0px #002e69;
+        }
+
+        /* Sprite styling for NPC characters - FIXED DIMENSIONS TO PREVENT CROPPING */
+        @keyframes walk-x {
+            0% { background-position: 0px 0; }
+            100% { background-position: -128px 0; }
+        }
+
+        .sprite-npc-male {
+            width: 32px;
+            height: 32px;
+            background-image: url('assets/Pre-made%20NPCs/Male.png');
+            background-size: 128px 96px;
+            background-repeat: no-repeat;
+            animation: walk-x 0.8s steps(4) infinite;
+            image-rendering: pixelated;
+            display: inline-block;
+            transform-origin: bottom center;
+        }
+        .sprite-npc-female {
+            width: 32px;
+            height: 32px;
+            background-image: url('assets/Pre-made%20NPCs/Female.png');
+            background-size: 128px 96px;
+            background-repeat: no-repeat;
+            animation: walk-x 0.8s steps(4) infinite;
+            image-rendering: pixelated;
+            display: inline-block;
+            transform-origin: bottom center;
+        }
+        
+        .flip-h {
+            transform: scaleX(-1);
+        }
+
+        /* Form Premium Input */
+        .pixel-input {
+            width: 100%;
+            background: rgba(251, 249, 245, 0.9);
+            border: 2px solid #002e69;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #001a41;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .pixel-input:focus {
+            box-shadow: 4px 4px 0px 0px #fea520;
+            border-color: #001a41;
+        }
+
+        /* =============================================
+           BACKGROUNDS & CIRCUITS
+           ============================================= */
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23002e69' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .bg-circuit {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 50h20M50 10v20M50 70v20M70 50h20' stroke='%23004494' stroke-width='1' fill='none' opacity='0.08'/%3E%3Ccircle cx='30' cy='50' r='2' fill='%23004494' opacity='0.08'/%3E%3Ccircle cx='70' cy='50' r='2' fill='%23004494' opacity='0.08'/%3E%3Ccircle cx='50' cy='30' r='2' fill='%23004494' opacity='0.08'/%3E%3Ccircle cx='50' cy='70' r='2' fill='%23004494' opacity='0.08'/%3E%3C/svg%3E");
+        }
+        .bg-circuit-dark {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 50h20M50 10v20M50 70v20M70 50h20' stroke='%23004494' stroke-width='1' fill='none' opacity='0.15'/%3E%3Ccircle cx='30' cy='50' r='2' fill='%23fea520' opacity='0.1'/%3E%3Ccircle cx='70' cy='50' r='2' fill='%23fea520' opacity='0.1'/%3E%3Ccircle cx='50' cy='30' r='2' fill='%23004494' opacity='0.15'/%3E%3Ccircle cx='50' cy='70' r='2' fill='%23004494' opacity='0.15'/%3E%3C/svg%3E");
+        }
+
+        /* =============================================
+           DIVIDERS
+           ============================================= */
+        .pixel-divider {
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #002e69 0px, #002e69 8px, transparent 8px, transparent 12px);
+        }
+        .pixel-divider-gold {
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #fea520 0px, #fea520 8px, transparent 8px, transparent 12px);
+        }
+
+        /* =============================================
+           ANIMATIONS
+           ============================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: translateY(12px) scale(0.98); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        @keyframes subtleFloat { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-5px); } 
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(-1.5deg); } }
+        @keyframes driftCloud { 0% { transform: translateX(0); } 50% { transform: translateX(-15px); } 100% { transform: translateX(0); } }
+        @keyframes circuitPulse { 0% { stroke-dashoffset: 200; opacity: 0.1; } 50% { opacity: 0.4; } 100% { stroke-dashoffset: 0; opacity: 0.1; } }
+        
+        /* Modal animations */
+        @keyframes modalEnter {
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-animate-in {
+            animation: modalEnter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .hero-bg { opacity: 0; animation: fadeIn 0.6s ease-out forwards; }
+        .hero-logo { opacity: 0; animation: logoReveal 1s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, subtleFloat 6s 1.2s ease-in-out infinite; }
+        .hero-label { opacity: 0; animation: fadeInUp 0.6s 0.5s ease-out forwards; }
+        .hero-title { opacity: 0; animation: fadeInUp 0.7s 0.7s ease-out forwards; }
+        .hero-subtitle { opacity: 0; animation: fadeInUp 0.6s 0.9s ease-out forwards; }
+        .hero-cta { opacity: 0; animation: fadeInUp 0.6s 1.1s ease-out forwards; }
+
+        .float-code { position: absolute; font-family: 'Press Start 2P', monospace; pointer-events: none; z-index: 1; }
+        .float-slow { animation: floatSlow 7s ease-in-out infinite; }
+        .float-drift { animation: driftCloud 10s ease-in-out infinite; }
+        
+        .circuit-svg { position: absolute; pointer-events: none; z-index: 1; }
+        .circuit-path { stroke-dasharray: 8 6; animation: circuitPulse 4s linear infinite; }
+
+        /* Badges */
+        .pixel-badge {
+            border: 2px solid #fea520;
+            background: rgba(254,165,32,0.08);
+            transition: all 0.25s ease;
+        }
+        .pixel-badge:hover {
+            background: rgba(254,165,32,0.2);
+            transform: translateY(-2px);
+            box-shadow: 2px 4px 0 0 #fea520;
+        }
+
+        /* Navbar */
+        .navbar-scrolled {
+            background: rgba(251, 249, 245, 0.98) !important;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 0 0 #002e69;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* FAQ */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+        .faq-answer.open { max-height: 500px; }
+
+        /* Roadmap */
+        .roadmap-line {
+            background: repeating-linear-gradient(180deg, #004494 0px, #004494 8px, transparent 8px, transparent 14px);
+            width: 4px;
+        }
+        .journey-node { transition: all 0.4s ease; }
+        .journey-node.active {
+            border-color: #fea520 !important;
+            box-shadow: 4px 4px 0px 0px #fea520 !important;
+        }
+        .journey-node.active .journey-number {
+            background: #fea520 !important;
+            color: #1b1c1a !important;
+        }
+        .roadmap-character {
+            position: absolute;
+            left: 0px; /* Switched to left for LTR */
+            transition: top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+        }
+
+        /* =============================================
+           INPUT BOX VISIBILITY & HIGH-CONTRAST FIX
+           ============================================= */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="url"],
+        input[type="search"],
+        input[type="number"],
+        select,
+        textarea,
+        .pixel-input {
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            -webkit-text-fill-color: #ffffff !important;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="tel"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="url"]::placeholder,
+        input[type="search"]::placeholder,
+        textarea::placeholder,
+        .pixel-input::placeholder {
+            color: rgba(251, 249, 245, 0.45) !important;
+            -webkit-text-fill-color: rgba(251, 249, 245, 0.45) !important;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        input[type="url"]:focus,
+        input[type="search"]:focus,
+        select:focus,
+        textarea:focus,
+        .pixel-input:focus {
+            background-color: #00183b !important;
+            color: #ffffff !important;
+            border-color: #fea520 !important;
+            box-shadow: 2px 2px 0px 0px #fea520 !important;
+            outline: none !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
+        select option {
+            background-color: #001a41 !important;
+            color: #ffffff !important;
+            padding: 8px !important;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px #00122e inset !important;
+            transition: background-color 5000s ease-in-out 0s !important;
+        }
+
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-navy font-body text-cream antialiased selection:bg-gold selection:text-navy">
+<!-- ========== NAVBAR ========== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 border-primary/20" role="navigation">
+    <div class="max-w-site mx-auto px-4 md:px-8 h-14 md:h-16 flex justify-between items-center">
+        <!-- Logo Brand -->
+        <a href="/#" class="flex items-center gap-2 group">
+            <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-6 h-6" alt="Trophy Logo" />
+            <span class="font-minecraft text-sm md:text-base text-navy tracking-tight">ICPC <span class="text-gold">NUSC</span></span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden lg:flex items-center gap-6">
+            <a href="/#about" class="font-label text-sm text-ink-light hover:text-navy transition-colors">About</a>
+            <a href="/#activities" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Activities</a>
+            <a href="/#roadmap" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Roadmap</a>
+            <a href="/#resources" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Resources</a>
+            <a href="/#leaderboard" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Stats</a>
+            <a href="/#faq" class="font-label text-sm text-ink-light hover:text-navy transition-colors">FAQ</a>
+            <button class="join-btn bg-gold text-ink font-label font-bold text-xs px-4 py-2 pixel-btn-gold flex items-center gap-2">
+                <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-4 h-4" alt="Trophy" />
+                JOIN US NOW
+            </button>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="lg:hidden p-1.5 text-navy" aria-label="Open Menu">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-[60] bg-cream" role="dialog">
+    <div class="flex justify-between items-center px-4 h-14 border-b-2 border-navy">
+        <span class="font-minecraft text-base text-navy">ICPC <span class="text-gold">NUSC</span></span>
+        <button id="menu-close" class="p-1.5 text-navy" aria-label="Close Menu">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <div class="flex flex-col items-center gap-5 pt-8 px-6 text-center">
+        <a href="/#about" class="mobile-nav-link font-display font-bold text-lg text-navy">About Us</a>
+        <a href="/#activities" class="mobile-nav-link font-display font-bold text-lg text-navy">Activities & Events</a>
+        <a href="/#roadmap" class="mobile-nav-link font-display font-bold text-lg text-navy">ICPC Roadmap</a>
+        <a href="/#resources" class="mobile-nav-link font-display font-bold text-lg text-navy">Knowledge Base</a>
+        <a href="/#leaderboard" class="mobile-nav-link font-display font-bold text-lg text-navy">Leaderboard</a>
+        <a href="/#faq" class="mobile-nav-link font-display font-bold text-lg text-navy">FAQ</a>
+        <button class="join-btn bg-gold text-ink font-display font-black text-base px-6 py-3 pixel-btn-gold mt-2 flex items-center gap-2 w-full justify-center">
+            <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-5 h-5" alt="Trophy" />
+            JOIN US NOW
+        </button>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="relative pt-32 pb-16 bg-pixel-grid bg-navy-dark border-b-4 border-gold overflow-hidden">
+    <div class="absolute inset-0 bg-circuit opacity-10 pointer-events-none"></div>
+    <div class="max-w-site mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-12 relative z-10">
+        <div class="md:w-1/2">
+            <h1 class="font-display font-black text-4xl md:text-6xl text-white mb-2 leading-tight">BUILD THE COMMUNITY.<br/><span class="text-gold text-3xl md:text-5xl block mt-2">BE PART OF THE TEAM.</span></h1>
+            <p class="font-body text-lg text-cream-dark/80 mb-8">ICPC NUSC is built by students who don't just participate — they create, organize, teach, and push the community forward. Become a leader today.</p>
+            <div class="flex flex-wrap gap-4">
+                <a href="/organizing-team/apply" class="pixel-btn-gold bg-gold text-ink font-display font-black px-6 py-3 hover:bg-white transition-colors">APPLY NOW</a>
+                <a href="#departments" class="pixel-btn bg-navy text-white font-display font-bold px-6 py-3 border-gold hover:bg-gold hover:text-ink">EXPLORE ROLES</a>
+            </div>
+        </div>
+        <div class="md:w-1/2 relative min-h-[350px] flex items-center justify-center">
+            <div class="relative w-72 h-72 bg-navy rounded-full flex items-center justify-center border-4 border-gold/30 pixel-shadow-gold">
+                <!-- Group of people illustration -->
+                <span class="sprite-npc-male absolute bottom-1/2 right-1/2 translate-x-4 translate-y-12 scale-150 transform-origin-bottom"></span>
+                <span class="sprite-npc-female absolute bottom-1/2 left-1/2 -translate-x-4 translate-y-12 scale-150 transform-origin-bottom flip-h"></span>
+                <img src="/assets/Furniture/Bedroom/Laptop.png" class="pixel-art w-12 h-12 absolute z-20 bottom-8 float-slow" />
+                <img src="/assets/Backgrounds/Cloud_1.png" class="pixel-art absolute top-4 -right-12 w-20 opacity-30 float-slow" />
+                <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art absolute -bottom-6 -left-6 w-16 float-drift" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMMUNITY PILLARS -->
+<section class="py-16 bg-navy relative border-b-2 border-white/5">
+    <div class="max-w-site mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="p-6 bg-navy-dark/40 pixel-border border-white/5">
+                <span class="material-symbols-outlined text-3xl text-gold mb-2 block">groups</span>
+                <h3 class="font-display font-black text-white text-base uppercase mb-1">STUDENT LED</h3>
+                <p class="text-xs text-cream-dark/60">Built by and for students</p>
+            </div>
+            <div class="p-6 bg-navy-dark/40 pixel-border border-white/5">
+                <span class="material-symbols-outlined text-3xl text-gold mb-2 block">code</span>
+                <h3 class="font-display font-black text-white text-base uppercase mb-1">TECHNICAL DEPTH</h3>
+                <p class="text-xs text-cream-dark/60">Algorithmic mastery</p>
+            </div>
+            <div class="p-6 bg-navy-dark/40 pixel-border border-white/5">
+                <span class="material-symbols-outlined text-3xl text-gold mb-2 block">school</span>
+                <h3 class="font-display font-black text-white text-base uppercase mb-1">PEER MENTORSHIP</h3>
+                <p class="text-xs text-cream-dark/60">Dedicated coaching</p>
+            </div>
+            <div class="p-6 bg-navy-dark/40 pixel-border border-white/5">
+                <span class="material-symbols-outlined text-3xl text-gold mb-2 block">emoji_events</span>
+                <h3 class="font-display font-black text-white text-base uppercase mb-1">ICPC PREPARATION</h3>
+                <p class="text-xs text-cream-dark/60">Contest training tracks</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW THE TEAM WORKS -->
+<section class="py-16 bg-navy-dark relative border-b-2 border-white/5">
+    <div class="max-w-site mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+            <h2 class="font-display font-black text-3xl md:text-4xl text-white mb-4">HOW THE TEAM WORKS</h2>
+            <p class="font-body text-cream-dark/80 max-w-2xl mx-auto">NUSC is structured into four core branches. Each branch operates independently but collaborates constantly to deliver high-quality events and training.</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <!-- Root node -->
+            <div class="bg-navy p-4 pixel-border border-gold text-white font-display font-bold text-xl mb-8 relative pixel-shadow-gold">
+                ICPC NUSC
+                <div class="absolute -bottom-8 left-1/2 w-1 h-8 bg-white/20"></div>
+            </div>
+            
+            <div class="w-full max-w-2xl h-1 bg-white/20 relative mb-8">
+                <div class="absolute top-0 left-0 w-1 h-8 bg-white/20"></div>
+                <div class="absolute top-0 left-1/3 w-1 h-8 bg-white/20"></div>
+                <div class="absolute top-0 right-1/3 w-1 h-8 bg-white/20"></div>
+                <div class="absolute top-0 right-0 w-1 h-8 bg-white/20"></div>
+            </div>
+            
+            <div class="w-full grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-navy p-3 pixel-border text-white text-sm font-bold border-gold/50 hover:bg-gold hover:text-ink transition-colors">Technical</div>
+                <div class="bg-navy p-3 pixel-border text-white text-sm font-bold border-gold/50 hover:bg-gold hover:text-ink transition-colors">Marketing</div>
+                <div class="bg-navy p-3 pixel-border text-white text-sm font-bold border-gold/50 hover:bg-gold hover:text-ink transition-colors">Media</div>
+                <div class="bg-navy p-3 pixel-border text-white text-sm font-bold border-gold/50 hover:bg-gold hover:text-ink transition-colors">HR</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section id="departments" class="py-16 bg-navy relative">
+    <div class="max-w-site mx-auto px-4 md:px-8">
+        <h2 class="font-display font-black text-3xl md:text-4xl text-white mb-12 text-center">OUR DEPARTMENTS</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- TECHNICAL -->
+            <div class="pixel-card bg-navy-dark p-8 border-2 border-white/10 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-navy pixel-border flex items-center justify-center">
+                        <span class="material-symbols-outlined text-gold text-3xl">code</span>
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-cream-dark/50 uppercase">01</span>
+                        <h3 class="font-display font-black text-2xl text-white">Technical</h3>
+                    </div>
+                </div>
+                <p class="font-body text-cream-dark/80 mb-6 text-sm">The core of our community. We build platforms, write problem sets, generate test cases, and deliver training sessions to the participants.</p>
+                <div class="mb-6 font-minecraft text-xs text-gold uppercase tracking-wider border-b border-white/10 pb-2">Roles Include:</div>
+                <ul class="space-y-2 font-body text-sm text-cream-dark/90 mb-8">
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Problem Setters & Testers</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Instructors & Mentors</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Web Developers (Frontend/Backend)</li>
+                </ul>
+                <a href="/organizing-team/apply" class="pixel-btn bg-navy border-gold text-white font-display font-bold px-4 py-2 w-full text-center hover:bg-gold hover:text-ink transition-colors block">APPLY FOR TECHNICAL</a>
+            </div>
+
+            <!-- MARKETING -->
+            <div class="pixel-card bg-navy-dark p-8 border-2 border-white/10 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-navy pixel-border flex items-center justify-center">
+                        <span class="material-symbols-outlined text-gold text-3xl">campaign</span>
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-cream-dark/50 uppercase">02</span>
+                        <h3 class="font-display font-black text-2xl text-white">Marketing</h3>
+                    </div>
+                </div>
+                <p class="font-body text-cream-dark/80 mb-6 text-sm">The voice of our community. We manage social media, write engaging copy, strategize campaigns, and ensure our events reach everyone.</p>
+                <div class="mb-6 font-minecraft text-xs text-gold uppercase tracking-wider border-b border-white/10 pb-2">Roles Include:</div>
+                <ul class="space-y-2 font-body text-sm text-cream-dark/90 mb-8">
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Social Media Managers</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Content Writers / Copywriters</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Campaign Strategists</li>
+                </ul>
+                <a href="/organizing-team/apply" class="pixel-btn bg-navy border-gold text-white font-display font-bold px-4 py-2 w-full text-center hover:bg-gold hover:text-ink transition-colors block">APPLY FOR MARKETING</a>
+            </div>
+
+            <!-- MEDIA -->
+            <div class="pixel-card bg-navy-dark p-8 border-2 border-white/10 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-navy pixel-border flex items-center justify-center">
+                        <span class="material-symbols-outlined text-gold text-3xl">palette</span>
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-cream-dark/50 uppercase">03</span>
+                        <h3 class="font-display font-black text-2xl text-white">Media</h3>
+                    </div>
+                </div>
+                <p class="font-body text-cream-dark/80 mb-6 text-sm">The vision of our community. We design graphics, edit videos, take event photos, and establish the visual identity of ICPC NUSC.</p>
+                <div class="mb-6 font-minecraft text-xs text-gold uppercase tracking-wider border-b border-white/10 pb-2">Roles Include:</div>
+                <ul class="space-y-2 font-body text-sm text-cream-dark/90 mb-8">
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Graphic Designers</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Video Editors</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Photographers</li>
+                </ul>
+                <a href="/organizing-team/apply" class="pixel-btn bg-navy border-gold text-white font-display font-bold px-4 py-2 w-full text-center hover:bg-gold hover:text-ink transition-colors block">APPLY FOR MEDIA</a>
+            </div>
+
+            <!-- HR -->
+            <div class="pixel-card bg-navy-dark p-8 border-2 border-white/10 group">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 bg-navy pixel-border flex items-center justify-center">
+                        <span class="material-symbols-outlined text-gold text-3xl">groups</span>
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-cream-dark/50 uppercase">04</span>
+                        <h3 class="font-display font-black text-2xl text-white">Human Resources</h3>
+                    </div>
+                </div>
+                <p class="font-body text-cream-dark/80 mb-6 text-sm">The heart of our community. We handle recruitment, internal communications, member evaluation, and foster a healthy team culture.</p>
+                <div class="mb-6 font-minecraft text-xs text-gold uppercase tracking-wider border-b border-white/10 pb-2">Roles Include:</div>
+                <ul class="space-y-2 font-body text-sm text-cream-dark/90 mb-8">
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> HR Specialists</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Internal Relations</li>
+                    <li class="flex items-center gap-2"><span class="text-gold">></span> Event Coordinators</li>
+                </ul>
+                <a href="/organizing-team/apply" class="pixel-btn bg-navy border-gold text-white font-display font-bold px-4 py-2 w-full text-center hover:bg-gold hover:text-ink transition-colors block">APPLY FOR HR</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ========== PREMIUM JOIN MODAL (GATEWAY) ========== -->
+<div id="join-modal" class="fixed inset-0 z-[100] bg-navy-dark/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
+    <div class="bg-cream pixel-border-gold pixel-shadow-gold max-w-xl md:max-w-2xl w-full max-h-[92vh] sm:max-h-none overflow-y-auto relative modal-animate-in my-auto">
+        <!-- Top decorative bar -->
+        <div class="bg-gold h-8 sm:h-9 md:h-10 border-b-2 border-ink flex items-center justify-between px-3 sm:px-4">
+            <span class="font-minecraft text-[10px] sm:text-xs text-ink tracking-widest uppercase">REGISTRATION STATUS</span>
+            <button class="close-modal text-ink hover:text-white hover:bg-red-accent px-2 py-0.5 border-2 border-transparent hover:border-ink transition-colors font-bold text-base sm:text-lg leading-none">&times;</button>
+        </div>
+        
+        <div id="modal-content" class="p-3.5 sm:p-6 md:p-8 relative text-center">
+            <!-- Scene Decor -->
+            <img src="/assets/Backgrounds/Cloud_1.png" class="pixel-art w-12 sm:w-16 absolute top-2 sm:top-4 right-2 sm:right-4 opacity-20 pointer-events-none float-drift" alt="Decor" />
+            
+            <h2 class="font-display font-black text-lg sm:text-2xl md:text-3xl text-navy mb-0.5 sm:mb-1.5">JOIN ICPC NUSC</h2>
+            <p class="font-body text-ink-light text-[11px] sm:text-sm mb-3 sm:mb-6 max-w-lg mx-auto leading-tight">
+                Recruitment is currently <strong class="text-gold-dark">OPEN for the Organizing Team</strong>. Participant training registration is closed for now.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-5 relative z-10">
+                <!-- Option 1: Participant (CLOSED) -->
+                <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
+                    <div class="w-full flex justify-center mb-1">
+                        <span class="bg-red-950/80 text-red-300 border border-red-500/50 font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 uppercase tracking-wider">CLOSED FOR NOW</span>
+                    </div>
+                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full opacity-60">
+                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0 grayscale"></span>
+                    </div>
+                    <div class="flex-grow flex flex-col items-center">
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-ink-lighter mb-0.5 uppercase tracking-wider">Participant</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-ink-lighter mb-1 leading-tight">LEARN + COMPETE</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-lighter mb-2 sm:mb-4 leading-tight">Training registrations are not available at this moment. Stay tuned!</p>
+                    </div>
+                    <div class="w-full bg-slate-700/60 text-slate-300 font-display font-bold text-[10px] sm:text-xs md:text-sm py-1 sm:py-2 pixel-btn flex justify-center items-center gap-1 cursor-not-allowed">
+                        NOT AVAILABLE NOW
+                    </div>
+                </div>
+                
+                <!-- Option 2: Organizing Team (OPEN) -->
+                <a href="/organizing-team/apply" class="group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
+                    <div class="w-full flex justify-center mb-1">
+                        <span class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
+                    </div>
+                    <div class="h-10 sm:h-16 md:h-20 flex flex-row items-end justify-center gap-1 sm:gap-2 md:gap-3 mb-1.5 sm:mb-2 relative w-full">
+                        <span class="sprite-npc-male scale-75 sm:scale-90 md:scale-100 transform-origin-bottom"></span>
+                        <img src="/assets/Furniture/Bedroom/Laptop.png" class="pixel-art w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 mb-1 sm:mb-2 relative z-10" alt="Laptop" />
+                        <span class="sprite-npc-female flip-h scale-75 sm:scale-90 md:scale-100 transform-origin-bottom"></span>
+                    </div>
+                    <div class="flex-grow flex flex-col items-center">
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-gold-dark mb-0.5 uppercase tracking-wider font-bold">Organizing Team</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">BUILD + LEAD</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join Technical, Marketing, Media, or HR and help lead NUSC.</p>
+                    </div>
+                    <div class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
+                        APPLY FOR TEAM &rarr;
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ========== FOOTER ========== -->
+<footer class="bg-navy-dark py-12 md:py-16 relative">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gold"></div>
+    <div class="max-w-site mx-auto px-4 md:px-12">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2">
+                    <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-6 h-6" alt="Trophy" />
+                    <span class="font-minecraft text-xl text-white">ICPC <span class="text-gold">NUSC</span></span>
+                </div>
+                <p class="font-display font-bold text-sm text-white/60 leading-relaxed">
+                    TOGETHER WE CODE. TOGETHER WE WIN.<br/>
+                    A student community dedicated to forging competitive programming champions.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <span class="font-minecraft text-xs tracking-wider text-gold uppercase mb-1">Quick Links</span>
+                <a href="/#" class="font-body text-sm text-white/70 hover:text-white transition-colors">Home</a>
+                <a href="/#about" class="font-body text-sm text-white/70 hover:text-white transition-colors">About Us</a>
+                <a href="/#activities" class="font-body text-sm text-white/70 hover:text-white transition-colors">Activities</a>
+                <a href="/#resources" class="font-body text-sm text-white/70 hover:text-white transition-colors">Resources</a>
+                <a href="/#faq" class="font-body text-sm text-white/70 hover:text-white transition-colors">FAQ</a>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <span class="font-minecraft text-xs tracking-wider text-gold uppercase mb-1">Connect</span>
+                <div id="social-links" class="flex gap-3"></div>
+            </div>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-body text-xs text-white/50">
+                &copy; 2026 ICPC Community NUSC. Built by contestants, for the next generation.
+            </p>
+            <p class="font-minecraft text-[10px] text-white/30">
+                INITIATE // ALGORITHM // WIN
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- ========== JAVASCRIPT LOGIC ========== -->
+<script>
+(function() {
+    'use strict';
+
+    // ENGLISH CONFIGURATION
+    const NUSC_CONFIG = {
+        social: {
+            facebook: { url: 'https://www.facebook.com/profile.php?id=61592853218679', label: 'Facebook' },
+            linkedin: { url: 'https://www.linkedin.com/company/icpc-nusc', label: 'LinkedIn' },
+            discord: { url: '#', label: 'Discord' },
+            github: { url: '#', label: 'GitHub' }
+        },
+        events: [],
+
+        journey: [
+            { number: 1, title: 'START', description: 'Welcome to NUSC. Your first step into the world of competitive programming begins here.', icon: 'assets/Objects/Bedroom/Backpack_blue.png' },
+            { number: 2, title: 'PROGRAMMING BASICS', description: 'Variables, loops, functions, and fast I/O in C++.', icon: 'assets/Furniture/Bedroom/Laptop.png' },
+            { number: 3, title: 'DATA STRUCTURES', description: 'Arrays, lists, trees, and graphs — your tools to store and process data efficiently.', icon: 'assets/Objects/Living%20Room/Books_outside_1.png' },
+            { number: 4, title: 'ALGORITHMS', description: 'Binary Search, Dynamic Programming (DP), Graph algorithms, and Number Theory.', icon: 'assets/Furniture/Light_2.png' },
+            { number: 5, title: 'PROBLEM SOLVING', description: 'Applying algorithmic patterns to unfamiliar problems and discovering the optimal solution.', icon: 'assets/Objects/Bedroom/Clock_1_blue.png' },
+            { number: 6, title: 'ICPC TRAINING', description: 'Team practice, real contest simulation, and team time management.', icon: 'assets/Objects/Bedroom/Backpack_red.png' },
+            { number: 7, title: 'CONTEST', description: 'Competing in regional ICPC qualifiers and advancing to higher stages.', icon: 'assets/Objects/Bedroom/Calendar_2.png' },
+            { number: 8, title: 'CHAMPION', description: 'Winning awards, achieving excellence, and bringing glory to the community.', icon: 'assets/Objects/Bedroom/Trophy.png' },
+        ],
+
+        community: [
+            { title: 'Competitive Teams', description: 'Forming harmonious 3-person teams, practicing problem distribution strategies, and participating as one unit.', icon: 'assets/Furniture/Bedroom/Laptop.png' },
+            { title: 'Mentors & Champions', description: 'Continuous, direct guidance from experienced contestants who have qualified for regional and international ICPC finals.', icon: 'assets/Objects/Bedroom/Trophy.png' },
+            { title: 'Study Groups', description: 'Studying difficult topics together — from Graph Theory to complex Dynamic Programming.', icon: 'assets/Objects/Living%20Room/Books_outside_1.png' },
+            { title: 'Discussion Sessions', description: 'Upsolving contest problems, exchanging different ideas, and breaking down alternative methods.', icon: 'assets/Furniture/Light_1.png' },
+            { title: 'Events & Bootcamps', description: 'Intensive summer bootcamps, workshops, and hosting speakers from major global tech companies.', icon: 'assets/Objects/Bedroom/Calendar_2.png' },
+            { title: 'Open Collaboration', description: 'Building open-source software projects and helping new members on their educational journey step by step.', icon: 'assets/Objects/Bedroom/Clock_1_blue.png' }
+        ],
+
+        stats: [
+            { label: 'Training Hours', value: '100+', icon: 'assets/Objects/Bedroom/Clock_1_blue.png' },
+            { label: 'Competitive Problems', value: '50+', icon: 'assets/Furniture/Bedroom/Laptop.png' },
+            { label: 'Specialized Topics', value: '20+', icon: 'assets/Objects/Living%20Room/Books_outside_1.png' },
+            { label: 'Growth Potential', value: '∞', icon: 'assets/Objects/Bedroom/Trophy.png' },
+        ],
+
+        achievements: [
+            { title: 'CONTEST READY', icon: 'assets/Objects/Bedroom/Trophy.png' },
+            { title: 'PROBLEM SOLVER', icon: 'assets/Furniture/Bedroom/Laptop.png' },
+            { title: 'ALGORITHM BUILDER', icon: 'assets/Furniture/Light_1.png' },
+            { title: 'TEAM PLAYER', icon: 'assets/Pre-made%20NPCs/Male.png' },
+            { title: 'CODE WARRIOR', icon: 'assets/Objects/Living%20Room/Books_outside_1.png' },
+            { title: 'TRAINING GRINDER', icon: 'assets/Objects/Bedroom/Clock_1_blue.png' },
+        ],
+
+        resources: [
+            { title: 'C++ Basics', description: 'Variables, conditions, loops, STL library, and fast I/O optimization.', difficulty: 'Beginner', icon: 'assets/Furniture/Bedroom/Laptop.png', url: '#' },
+            { title: 'Data Structures', description: 'Arrays, Stacks, Trees, Segment Trees and DSU in detail.', difficulty: 'Intermediate', icon: 'assets/Objects/Living%20Room/Books_outside_1.png', url: '#' },
+            { title: 'Competitive Algorithms', description: 'Dynamic Programming, Graph algorithms, and Number Theory.', difficulty: 'Intermediate', icon: 'assets/Furniture/Light_3.png', url: '#' },
+            { title: 'Problem Solving Strategies', description: 'How to read a problem, deduce constraints, and pick the right algorithm.', difficulty: 'All Levels', icon: 'assets/Objects/Bedroom/Clock_1_blue.png', url: '#' },
+            { title: 'ICPC Preparation Guide', description: 'Team time management, collective problem solving strategies, and past experiences.', difficulty: 'Advanced', icon: 'assets/Objects/Bedroom/Trophy.png', url: '#' },
+            { title: 'Training Sheets', description: 'Carefully curated problem sets categorized by topic and difficulty level.', difficulty: 'All Levels', icon: 'assets/Objects/Bedroom/Calendar_2.png', url: '#' },
+        ],
+
+        faq: [
+            {
+                question: 'I am a complete beginner in programming.. Can I join?',
+                answer: 'Yes, absolutely! The NUSC community welcomes all levels from zero to pros. We provide training paths specifically for beginners that start from basic concepts and take you step-by-step into competitive problem solving.'
+            },
+            {
+                question: 'What is the international ICPC contest?',
+                answer: 'The International Collegiate Programming Contest (ICPC) is the oldest, most prestigious, and largest programming contest for university students in the world. Teams of 3 students compete on a single PC to solve complex algorithmic problems under time pressure.'
+            },
+            {
+                question: 'What is the ICPC NUSC community?',
+                answer: 'It is the official competitive programming student community at our university. We organize weekly trainings, workshops, mock contests, and help contestants form teams and prepare for regional and global competitions.'
+            },
+            {
+                question: 'Which programming language is most used in contests?',
+                answer: 'C++ is the primary and most popular language in competitive programming due to its incredible speed and the Standard Template Library (STL). Java and Python can also be used in most contests.'
+            },
+            {
+                question: 'How are ICPC teams formed?',
+                answer: 'A team consists of 3 students from the same university. The NUSC community helps you find suitable teammates who share your level and interests, and you train together on coordination and time management.'
+            },
+            {
+                question: 'How do I train effectively to solve problems?',
+                answer: 'Competitive solving requires a gradual approach; start by solving sheets organized by topic, and always read the Editorials after every contest to learn new and more efficient methods.'
+            },
+            {
+                question: 'Is participating in the community free?',
+                answer: 'Yes, all trainings, workshops, and activities provided by the NUSC community are completely free for all students.'
+            },
+            {
+                question: 'How do I join the NUSC community right now?',
+                answer: 'Recruitment is currently open for the Organizing Team (Technical, Marketing, Media, and HR). Click "JOIN US NOW" or "Apply For Team" to submit your application. Participant training registration will be announced soon!'
+            },
+        ],
+    };
+
+    // RENDER FUNCTIONS
+    function renderEvents() {
+        const container = document.getElementById('events-container');
+        if (!container) return;
+        if (!NUSC_CONFIG.events || NUSC_CONFIG.events.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-10 px-6 pixel-card bg-cream-dark max-w-lg mx-auto reveal">
+                    <span class="material-symbols-outlined text-4xl text-gold mb-3 block">event_available</span>
+                    <h3 class="font-display font-black text-xl text-navy mb-2">No Scheduled Events Right Now</h3>
+                    <p class="font-body text-sm text-ink-light leading-relaxed">
+                        Upcoming training sessions, mock contests, and workshops will be announced here soon. Stay tuned!
+                    </p>
+                </div>
+            `;
+            return;
+        }
+        container.innerHTML = NUSC_CONFIG.events.map((event, i) => `
+            <div class="pixel-card bg-cream p-0 relative reveal" style="transition-delay:${i * 0.08}s">
+                <div class="flex items-center justify-between px-5 py-3 border-b-2 border-ink bg-cream-dark">
+                    <span class="font-minecraft text-[10px] tracking-wider text-navy uppercase">${event.category}</span>
+                    <img src="${event.icon}" class="pixel-art w-5 h-5 float-slow" alt="${event.title}" />
+                </div>
+                <div class="p-6">
+                    <h3 class="font-display font-black text-xl text-navy mb-2">${event.title}</h3>
+                    <div class="flex items-center gap-3 mb-3 text-ink-light font-label font-bold text-xs uppercase">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> ${event.date}</span>
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> ${event.time}</span>
+                    </div>
+                    <p class="font-body text-sm text-ink-light mb-5 leading-relaxed">${event.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="font-minecraft text-[9px] px-2.5 py-1 bg-gold/20 text-gold-dark border border-gold/40">${event.status}</span>
+                        <a href="${event.url}" class="font-display font-bold text-sm text-navy hover:text-gold-dark transition-colors flex items-center gap-1">
+                            Details & Registration &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderJourney() {
+        const container = document.getElementById('journey-container');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.journey.map((step, i) => {
+            const isLast = i === NUSC_CONFIG.journey.length - 1;
+            return `
+            <div class="flex items-start gap-4 md:gap-6 relative py-4 md:py-5 journey-node-wrapper">
+                <div class="journey-node relative z-10 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center border-2 ${isLast ? 'border-gold bg-gold/20' : 'border-white/20 bg-navy'} flex-shrink-0">
+                    <img src="${step.icon}" class="pixel-art w-6 h-6 md:w-8 md:h-8" alt="${step.title}" />
+                </div>
+                <div class="pt-1 md:pt-2">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="journey-number font-minecraft text-[10px] tracking-wider px-2 py-0.5 ${isLast ? 'bg-gold text-ink' : 'bg-white/10 text-white/70'}">${String(step.number).padStart(2,'0')}</span>
+                        <h3 class="font-display font-bold text-lg md:text-xl ${isLast ? 'text-gold' : 'text-white'}">${step.title}</h3>
+                    </div>
+                    <p class="font-body text-sm md:text-base text-white/70 leading-relaxed">${step.description}</p>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderCommunity() {
+        const container = document.getElementById('community-cards');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.community.map((item, i) => `
+            <div class="pixel-card bg-cream p-6 relative reveal" style="transition-delay:${i * 0.1}s">
+                <div class="flex items-center gap-3 mb-3">
+                    <img src="${item.icon}" class="pixel-art w-7 h-7" alt="${item.title}" />
+                    <h3 class="font-display font-bold text-xl text-navy">${item.title}</h3>
+                </div>
+                <p class="font-body text-sm text-ink-light leading-relaxed">${item.description}</p>
+            </div>
+        `).join('');
+    }
+
+    function renderStats() {
+        const container = document.getElementById('stats-container');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.stats.map((stat, i) => `
+            <div class="text-center p-5 md:p-6 bg-navy-light/20 pixel-border border-white/10 reveal" style="transition-delay:${i * 0.1}s">
+                <img src="${stat.icon}" class="pixel-art w-8 h-8 mx-auto mb-3" alt="${stat.label}" />
+                <div class="font-minecraft text-3xl md:text-4xl text-gold mb-2">${stat.value}</div>
+                <span class="font-display font-bold text-sm text-white/80">${stat.label}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderBadges() {
+        const container = document.getElementById('badges-container');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.achievements.map((badge, i) => `
+            <div class="pixel-badge px-4 py-3 flex items-center gap-2.5 reveal" style="transition-delay:${i * 0.08}s">
+                <img src="${badge.icon}" class="pixel-art w-5 h-5" alt="${badge.title}" />
+                <span class="font-minecraft text-[10px] text-gold tracking-wider">${badge.title}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderResources() {
+        const container = document.getElementById('resources-container');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.resources.map((res, i) => `
+            <a href="${res.url}" class="pixel-card bg-cream-dark p-6 relative group reveal block" style="transition-delay:${i * 0.08}s">
+                <div class="flex items-center justify-between mb-4">
+                    <img src="${res.icon}" class="pixel-art w-8 h-8" alt="${res.title}" />
+                    <span class="font-minecraft text-[9px] px-2.5 py-1 bg-navy/10 text-navy uppercase">${res.difficulty}</span>
+                </div>
+                <h3 class="font-display font-bold text-xl text-navy mb-2 group-hover:text-gold-dark transition-colors">${res.title}</h3>
+                <p class="font-body text-sm text-ink-light mb-4 leading-relaxed">${res.description}</p>
+                <span class="font-display font-bold text-sm text-navy group-hover:text-gold-dark transition-colors flex items-center gap-1">
+                    Explore Path &rarr;
+                </span>
+            </a>
+        `).join('');
+    }
+
+    function renderFAQ() {
+        const container = document.getElementById('faq-container');
+        if (!container) return;
+        if(container) container.innerHTML = NUSC_CONFIG.faq.map((item, i) => `
+            <div class="pixel-card bg-cream reveal" style="transition-delay:${i * 0.05}s">
+                <button class="faq-toggle w-full px-5 py-4 flex items-center justify-between text-left" aria-expanded="false" aria-controls="faq-a-${i}">
+                    <span class="font-display font-bold text-lg text-navy pr-4">${item.question}</span>
+                    <span class="material-symbols-outlined text-xl text-ink-lighter flex-shrink-0 faq-icon transition-transform duration-300">expand_more</span>
+                </button>
+                <div id="faq-a-${i}" class="faq-answer px-5" role="region">
+                    <p class="font-body text-base text-ink-light pb-4 leading-relaxed">${item.answer}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderSocialLinks() {
+        const container = document.getElementById('social-links');
+        if (!container) return;
+        const paths = {
+            facebook: 'M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z',
+            linkedin: 'M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28',
+            discord: 'M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z',
+            github: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
+        };
+        if(container) container.innerHTML = Object.entries(NUSC_CONFIG.social).map(([key, s]) => `
+            <a href="${s.url}" class="w-10 h-10 border-2 border-white/20 flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-all" aria-label="${s.label}" target="_blank" rel="noopener noreferrer">
+                <svg class="w-5 h-5 fill-white/70 hover:fill-gold" viewBox="0 0 24 24"><path d="${paths[key]}"/></svg>
+            </a>
+        `).join('');
+    }
+
+    // INTERACTIVITY
+    function initNavbar() {
+        const navbar = document.getElementById('navbar');
+        if (!navbar) return;
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    navbar.classList.toggle('navbar-scrolled', window.scrollY > 40);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    function initMobileMenu() {
+        const toggle = document.getElementById('menu-toggle');
+        const close = document.getElementById('menu-close');
+        const menu = document.getElementById('mobile-menu');
+        if (!toggle || !close || !menu) return;
+        const open = () => { menu.classList.add('open'); toggle.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+        const shut = () => { menu.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+        toggle.addEventListener('click', open);
+        close.addEventListener('click', shut);
+        menu.querySelectorAll('a').forEach(l => l.addEventListener('click', shut));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) shut(); });
+    }
+
+    function initScrollReveal() {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    function initJourneyNodes() {
+        const nodes = document.querySelectorAll('.journey-node');
+        const charEl = document.getElementById('roadmap-char');
+        if (!nodes.length) return;
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (charEl) {
+                        const wrapper = entry.target.closest('.journey-node-wrapper');
+                        if (wrapper) {
+                            const offset = wrapper.offsetTop;
+                            charEl.style.top = offset + 'px';
+                        }
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        nodes.forEach(n => observer.observe(n));
+    }
+
+    function initFAQ() {
+        document.addEventListener('click', e => {
+            const toggle = e.target.closest('.faq-toggle');
+            if (!toggle) return;
+            const answer = toggle.nextElementSibling;
+            const icon = toggle.querySelector('.faq-icon');
+            const isOpen = answer.classList.contains('open');
+            document.querySelectorAll('.faq-answer.open').forEach(a => {
+                if (a !== answer) {
+                    a.classList.remove('open');
+                    a.previousElementSibling.setAttribute('aria-expanded','false');
+                    const ic = a.previousElementSibling.querySelector('.faq-icon');
+                    if (ic) ic.style.transform = '';
+                }
+            });
+            if (isOpen) {
+                answer.classList.remove('open');
+                toggle.setAttribute('aria-expanded','false');
+                if (icon) icon.style.transform = '';
+            } else {
+                answer.classList.add('open');
+                toggle.setAttribute('aria-expanded','true');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    }
+
+    function initModal() {
+        const modal = document.getElementById('join-modal');
+        const joinBtns = document.querySelectorAll('.join-btn');
+        const closeBtns = document.querySelectorAll('.close-modal');
+        const form = document.getElementById('join-form');
+        const content = document.getElementById('modal-content');
+        const success = document.getElementById('modal-success');
+
+        const openModal = (e) => {
+            if(e) e.preventDefault();
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            content.classList.remove('hidden');
+            success.classList.add('hidden');
+            form.reset();
+        };
+
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        joinBtns.forEach(btn => btn.addEventListener('click', openModal));
+        closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            content.classList.add('hidden');
+            success.classList.remove('hidden');
+            success.classList.add('modal-animate-in');
+        });
+    }
+
+    // INIT
+    function init() {
+        renderEvents();
+        renderJourney();
+        renderCommunity();
+        renderStats();
+        renderBadges();
+        renderResources();
+        renderFAQ();
+        renderSocialLinks();
+
+        initNavbar();
+        initMobileMenu();
+        initScrollReveal();
+        initJourneyNodes();
+        initFAQ();
+        initModal();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+
+</body>
+</html>
+
+

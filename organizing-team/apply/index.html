@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apply for Organizing Team | ICPC Community NUSC</title>
+    <meta name="description" content="Apply to join the ICPC NUSC organizing team — Technical, Marketing, Media, and HR departments." />
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    },
+                    maxWidth: {
+                        'site': '1280px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+        .pixel-shadow-sm { box-shadow: 2px 2px 0px 0px #00122e; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px 0px #00122e;
+        }
+
+        .pixel-btn-navy {
+            border: 2px solid #004494;
+            background: #002e69;
+            color: #fbf9f5;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-navy:hover {
+            border-color: #fea520;
+            background: #004494;
+        }
+
+        /* =============================================
+           INPUT BOX VISIBILITY & HIGH-CONTRAST FIX
+           ============================================= */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="url"],
+        input[type="search"],
+        input[type="number"],
+        select,
+        textarea,
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            -webkit-text-fill-color: #ffffff !important;
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="tel"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="url"]::placeholder,
+        input[type="search"]::placeholder,
+        textarea::placeholder,
+        .pixel-input::placeholder {
+            color: rgba(251, 249, 245, 0.45) !important;
+            -webkit-text-fill-color: rgba(251, 249, 245, 0.45) !important;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        input[type="url"]:focus,
+        input[type="search"]:focus,
+        select:focus,
+        textarea:focus,
+        .pixel-input:focus {
+            background-color: #00183b !important;
+            color: #ffffff !important;
+            border-color: #fea520 !important;
+            box-shadow: 2px 2px 0px 0px #fea520 !important;
+            outline: none !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
+        select option {
+            background-color: #001a41 !important;
+            color: #ffffff !important;
+            padding: 8px !important;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px #00122e inset !important;
+            transition: background-color 5000s ease-in-out 0s !important;
+        }
+
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 12px;
+            border: 2px solid #004494;
+            background: #001a41;
+            color: rgba(251, 249, 245, 0.6);
+            transition: all 0.2s;
+        }
+        .step-pill.active {
+            border-color: #fea520;
+            background: #fea520;
+            color: #1b1c1a;
+            box-shadow: 2px 2px 0px 0px #00122e;
+        }
+        .step-pill.completed {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen selection:bg-gold selection:text-navy">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 h-16 flex items-center">
+        <div class="max-w-site mx-auto px-4 md:px-8 w-full flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-6 h-6" alt="NUSC Logo" />
+                <span class="font-minecraft text-xs md:text-sm text-white tracking-tight">ICPC <span class="text-gold">NUSC</span></span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="/organizing-team" class="font-label text-xs uppercase font-bold text-cream-dark/70 hover:text-gold transition-colors">
+                    &larr; Back to Departments
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN FORM CONTAINER -->
+    <main class="pt-24 pb-20 px-4 md:px-8 bg-pixel-grid min-h-screen">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Header Card -->
+            <div class="text-center mb-8">
+                <span class="font-minecraft text-[10px] text-navy bg-gold font-bold px-2.5 py-1 uppercase tracking-widest inline-block mb-3">FALL 2026 RECRUITMENT</span>
+                <h1 class="font-display font-black text-3xl md:text-4xl text-white">JOIN THE ORGANIZING TEAM</h1>
+                <p class="font-body text-xs md:text-sm text-cream-dark/70 max-w-xl mx-auto mt-2">
+                    Help lead, organize, mentor, and build the competitive programming culture at NUSC.
+                </p>
+            </div>
+
+            <!-- Multi-step Indicator -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-8" id="steps-indicator">
+                <div class="step-pill active" data-step="1">
+                    <span class="font-mono text-xs">01</span>
+                    <span>Personal Info</span>
+                </div>
+                <div class="step-pill" data-step="2">
+                    <span class="font-mono text-xs">02</span>
+                    <span>Preferences</span>
+                </div>
+                <div class="step-pill" data-step="3">
+                    <span class="font-mono text-xs">03</span>
+                    <span>Department Qs</span>
+                </div>
+                <div class="step-pill" data-step="4">
+                    <span class="font-mono text-xs">04</span>
+                    <span>Review & Send</span>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="form-error-banner" class="hidden mb-6 bg-red-accent/20 border-2 border-red-accent text-red-light p-3.5 text-xs font-body flex items-start gap-2">
+                <span class="material-symbols-outlined text-base flex-shrink-0 text-red-accent">error</span>
+                <span id="form-error-msg">Please complete all required fields.</span>
+            </div>
+
+            <!-- FORM WRAPPER -->
+            <div class="bg-navy p-6 md:p-10 pixel-border border-gold/40 relative shadow-2xl">
+                
+                <!-- STEP 1: PERSONAL INFORMATION -->
+                <div id="step-1" class="form-step space-y-5">
+                    <div class="border-b border-white/10 pb-3 mb-4">
+                        <h2 class="font-display font-black text-xl text-white">Step 1: Personal Information</h2>
+                        <p class="text-xs text-cream-dark/60">Tell us who you are and how we can contact you.</p>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Full Name *</label>
+                        <input type="text" id="personal_full_name" class="pixel-input" placeholder="Enter your full name" required />
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">University Email *</label>
+                            <input type="email" id="personal_email" class="pixel-input" placeholder="student@university.edu.eg" required />
+                        </div>
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Phone Number (WhatsApp) *</label>
+                            <input type="tel" id="personal_phone" class="pixel-input" placeholder="01XXXXXXXXX" required />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">University & Faculty *</label>
+                            <input type="text" id="personal_university" class="pixel-input" placeholder="University & Faculty name" required />
+                        </div>
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Academic Year *</label>
+                            <select id="personal_year" class="pixel-input" required>
+                                <option value="">Select Academic Year</option>
+                                <option value="First Year">First Year (Freshman)</option>
+                                <option value="Second Year">Second Year (Sophomore)</option>
+                                <option value="Third Year">Third Year (Junior)</option>
+                                <option value="Fourth Year">Fourth Year (Senior)</option>
+                                <option value="Other">Other / Post-grad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-4 border-t border-white/10">
+                        <button type="button" onclick="nextStep(2)" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-6 py-2.5 flex items-center gap-1.5">
+                            Continue &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: PREFERENCES & UNIVERSAL QUESTIONS -->
+                <div id="step-2" class="form-step space-y-5 hidden">
+                    <div class="border-b border-white/10 pb-3 mb-4">
+                        <h2 class="font-display font-black text-xl text-white">Step 2: Department Preferences & Motivation</h2>
+                        <p class="text-xs text-cream-dark/60">Choose your target departments and share your motivation.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">First Department Preference *</label>
+                            <select id="dept_first_pref" class="pixel-input" required onchange="onFirstPrefChange(this.value)">
+                                <option value="">Select First Choice</option>
+                                <option value="Technical">Technical (Coding, Mentorship, Problem Setting)</option>
+                                <option value="Marketing">Marketing (Campaigns, Social Media, Growth)</option>
+                                <option value="Media">Media (Design, Video Editing, Coverage)</option>
+                                <option value="HR">HR (People, Recruitment, Culture)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Second Department Preference *</label>
+                            <select id="dept_second_pref" class="pixel-input" required>
+                                <option value="">Select Second Choice</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Media">Media</option>
+                                <option value="HR">HR</option>
+                            </select>
+                            <span class="text-[10px] text-cream-dark/50 block mt-1">Must be different from first choice.</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Why do you want to join the ICPC NUSC organizing team? *</label>
+                        <textarea id="universal_why_join" rows="3" class="pixel-input" placeholder="Share your motivation..." required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">What do you think you can contribute to NUSC? *</label>
+                        <textarea id="universal_contribution" rows="3" class="pixel-input" placeholder="Your skills, experience, ideas..." required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">What do you want to learn or improve by joining the team? *</label>
+                        <textarea id="universal_learn_goals" rows="2" class="pixel-input" placeholder="What skills are you aiming to build?" required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Tell us about a project, activity, competition, club, or team experience (Optional)</label>
+                        <textarea id="universal_past_experience" rows="2" class="pixel-input" placeholder="Any previous clubs, projects, hackathons..."></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Realistic weekly time commitment *</label>
+                            <select id="universal_time_commitment" class="pixel-input" required>
+                                <option value="">Select realistic commitment</option>
+                                <option value="2–4 hours">2–4 hours / week</option>
+                                <option value="4–6 hours">4–6 hours / week</option>
+                                <option value="6–10 hours">6–10 hours / week</option>
+                                <option value="10+ hours">10+ hours / week</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">How do you usually behave when working under pressure? *</label>
+                        <textarea id="universal_under_pressure" rows="2" class="pixel-input" placeholder="How do you handle deadlines and unexpected blockers?" required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Tell us about a disagreement you had in a team and how you handled it *</label>
+                        <textarea id="universal_conflict_handling" rows="2" class="pixel-input" placeholder="Describe a team conflict and resolution..." required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Leadership experience situation (Optional)</label>
+                        <textarea id="universal_leadership_optional" rows="2" class="pixel-input" placeholder="A time you had to take responsibility for a team or project..."></textarea>
+                    </div>
+
+                    <div class="flex justify-between pt-4 border-t border-white/10">
+                        <button type="button" onclick="nextStep(1)" class="pixel-btn-navy text-xs px-4 py-2 font-label">&larr; Back</button>
+                        <button type="button" onclick="nextStep(3)" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-6 py-2.5 flex items-center gap-1.5">
+                            Continue to Dept Questions &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: CONDITIONAL DEPARTMENT QUESTIONS -->
+                <div id="step-3" class="form-step space-y-6 hidden">
+                    <div class="border-b border-white/10 pb-3 mb-4">
+                        <h2 class="font-display font-black text-xl text-white">Step 3: Department Specific Questions</h2>
+                        <p class="text-xs text-cream-dark/60">Questions tailored specifically for your chosen departments.</p>
+                    </div>
+
+                    <!-- Dynamic Department Panels Container -->
+                    <div id="dept-questions-container" class="space-y-6">
+                        <!-- Rendered dynamically based on 1st & 2nd preferences -->
+                    </div>
+
+                    <div class="flex justify-between pt-4 border-t border-white/10">
+                        <button type="button" onclick="nextStep(2)" class="pixel-btn-navy text-xs px-4 py-2 font-label">&larr; Back</button>
+                        <button type="button" onclick="nextStep(4)" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-6 py-2.5 flex items-center gap-1.5">
+                            Review Application &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: REVIEW & SUBMIT -->
+                <div id="step-4" class="form-step space-y-6 hidden">
+                    <div class="border-b border-white/10 pb-3 mb-4">
+                        <h2 class="font-display font-black text-xl text-white">Step 4: Review Your Submission</h2>
+                        <p class="text-xs text-cream-dark/60">Please double check your answers before submitting.</p>
+                    </div>
+
+                    <!-- Summary Card -->
+                    <div id="review-summary-card" class="bg-navy-darkest p-6 pixel-border border-navy-light/40 space-y-4 text-xs">
+                        <!-- Injected summary -->
+                    </div>
+
+                    <div class="flex items-start gap-2 pt-2">
+                        <input type="checkbox" id="confirm_truth" class="pixel-input w-4 h-4 mt-0.5" required />
+                        <label for="confirm_truth" class="text-xs text-cream-dark/80 font-body">
+                            I confirm that all provided information is accurate, and I am committed to dedicating the requested hours if accepted.
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between pt-4 border-t border-white/10">
+                        <button type="button" onclick="nextStep(3)" class="pixel-btn-navy text-xs px-4 py-2 font-label">&larr; Back</button>
+                        <button type="button" id="submit-application-btn" onclick="submitFinalApplication()" class="pixel-btn-gold bg-gold text-ink font-display font-black text-sm px-8 py-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base">send</span> SUBMIT APPLICATION
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 5: CELEBRATION SUCCESS OVERLAY -->
+                <div id="step-success" class="hidden text-center py-12 space-y-6">
+                    <div class="w-20 h-20 bg-navy-darkest pixel-border-gold rounded-full mx-auto flex items-center justify-center pixel-shadow-gold">
+                        <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-10 h-10" alt="Trophy" />
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-navy bg-gold font-bold px-2 py-0.5 uppercase tracking-widest inline-block mb-2">SUBMISSION RECEIVED</span>
+                        <h2 class="font-display font-black text-3xl text-white">APPLICATION SUBMITTED!</h2>
+                        <p class="text-xs text-cream-dark/70 max-w-md mx-auto mt-2">
+                            Thank you for applying to the ICPC NUSC Organizing Team. Our leadership and HR team will review your application and contact you via email & WhatsApp.
+                        </p>
+                    </div>
+                    <div class="bg-navy-darkest p-4 pixel-border border-white/10 max-w-sm mx-auto text-xs font-mono text-gold">
+                        Application ID: <span id="success-app-id">app_000</span>
+                    </div>
+                    <div class="pt-4">
+                        <a href="/" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-8 py-3 inline-block">
+                            RETURN TO HOMEPAGE
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Central Data Store & Auth Logic -->
+    <script src="/js/data-store.js"></script>
+
+    <!-- DYNAMIC APPLICATION FORM LOGIC -->
+    <script>
+        (function() {
+            'use strict';
+
+            let currentStep = 1;
+
+            window.onFirstPrefChange = function(val) {
+                const secondSelect = document.getElementById('dept_second_pref');
+                Array.from(secondSelect.options).forEach(opt => {
+                    if (opt.value && opt.value === val) {
+                        opt.disabled = true;
+                    } else {
+                        opt.disabled = false;
+                    }
+                });
+                if (secondSelect.value === val) {
+                    secondSelect.value = '';
+                }
+            };
+
+            window.nextStep = function(stepNum) {
+                const errorBanner = document.getElementById('form-error-banner');
+                const errorMsg = document.getElementById('form-error-msg');
+                errorBanner.classList.add('hidden');
+
+                // Validate Step 1
+                if (stepNum > 1 && currentStep === 1) {
+                    const name = document.getElementById('personal_full_name').value.trim();
+                    const email = document.getElementById('personal_email').value.trim();
+                    const phone = document.getElementById('personal_phone').value.trim();
+                    const uni = document.getElementById('personal_university').value.trim();
+                    const year = document.getElementById('personal_year').value;
+
+                    if (!name || !email || !phone || !uni || !year) {
+                        errorMsg.textContent = 'Please fill out all required personal information fields.';
+                        errorBanner.classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                // Validate Step 2
+                if (stepNum > 2 && currentStep === 2) {
+                    const pref1 = document.getElementById('dept_first_pref').value;
+                    const pref2 = document.getElementById('dept_second_pref').value;
+                    const why = document.getElementById('universal_why_join').value.trim();
+                    const contrib = document.getElementById('universal_contribution').value.trim();
+                    const learn = document.getElementById('universal_learn_goals').value.trim();
+                    const commit = document.getElementById('universal_time_commitment').value;
+                    const pressure = document.getElementById('universal_under_pressure').value.trim();
+                    const conflict = document.getElementById('universal_conflict_handling').value.trim();
+
+                    if (!pref1 || !pref2 || !why || !contrib || !learn || !commit || !pressure || !conflict) {
+                        errorMsg.textContent = 'Please answer all required preference and motivation questions.';
+                        errorBanner.classList.remove('hidden');
+                        return;
+                    }
+                    if (pref1 === pref2) {
+                        errorMsg.textContent = 'First and Second Department Preferences cannot be the same.';
+                        errorBanner.classList.remove('hidden');
+                        return;
+                    }
+
+                    // Render dynamic department questions for Step 3
+                    renderDepartmentQuestions();
+                }
+
+                // Validate Step 3
+                if (stepNum > 3 && currentStep === 3) {
+                    const reqInputs = document.querySelectorAll('#dept-questions-container [required]');
+                    let missing = false;
+                    reqInputs.forEach(input => {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            // Checked by name group
+                            const name = input.name;
+                            const anyChecked = document.querySelector(`input[name="${name}"]:checked`);
+                            if (!anyChecked) missing = true;
+                        } else if (!input.value.trim()) {
+                            missing = true;
+                        }
+                    });
+
+                    if (missing) {
+                        errorMsg.textContent = 'Please complete all required department-specific questions.';
+                        errorBanner.classList.remove('hidden');
+                        return;
+                    }
+
+                    // Render Review in Step 4
+                    renderReviewSummary();
+                }
+
+                // Transition step view
+                currentStep = stepNum;
+                document.querySelectorAll('.form-step').forEach(el => el.classList.add('hidden'));
+                document.getElementById('step-' + stepNum).classList.remove('hidden');
+
+                // Update Step Pill Indicators
+                document.querySelectorAll('.step-pill').forEach(pill => {
+                    const s = parseInt(pill.getAttribute('data-step'), 10);
+                    pill.classList.remove('active', 'completed');
+                    if (s === currentStep) pill.classList.add('active');
+                    else if (s < currentStep) pill.classList.add('completed');
+                });
+
+                window.scrollTo({ top: 100, behavior: 'smooth' });
+            };
+
+            // RENDER DEPARTMENT SPECIFIC QUESTIONS
+            function renderDepartmentQuestions() {
+                const pref1 = document.getElementById('dept_first_pref').value;
+                const pref2 = document.getElementById('dept_second_pref').value;
+                const container = document.getElementById('dept-questions-container');
+
+                const deptsToRender = [pref1, pref2].filter(Boolean);
+                
+                container.innerHTML = deptsToRender.map((dept, idx) => {
+                    return `
+                        <div class="bg-navy-darkest p-6 pixel-border border-navy-light/40 space-y-4">
+                            <div class="flex items-center gap-2 border-b border-white/10 pb-2">
+                                <span class="font-minecraft text-[10px] text-navy bg-gold font-bold px-2 py-0.5 uppercase tracking-wider">${idx === 0 ? 'PRIMARY' : 'SECONDARY'} CHOICE</span>
+                                <h3 class="font-display font-black text-lg text-white">${dept.toUpperCase()} DEPARTMENT QUESTIONS</h3>
+                            </div>
+                            <div class="space-y-4">
+                                ${getQuestionsHTMLForDepartment(dept.toLowerCase())}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function getQuestionsHTMLForDepartment(dept) {
+                if (dept === 'technical') {
+                    return `
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">What programming languages are you comfortable using? *</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                ${['C++', 'Python', 'Java', 'JavaScript / TypeScript', 'C', 'C#', 'Other'].map(l => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="tech_languages" value="${l}" class="pixel-input w-4 h-4" />
+                                        <span>${l}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">How would you describe your competitive programming experience? *</label>
+                            <select id="tech_cp_experience" class="pixel-input" required>
+                                <option value="">Select CP Level</option>
+                                <option value="No experience">No experience (Complete beginner)</option>
+                                <option value="Beginner">Beginner (Solved 10-50 basic problems)</option>
+                                <option value="Some practice">Some practice (Familiar with STL & basic logic)</option>
+                                <option value="Intermediate">Intermediate (Codeforces Pupil / Specialist)</option>
+                                <option value="Advanced">Advanced (Codeforces Expert+ / ICPC Regionalist)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which topics have you practiced? *</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                ${['Arrays', 'Strings', 'Sorting', 'Binary Search', 'Recursion', 'Graphs', 'Trees', 'Dynamic Programming', 'Greedy Algorithms', 'Data Structures', 'STL', 'Number Theory', 'None yet'].map(t => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="tech_topics" value="${t}" class="pixel-input w-4 h-4" />
+                                        <span>${t}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Describe one programming problem or project that you are proud of solving/building *</label>
+                            <textarea id="tech_proud_project" rows="3" class="pixel-input" placeholder="Explain the problem constraints, your algorithmic approach, and complexity..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">GitHub / Portfolio / Codeforces Profile URL (Optional)</label>
+                            <input type="url" id="tech_portfolio_url" class="pixel-input" placeholder="https://github.com/your-username" />
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Imagine an NUSC website feature is broken right before an event. What would you do? *</label>
+                            <textarea id="tech_broken_site_scenario" rows="3" class="pixel-input" placeholder="Describe your step-by-step debugging & triage approach..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Which technical area interests you most? *</label>
+                            <select id="tech_interest_area" class="pixel-input" required>
+                                <option value="">Select focus area</option>
+                                <option value="Problem Setting">Problem Setting & Test Case Generation</option>
+                                <option value="Frontend Development">Frontend Web Development</option>
+                                <option value="Backend Development">Backend Development & APIs</option>
+                                <option value="Competitive Programming Mentoring">CP Mentoring & Workshop Delivery</option>
+                                <option value="Automation & DevOps">Automation & Contest DevOps</option>
+                                <option value="Not sure yet">Not sure yet / Flexible</option>
+                            </select>
+                        </div>
+                    `;
+                }
+
+                if (dept === 'marketing') {
+                    return `
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which marketing areas interest you? *</label>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                ${['Social Media', 'Content Strategy', 'Campaigns', 'Community Growth', 'Partnerships', 'Copywriting', 'Event Promotion', 'Brand Strategy'].map(m => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="mkt_interest_areas" value="${m}" class="pixel-input w-4 h-4" />
+                                        <span>${m}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Imagine NUSC is hosting a beginner programming workshop. How would you convince students to attend? *</label>
+                            <textarea id="mkt_convince_workshop" rows="3" class="pixel-input" placeholder="Draft your marketing hook or campaign approach..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">If you had to promote NUSC to students who have never heard of ICPC, what would your message be? *</label>
+                            <textarea id="mkt_pitch_nusc" rows="3" class="pixel-input" placeholder="How would you explain competitive programming in simple terms?" required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which platforms do you actively use for community growth? *</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                                ${['Instagram', 'Facebook', 'LinkedIn', 'TikTok', 'WhatsApp', 'Discord', 'YouTube', 'Other'].map(p => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="mkt_platforms" value="${p}" class="pixel-input w-4 h-4" />
+                                        <span>${p}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Have you worked on a campaign, page, or event promo before? *</label>
+                            <select id="mkt_past_campaign_exp" class="pixel-input" required>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Tell us what you did (or relevant promo work)</label>
+                            <textarea id="mkt_past_campaign_details" rows="2" class="pixel-input" placeholder="Describe the campaign results and role..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Give us one idea for growing the ICPC NUSC community *</label>
+                            <textarea id="mkt_growth_idea" rows="3" class="pixel-input" placeholder="A creative idea to expand reach..." required></textarea>
+                        </div>
+                    `;
+                }
+
+                if (dept === 'media') {
+                    return `
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which media areas interest you? *</label>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                ${['Graphic Design', 'Photography', 'Videography', 'Video Editing', 'Motion Graphics', 'Social Media Content', 'UI / Visual Design', 'Event Coverage'].map(m => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="media_interest_areas" value="${m}" class="pixel-input w-4 h-4" />
+                                        <span>${m}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which creative tools have you used? *</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                ${['Photoshop', 'Illustrator', 'Figma', 'Canva', 'Premiere Pro', 'After Effects', 'DaVinci Resolve', 'CapCut', 'Blender', 'Other', 'None'].map(t => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="media_tools_used" value="${t}" class="pixel-input w-4 h-4" />
+                                        <span>${t}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Portfolio Link (Behance, Drive, Instagram, etc.) (Optional)</label>
+                            <input type="url" id="media_portfolio_url" class="pixel-input" placeholder="https://behance.net/your-profile" />
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Tell us about one piece of content you created that you are proud of *</label>
+                            <textarea id="media_proud_work" rows="3" class="pixel-input" placeholder="Describe the visual piece and why you are proud of it..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Imagine you are covering an ICPC contest. What moments would you prioritize capturing? *</label>
+                            <textarea id="media_contest_moments" rows="3" class="pixel-input" placeholder="What key emotional and storytelling moments would you focus on?" required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">How would you turn raw event footage into a 30-second social video? *</label>
+                            <textarea id="media_video_approach" rows="3" class="pixel-input" placeholder="Describe pacing, audio, hooks, and visual transitions..." required></textarea>
+                        </div>
+                    `;
+                }
+
+                if (dept === 'hr') {
+                    return `
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1.5">Which HR areas interest you? *</label>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                ${['Recruitment', 'Interviews', 'Onboarding', 'People & Culture', 'Internal Activities', 'Team Communication', 'Performance Follow-up', 'Conflict Management'].map(h => `
+                                    <label class="flex items-center gap-2 bg-navy p-2 pixel-border border-white/10 cursor-pointer hover:border-gold">
+                                        <input type="checkbox" name="hr_interest_areas" value="${h}" class="pixel-input w-4 h-4" />
+                                        <span>${h}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Imagine two team members have a disagreement affecting work. What would you do? *</label>
+                            <textarea id="hr_disagreement_scenario" rows="3" class="pixel-input" placeholder="Your mediation and conflict resolution approach..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">What do you think makes someone a good team member? *</label>
+                            <textarea id="hr_good_team_member" rows="3" class="pixel-input" placeholder="What core qualities do you look for?" required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Tell us about a time you helped organize, coordinate, or support a group *</label>
+                            <textarea id="hr_past_coord_exp" rows="3" class="pixel-input" placeholder="Describe the team situation and your contribution..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Imagine a new member joins NUSC but feels lost. How would you help them? *</label>
+                            <textarea id="hr_lost_member_scenario" rows="3" class="pixel-input" placeholder="Onboarding and integration steps..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-xs text-gold uppercase font-bold mb-1">How would you handle a team member who repeatedly misses deadlines? *</label>
+                            <textarea id="hr_missed_deadlines_scenario" rows="3" class="pixel-input" placeholder="Accountability and follow-up strategy..." required></textarea>
+                        </div>
+                    `;
+                }
+
+                return '';
+            }
+
+            // RENDER REVIEW SUMMARY
+            function renderReviewSummary() {
+                const name = document.getElementById('personal_full_name').value;
+                const email = document.getElementById('personal_email').value;
+                const phone = document.getElementById('personal_phone').value;
+                const uni = document.getElementById('personal_university').value;
+                const year = document.getElementById('personal_year').value;
+                const pref1 = document.getElementById('dept_first_pref').value;
+                const pref2 = document.getElementById('dept_second_pref').value;
+                const commit = document.getElementById('universal_time_commitment').value;
+
+                const card = document.getElementById('review-summary-card');
+                card.innerHTML = `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-white/10">
+                        <div>
+                            <span class="text-cream-dark/60 block font-label text-[10px] uppercase">Applicant</span>
+                            <span class="font-bold text-white text-sm">${escapeHTML(name)}</span>
+                            <span class="text-cream-dark/60 block text-[11px]">${escapeHTML(email)} • ${escapeHTML(phone)}</span>
+                        </div>
+                        <div>
+                            <span class="text-cream-dark/60 block font-label text-[10px] uppercase">University</span>
+                            <span class="font-bold text-white">${escapeHTML(uni)}</span>
+                            <span class="text-cream-dark/60 block text-[11px]">${escapeHTML(year)}</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <span class="text-gold block font-label text-[10px] uppercase font-bold">1st Choice</span>
+                            <span class="font-bold text-white">${escapeHTML(pref1)}</span>
+                        </div>
+                        <div>
+                            <span class="text-cream-dark/60 block font-label text-[10px] uppercase font-bold">2nd Choice</span>
+                            <span class="font-bold text-white">${escapeHTML(pref2)}</span>
+                        </div>
+                        <div>
+                            <span class="text-cream-dark/60 block font-label text-[10px] uppercase font-bold">Weekly Hours</span>
+                            <span class="font-bold text-white">${escapeHTML(commit)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // SUBMIT FINAL APPLICATION
+            window.submitFinalApplication = async function() {
+                const check = document.getElementById('confirm_truth');
+                if (!check.checked) {
+                    alert('Please confirm that your answers are accurate.');
+                    return;
+                }
+
+                const submitBtn = document.getElementById('submit-application-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Submitting...';
+
+                // Compile answers snapshot with question prompts
+                const snapshot = {
+                    personal_full_name: { q: 'Full Name', a: document.getElementById('personal_full_name').value.trim() },
+                    personal_email: { q: 'University Email', a: document.getElementById('personal_email').value.trim() },
+                    personal_phone: { q: 'Phone Number', a: document.getElementById('personal_phone').value.trim() },
+                    personal_university: { q: 'University / Faculty', a: document.getElementById('personal_university').value.trim() },
+                    personal_year: { q: 'Academic Year', a: document.getElementById('personal_year').value },
+                    dept_first_pref: { q: 'First Department Preference', a: document.getElementById('dept_first_pref').value },
+                    dept_second_pref: { q: 'Second Department Preference', a: document.getElementById('dept_second_pref').value },
+                    universal_why_join: { q: 'Why do you want to join the ICPC NUSC organizing team?', a: document.getElementById('universal_why_join').value.trim() },
+                    universal_contribution: { q: 'What do you think you can contribute to NUSC?', a: document.getElementById('universal_contribution').value.trim() },
+                    universal_learn_goals: { q: 'What do you want to learn or improve by joining the team?', a: document.getElementById('universal_learn_goals').value.trim() },
+                    universal_past_experience: { q: 'Tell us about a project, activity, competition, club, volunteer experience, or team experience you participated in.', a: document.getElementById('universal_past_experience').value.trim() },
+                    universal_time_commitment: { q: 'How much time can you realistically commit each week?', a: document.getElementById('universal_time_commitment').value },
+                    universal_under_pressure: { q: 'How do you usually behave when working under pressure?', a: document.getElementById('universal_under_pressure').value.trim() },
+                    universal_conflict_handling: { q: 'Tell us about a disagreement you had while working in a team and how you handled it.', a: document.getElementById('universal_conflict_handling').value.trim() },
+                    universal_leadership_optional: { q: 'Tell us about a situation where you had to take responsibility for a team or project.', a: document.getElementById('universal_leadership_optional').value.trim() }
+                };
+
+                // Extract any checked checkboxes by name
+                const checkboxNames = ['tech_languages', 'tech_topics', 'mkt_interest_areas', 'mkt_platforms', 'media_interest_areas', 'media_tools_used', 'hr_interest_areas'];
+                checkboxNames.forEach(cn => {
+                    const checked = Array.from(document.querySelectorAll(`input[name="${cn}"]:checked`)).map(el => el.value);
+                    if (checked.length > 0) {
+                        snapshot[cn] = { q: cn.replace(/_/g, ' ').toUpperCase(), a: checked };
+                    }
+                });
+
+                // Extract single inputs by id
+                const specificIds = [
+                    'tech_cp_experience', 'tech_proud_project', 'tech_portfolio_url', 'tech_broken_site_scenario', 'tech_interest_area',
+                    'mkt_convince_workshop', 'mkt_pitch_nusc', 'mkt_past_campaign_exp', 'mkt_past_campaign_details', 'mkt_growth_idea',
+                    'media_portfolio_url', 'media_proud_work', 'media_contest_moments', 'media_video_approach',
+                    'hr_disagreement_scenario', 'hr_good_team_member', 'hr_past_coord_exp', 'hr_lost_member_scenario', 'hr_missed_deadlines_scenario'
+                ];
+
+                specificIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && el.value.trim()) {
+                        const labelEl = el.previousElementSibling;
+                        const labelText = labelEl ? labelEl.textContent.replace('*', '').trim() : id;
+                        snapshot[id] = { q: labelText, a: el.value.trim() };
+                    }
+                });
+
+                const appRecord = {
+                    fullName: snapshot.personal_full_name.a,
+                    email: snapshot.personal_email.a,
+                    phone: snapshot.personal_phone.a,
+                    university: snapshot.personal_university.a,
+                    academicYear: snapshot.personal_year.a,
+                    firstPreference: snapshot.dept_first_pref.a,
+                    secondPreference: snapshot.dept_second_pref.a,
+                    answersSnapshot: snapshot
+                };
+
+                const saved = await window.NUSC_DATA_STORE.saveApplication(appRecord);
+
+                if (saved && saved.error) {
+                    alert('Submission Error: ' + saved.error + '\n\nPlease check your internet connection and try submitting again. Your answers have been preserved.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'SUBMIT APPLICATION';
+                    return;
+                }
+
+                document.getElementById('step-4').classList.add('hidden');
+                document.getElementById('steps-indicator').classList.add('hidden');
+                document.getElementById('success-app-id').textContent = (saved && saved.id) ? saved.id : 'APP-RECEIVED';
+                document.getElementById('step-success').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            function escapeHTML(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+        })();
+    </script>
+</body>
+</html>

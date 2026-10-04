@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICPC NUSC | Admin Dashboard</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'red-light': '#ffdad5',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                        'ink-light': '#434751',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+        .pixel-shadow-sm { box-shadow: 2px 2px 0px 0px #00122e; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px 0px #00122e;
+        }
+
+        .pixel-btn-navy {
+            border: 2px solid #004494;
+            background: #002e69;
+            color: #fbf9f5;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .pixel-btn-navy:hover {
+            border-color: #fea520;
+            background: #004494;
+        }
+
+        /* =============================================
+           INPUT BOX VISIBILITY & HIGH-CONTRAST FIX
+           ============================================= */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="url"],
+        input[type="search"],
+        input[type="number"],
+        select,
+        textarea,
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            -webkit-text-fill-color: #ffffff !important;
+            padding: 8px 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="tel"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="url"]::placeholder,
+        input[type="search"]::placeholder,
+        textarea::placeholder,
+        .pixel-input::placeholder {
+            color: rgba(251, 249, 245, 0.45) !important;
+            -webkit-text-fill-color: rgba(251, 249, 245, 0.45) !important;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        input[type="url"]:focus,
+        input[type="search"]:focus,
+        select:focus,
+        textarea:focus,
+        .pixel-input:focus {
+            background-color: #00183b !important;
+            color: #ffffff !important;
+            border-color: #fea520 !important;
+            box-shadow: 2px 2px 0px 0px #fea520 !important;
+            outline: none !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
+        select option {
+            background-color: #001a41 !important;
+            color: #ffffff !important;
+            padding: 8px !important;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px #00122e inset !important;
+            transition: background-color 5000s ease-in-out 0s !important;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(251, 249, 245, 0.7);
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .nav-item:hover {
+            color: #fea520;
+            background: rgba(254, 165, 32, 0.08);
+            border-left-color: #fea520;
+        }
+        .nav-item.active {
+            color: #1b1c1a;
+            background: #fea520;
+            border-left-color: #ffffff;
+            font-weight: 700;
+        }
+        .nav-item.active .material-symbols-outlined {
+            color: #1b1c1a;
+        }
+
+        /* Status Pills */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid transparent;
+        }
+        .status-new { background: #004494; color: #fff; border-color: #60a5fa; }
+        .status-under_review { background: #fea520; color: #1b1c1a; border-color: #1b1c1a; }
+        .status-shortlisted { background: #9333ea; color: #fff; border-color: #c084fc; }
+        .status-interview { background: #0284c7; color: #fff; border-color: #38bdf8; }
+        .status-accepted { background: #16a34a; color: #fff; border-color: #4ade80; }
+        .status-rejected { background: #920907; color: #fff; border-color: #f87171; }
+
+        .dept-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Star Rating */
+        .star-btn {
+            font-size: 18px;
+            color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .star-btn.filled { color: #fea520; font-variation-settings: 'FILL' 1; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #00122e; }
+        ::-webkit-scrollbar-thumb { background: #004494; }
+        ::-webkit-scrollbar-thumb:hover { background: #fea520; }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- ===================================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================================================== -->
+    <aside id="sidebar" class="w-64 bg-navy-dark border-r-2 border-navy-light/40 flex flex-col justify-between flex-shrink-0 z-30 transition-all duration-300 min-h-screen">
+        <div>
+            <!-- Sidebar Header / Logo -->
+            <div class="h-16 border-b-2 border-navy-light/40 flex items-center px-5 justify-between">
+                <a href="/admin" class="flex items-center gap-2.5">
+                    <img src="/assets/Objects/Bedroom/Trophy.png" class="pixel-art w-6 h-6" alt="NUSC Logo" />
+                    <div>
+                        <span class="font-minecraft text-xs text-white tracking-wider block">ICPC <span class="text-gold">NUSC</span></span>
+                        <span class="font-label text-[9px] text-gold-light uppercase tracking-widest block -mt-0.5">ADMIN PORTAL</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="py-4 space-y-1">
+                <a href="#dashboard" class="nav-item active" data-view="dashboard">
+                    <span class="material-symbols-outlined text-lg">dashboard</span>
+                    Dashboard
+                </a>
+                <a href="#applications" class="nav-item" data-view="applications">
+                    <span class="material-symbols-outlined text-lg">description</span>
+                    Applications
+                    <span id="nav-new-badge" class="ml-auto bg-navy-darkest text-gold text-[10px] font-minecraft px-1.5 py-0.5 border border-gold/40">0 NEW</span>
+                </a>
+                <a href="#events" class="nav-item" data-view="events">
+                    <span class="material-symbols-outlined text-lg">event</span>
+                    Events
+                </a>
+                <a href="#questions" class="nav-item" data-view="questions">
+                    <span class="material-symbols-outlined text-lg">quiz</span>
+                    Questions
+                </a>
+                <a href="#settings" class="nav-item" data-view="settings">
+                    <span class="material-symbols-outlined text-lg">settings</span>
+                    Settings
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t-2 border-navy-light/40 space-y-3">
+            <div class="flex items-center gap-2 text-[10px] font-label text-cream-dark/60">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span>DATA STORE &bull; REAL DATA ONLY</span>
+            </div>
+
+            <div class="bg-navy-darkest p-2.5 pixel-border border-navy-light/30 flex items-center justify-between">
+                <div class="truncate mr-2">
+                    <span id="admin-user-name" class="font-display font-bold text-xs text-white block truncate">cassidy</span>
+                    <span id="admin-user-role" class="font-label text-[9px] text-gold uppercase tracking-wider block">Super Admin</span>
+                </div>
+                <button id="logout-btn" class="text-cream-dark/60 hover:text-red-400 p-1 transition-colors" title="Sign Out">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN CONTENT WRAPPER -->
+    <!-- ===================================================================== -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen">
+        
+        <!-- TOP APP BAR -->
+        <header class="h-16 bg-navy-dark/90 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0">
+            <div class="flex items-center gap-4">
+                <h2 id="top-title" class="font-display font-black text-lg text-white uppercase tracking-wide">DASHBOARD</h2>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Global Quick Search -->
+                <div class="relative w-64 md:w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-base text-cream-dark/40 pointer-events-none">search</span>
+                    <input type="text" id="global-search" class="pixel-input pl-9 pr-3 py-1.5 text-xs" placeholder="Search applicants, events, questions..." />
+                </div>
+
+                <!-- Server Sync Status & Refresh Button -->
+                <span id="server-status-badge" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono bg-navy-darkest border border-green-500/50 text-green-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                    <span>SERVER SYNC ACTIVE</span>
+                </span>
+                <button id="global-sync-btn" onclick="window.syncServerData(false)" class="pixel-btn-gold text-xs px-3 py-1.5 flex items-center gap-1.5 font-label" title="Fetch latest submissions from live server">
+                    <span id="sync-icon" class="material-symbols-outlined text-sm">sync</span>
+                    <span id="sync-label" class="hidden sm:inline">SYNC DATA</span>
+                </button>
+
+                <!-- View Public Website Button -->
+                <a href="/" target="_blank" class="pixel-btn-navy text-xs px-3 py-1.5 flex items-center gap-1.5 font-label" title="Open Public Website in new tab">
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    <span class="hidden sm:inline">Public Site</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN DYNAMIC VIEW CONTAINER -->
+        <main class="flex-grow p-6 md:p-8 overflow-y-auto">
+            
+            <!-- VIEW: DASHBOARD -->
+            <section id="view-dashboard" class="space-y-8">
+                <!-- Banner -->
+                <div class="bg-navy p-6 pixel-border border-gold/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="font-minecraft text-[10px] text-navy bg-gold font-bold px-2 py-0.5 uppercase tracking-wider mb-1 inline-block">REAL DATA STORE</span>
+                        <h1 class="font-display font-black text-2xl md:text-3xl text-white">ICPC NUSC DASHBOARD</h1>
+                        <p class="font-body text-xs text-cream-dark/70 mt-1">Real-time control center for organizing team applications, active events, and candidate reviews.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#applications" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">assignment_ind</span> Review Applications
+                        </a>
+                        <button onclick="openCreateEventModal()" class="pixel-btn-navy text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">add</span> Create Event
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Key Metrics Grid -->
+                <div>
+                    <h3 class="font-label text-xs uppercase tracking-widest text-gold font-bold mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">analytics</span> Real Application Statistics
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                        <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                            <span class="font-label text-[11px] text-cream-dark/60 uppercase font-bold block">Total Apps</span>
+                            <span id="stat-total-apps" class="font-minecraft text-2xl text-white block mt-1">0</span>
+                        </div>
+                        <div class="bg-navy p-4 pixel-border border-blue-500/40">
+                            <span class="font-label text-[11px] text-blue-300 uppercase font-bold block">New</span>
+                            <span id="stat-new-apps" class="font-minecraft text-2xl text-blue-400 block mt-1">0</span>
+                        </div>
+                        <div class="bg-navy p-4 pixel-border border-gold/40">
+                            <span class="font-label text-[11px] text-gold uppercase font-bold block">Under Review</span>
+                            <span id="stat-review-apps" class="font-minecraft text-2xl text-gold block mt-1">0</span>
+                        </div>
+                        <div class="bg-navy p-4 pixel-border border-purple-500/40">
+                            <span class="font-label text-[11px] text-purple-300 uppercase font-bold block">Shortlisted</span>
+                            <span id="stat-short-apps" class="font-minecraft text-2xl text-purple-400 block mt-1">0</span>
+                        </div>
+                        <div class="bg-navy p-4 pixel-border border-green-500/40">
+                            <span class="font-label text-[11px] text-green-300 uppercase font-bold block">Accepted</span>
+                            <span id="stat-acc-apps" class="font-minecraft text-2xl text-green-400 block mt-1">0</span>
+                        </div>
+                        <div class="bg-navy p-4 pixel-border border-red-500/40">
+                            <span class="font-label text-[11px] text-red-300 uppercase font-bold block">Rejected</span>
+                            <span id="stat-rej-apps" class="font-minecraft text-2xl text-red-400 block mt-1">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout: Department Overview & Event Stats -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Department Breakdown -->
+                    <div class="lg:col-span-2 bg-navy p-6 pixel-border border-navy-light/40">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-label text-xs uppercase tracking-widest text-gold font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">groups</span> Department Distribution
+                            </h3>
+                            <span class="font-label text-[10px] text-cream-dark/50">Real Applicant Distribution</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="dept-overview-cards">
+                            <!-- Injected by JS dynamically from real records -->
+                        </div>
+                    </div>
+
+                    <!-- Event Quick Stats -->
+                    <div class="bg-navy p-6 pixel-border border-navy-light/40 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-label text-xs uppercase tracking-widest text-gold font-bold mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">calendar_month</span> Event Statistics
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
+                                    <span class="text-xs text-cream-dark/80">Active Published Events</span>
+                                    <span id="stat-active-events" class="font-minecraft text-sm text-gold">1</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
+                                    <span class="text-xs text-cream-dark/80">Total Upcoming</span>
+                                    <span id="stat-upcoming-events" class="font-minecraft text-sm text-white">1</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-1">
+                                    <span class="text-xs text-cream-dark/80">Total Registrations</span>
+                                    <span id="stat-total-regs" class="font-minecraft text-sm text-green-400">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 mt-4 border-t border-white/10">
+                            <a href="#events" class="text-xs font-label font-bold text-gold hover:text-white transition-colors flex items-center justify-between">
+                                Manage Events & Registrations &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Applications Table -->
+                <div class="bg-navy p-6 pixel-border border-navy-light/40">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-label text-xs uppercase tracking-widest text-gold font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">recent_actors</span> Recent Applications
+                        </h3>
+                        <a href="#applications" class="font-label text-xs text-gold hover:text-white font-bold">View All &rarr;</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="border-b-2 border-navy-light/60 text-cream-dark/50 font-label uppercase text-[11px]">
+                                    <th class="py-2.5 px-3">Applicant</th>
+                                    <th class="py-2.5 px-3">1st Preference</th>
+                                    <th class="py-2.5 px-3">2nd Preference</th>
+                                    <th class="py-2.5 px-3">Status</th>
+                                    <th class="py-2.5 px-3">Submitted</th>
+                                    <th class="py-2.5 px-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-apps-tbody" class="divide-y divide-white/5">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: APPLICATIONS -->
+            <section id="view-applications" class="space-y-6 hidden">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">ORGANIZING TEAM APPLICATIONS</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Review, filter, score, and assign candidates applying through the recruitment portal.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.syncServerData(false)" class="pixel-btn-navy text-xs font-display font-bold px-3.5 py-2 flex items-center gap-1.5" title="Fetch latest applications from server">
+                            <span class="material-symbols-outlined text-sm">sync</span> Sync From Server
+                        </button>
+                        <button onclick="exportApplications()" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-3.5 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters & Search Toolbar -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <!-- Search input -->
+                        <div class="lg:col-span-2">
+                            <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Search</label>
+                            <input type="text" id="app-search-input" class="pixel-input" placeholder="Search by name, email, university..." />
+                        </div>
+
+                        <!-- Department Filter -->
+                        <div>
+                            <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Department</label>
+                            <select id="app-dept-filter" class="pixel-input">
+                                <option value="all">All Departments</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Media">Media</option>
+                                <option value="HR">HR</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div>
+                            <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Status</label>
+                            <select id="app-status-filter" class="pixel-input">
+                                <option value="all">All Statuses</option>
+                                <option value="new">New</option>
+                                <option value="under_review">Under Review</option>
+                                <option value="shortlisted">Shortlisted</option>
+                                <option value="interview">Interview</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <!-- Sort Filter -->
+                        <div>
+                            <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Sort By</label>
+                            <select id="app-sort-filter" class="pixel-input">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="status">Status</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Active Filter summary count -->
+                    <div class="flex justify-between items-center text-[11px] font-label text-cream-dark/60 pt-2 border-t border-white/5">
+                        <span id="apps-count-label">Showing 0 applications</span>
+                        <button onclick="resetAppFilters()" class="text-gold hover:underline text-[11px]">Clear Filters</button>
+                    </div>
+                </div>
+
+                <!-- Applications Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-navy-darkest/60 border-b-2 border-navy-light/60 text-cream-dark/60 font-label uppercase text-[11px]">
+                                <tr>
+                                    <th class="py-3 px-4">Applicant</th>
+                                    <th class="py-3 px-4">Preferences</th>
+                                    <th class="py-3 px-4">Final Dept</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Review Score</th>
+                                    <th class="py-3 px-4">Submitted</th>
+                                    <th class="py-3 px-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="apps-tbody" class="divide-y divide-white/5">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="apps-empty-state" class="bg-navy p-12 text-center pixel-border border-navy-light/40">
+                    <span class="material-symbols-outlined text-5xl text-cream-dark/30 mb-3 block">inbox</span>
+                    <h4 class="font-display font-black text-xl text-white mb-1">NO APPLICATIONS YET</h4>
+                    <p class="text-xs text-cream-dark/60 max-w-md mx-auto">Applications submitted through the organizing team recruitment form (<a href="/organizing-team/apply" target="_blank" class="text-gold hover:underline">/organizing-team/apply</a>) will appear here in real time.</p>
+                </div>
+            </section>
+
+            <!-- VIEW: APPLICANT DETAILS PROFILE -->
+            <section id="view-applicant-detail" class="space-y-6 hidden">
+                <!-- Back Button -->
+                <div class="flex items-center gap-2">
+                    <a href="#applications" class="font-label text-xs uppercase font-bold text-gold hover:text-white transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Applications
+                    </a>
+                </div>
+
+                <!-- Applicant Profile Card Header -->
+                <div class="bg-navy p-6 pixel-border border-gold/40">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 bg-navy-darkest pixel-border-gold flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-2xl text-gold">person</span>
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <h1 id="detail-name" class="font-display font-black text-2xl text-white">Applicant Name</h1>
+                                    <span id="detail-status-pill" class="status-pill status-new">NEW</span>
+                                </div>
+                                <p id="detail-meta" class="font-body text-xs text-cream-dark/70 mt-1">University • Faculty • Academic Year</p>
+                                <div class="flex flex-wrap items-center gap-4 text-xs font-label text-gold mt-2">
+                                    <span id="detail-email" class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">mail</span> email@example.com</span>
+                                    <span id="detail-phone" class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">call</span> 01012345678</span>
+                                    <span id="detail-date" class="flex items-center gap-1 text-cream-dark/50"><span class="material-symbols-outlined text-sm">schedule</span> Aug 28, 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status & Department Controls -->
+                        <div class="bg-navy-darkest p-4 pixel-border border-navy-light/40 flex flex-wrap items-center gap-4">
+                            <div>
+                                <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Change Status</label>
+                                <select id="detail-status-select" class="pixel-input text-xs font-bold" onchange="onStatusSelectChange(this.value)">
+                                    <option value="new">NEW</option>
+                                    <option value="under_review">UNDER REVIEW</option>
+                                    <option value="shortlisted">SHORTLISTED</option>
+                                    <option value="interview">INTERVIEW</option>
+                                    <option value="accepted">ACCEPTED</option>
+                                    <option value="rejected">REJECTED</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-label text-[10px] text-gold uppercase font-bold mb-1">Final Department</label>
+                                <select id="detail-final-dept-select" class="pixel-input text-xs font-bold" onchange="onFinalDeptChange(this.value)">
+                                    <option value="">Not Assigned</option>
+                                    <option value="Technical">Technical</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Media">Media</option>
+                                    <option value="HR">HR</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-end pt-3 sm:pt-0">
+                                <button onclick="promptDeleteApplication(currentActiveAppId, document.getElementById('detail-name').textContent)" class="pixel-btn bg-red-950 text-red-300 border-red-500/60 hover:bg-red-700 hover:text-white text-xs px-3 py-2 font-label font-bold flex items-center gap-1 transition-colors" title="Permanently Delete Application">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                    <span>DELETE</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="space-y-4">
+                    <!-- Tab Buttons -->
+                    <div class="flex border-b-2 border-navy-light/40 gap-2">
+                        <button class="detail-tab-btn active px-4 py-2.5 font-label text-xs font-bold border-b-2 border-gold text-gold" data-tab="overview">
+                            Universal Answers
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2.5 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-tab="dept-answers">
+                            Department Specific Questions
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2.5 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-tab="review">
+                            Internal Review & Rubric
+                        </button>
+                        <button class="detail-tab-btn px-4 py-2.5 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-tab="notes">
+                            Internal Notes (<span id="notes-tab-count">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: UNIVERSAL ANSWERS -->
+                    <div id="tab-content-overview" class="detail-tab-panel space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                                <span class="font-label text-[10px] text-gold uppercase font-bold">1st Department Preference</span>
+                                <p id="detail-pref1" class="font-display font-black text-lg text-white mt-1">—</p>
+                            </div>
+                            <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                                <span class="font-label text-[10px] text-gold uppercase font-bold">2nd Department Preference</span>
+                                <p id="detail-pref2" class="font-display font-black text-lg text-white mt-1">—</p>
+                            </div>
+                        </div>
+
+                        <div id="universal-qa-container" class="space-y-3">
+                            <!-- Injected QA list -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: DEPARTMENT SPECIFIC ANSWERS -->
+                    <div id="tab-content-dept-answers" class="detail-tab-panel space-y-4 hidden">
+                        <div id="dept-qa-container" class="space-y-4">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: INTERNAL REVIEW & EVALUATION RUBRIC -->
+                    <div id="tab-content-review" class="detail-tab-panel space-y-4 hidden">
+                        <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-6">
+                            <div>
+                                <h3 class="font-display font-bold text-base text-white mb-1">RECRUITER EVALUATION RUBRIC</h3>
+                                <p class="text-xs text-cream-dark/60">Score the applicant from 1 to 5 stars for each evaluation dimension.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="rubric-sliders">
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Communication</span>
+                                        <span class="text-[10px] text-cream-dark/50">Clarity, tone, articulacy</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="communication"></div>
+                                </div>
+
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Technical / Specialized Skill</span>
+                                        <span class="text-[10px] text-cream-dark/50">Depth of practical knowledge</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="technicalAbility"></div>
+                                </div>
+
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Commitment & Availability</span>
+                                        <span class="text-[10px] text-cream-dark/50">Realistic hours & dedication</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="commitment"></div>
+                                </div>
+
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Teamwork & Maturity</span>
+                                        <span class="text-[10px] text-cream-dark/50">Conflict resolution & listening</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="teamwork"></div>
+                                </div>
+
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Problem Solving</span>
+                                        <span class="text-[10px] text-cream-dark/50">Structured thinking under pressure</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="problemSolving"></div>
+                                </div>
+
+                                <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 flex justify-between items-center">
+                                    <div>
+                                        <span class="font-label text-xs text-white font-bold block">Culture Fit</span>
+                                        <span class="text-[10px] text-cream-dark/50">Enthusiasm for NUSC mission</span>
+                                    </div>
+                                    <div class="star-rating flex gap-1" data-field="cultureFit"></div>
+                                </div>
+                            </div>
+
+                            <!-- Review Summary Textarea -->
+                            <div>
+                                <label class="block font-label text-xs text-gold uppercase font-bold mb-1">Review Summary / Recruiter Recommendation</label>
+                                <textarea id="review-summary-input" rows="4" class="pixel-input" placeholder="Enter concise summary of candidate evaluation, red flags, or interview notes..."></textarea>
+                            </div>
+
+                            <button onclick="saveApplicantReview()" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-6 py-2.5 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">save</span> SAVE REVIEW EVALUATION
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: INTERNAL NOTES -->
+                    <div id="tab-content-notes" class="detail-tab-panel space-y-4 hidden">
+                        <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                            <div>
+                                <h3 class="font-display font-bold text-base text-white mb-1">INTERNAL RECRUITMENT NOTES</h3>
+                                <p class="text-xs text-cream-dark/60">Private team notes. Never visible to applicants.</p>
+                            </div>
+
+                            <!-- Add Note Box -->
+                            <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30 space-y-2">
+                                <textarea id="new-note-text" rows="2" class="pixel-input" placeholder="Type an internal note or interview feedback..."></textarea>
+                                <div class="flex justify-end">
+                                    <button onclick="submitInternalNote()" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-4 py-1.5 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">add_comment</span> Add Note
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Notes Thread -->
+                            <div id="notes-thread-container" class="space-y-3">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: EVENTS -->
+            <section id="view-events" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">EVENT MANAGEMENT</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Manage official NUSC workshops, bootcamps, and track participant registrations.</p>
+                    </div>
+                    <button onclick="openCreateEventModal()" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-4 py-2.5 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">add</span> CREATE NEW EVENT
+                    </button>
+                </div>
+
+                <!-- Events Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-navy-darkest/60 border-b-2 border-navy-light/60 text-cream-dark/60 font-label uppercase text-[11px]">
+                                <tr>
+                                    <th class="py-3 px-4">Event Title</th>
+                                    <th class="py-3 px-4">Category</th>
+                                    <th class="py-3 px-4">Schedule</th>
+                                    <th class="py-3 px-4">Level</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Registrations</th>
+                                    <th class="py-3 px-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-tbody" class="divide-y divide-white/5">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: QUESTIONS -->
+            <section id="view-questions" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">APPLICATION QUESTIONS</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Manage Universal and Department-specific questions used in recruitment forms.</p>
+                    </div>
+                    <button onclick="openAddQuestionModal()" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-4 py-2.5 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">add</span> ADD QUESTION
+                    </button>
+                </div>
+
+                <!-- Department Filter Tabs -->
+                <div class="flex border-b-2 border-navy-light/40 gap-2">
+                    <button class="q-tab-btn active px-4 py-2 font-label text-xs font-bold border-b-2 border-gold text-gold" data-dept="all">All (Universal + Depts)</button>
+                    <button class="q-tab-btn px-4 py-2 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-dept="universal">Universal</button>
+                    <button class="q-tab-btn px-4 py-2 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-dept="technical">Technical</button>
+                    <button class="q-tab-btn px-4 py-2 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-dept="marketing">Marketing</button>
+                    <button class="q-tab-btn px-4 py-2 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-dept="media">Media</button>
+                    <button class="q-tab-btn px-4 py-2 font-label text-xs font-bold border-b-2 border-transparent text-cream-dark/60 hover:text-white" data-dept="hr">HR</button>
+                </div>
+
+                <!-- Questions Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-navy-darkest/60 border-b-2 border-navy-light/60 text-cream-dark/60 font-label uppercase text-[11px]">
+                                <tr>
+                                    <th class="py-3 px-4 w-12">#</th>
+                                    <th class="py-3 px-4">Question Text</th>
+                                    <th class="py-3 px-4">Dept</th>
+                                    <th class="py-3 px-4">Type</th>
+                                    <th class="py-3 px-4">Required</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4 text-right">Toggle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questions-tbody" class="divide-y divide-white/5">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: SETTINGS -->
+            <section id="view-settings" class="space-y-6 hidden">
+                <div>
+                    <h1 class="font-display font-black text-2xl text-white">ADMIN SETTINGS</h1>
+                    <p class="font-body text-xs text-cream-dark/70">Administrator profile, role matrix, and backup tools.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Admin Profile -->
+                    <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                        <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">badge</span> Admin Profile
+                        </h3>
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between border-b border-white/10 pb-2">
+                                <span class="text-cream-dark/60">Administrator:</span>
+                                <span id="settings-username" class="text-white font-mono font-bold">cassidy</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-2">
+                                <span class="text-cream-dark/60">Role:</span>
+                                <span class="text-gold font-bold uppercase">Super Admin</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/10 pb-2">
+                                <span class="text-cream-dark/60">Access Level:</span>
+                                <span class="text-green-400 font-bold">Full Server Read / Write / Evaluate</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role Permissions Matrix Preview -->
+                    <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                        <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">security</span> Role Matrix (Extensible)
+                        </h3>
+                        <div class="space-y-2 text-xs font-label">
+                            <div class="flex items-center justify-between p-2 bg-navy-darkest">
+                                <span class="font-bold text-white">Super Admin</span>
+                                <span class="text-[10px] text-gold uppercase">All Permissions</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-navy-darkest opacity-80">
+                                <span class="font-bold text-white">HR Admin</span>
+                                <span class="text-[10px] text-cream-dark/70">Applications & Interviews</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-navy-darkest opacity-80">
+                                <span class="font-bold text-white">Technical Admin</span>
+                                <span class="text-[10px] text-cream-dark/70">Technical Review & Problems</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-navy-darkest opacity-80">
+                                <span class="font-bold text-white">Event Coordinator</span>
+                                <span class="text-[10px] text-cream-dark/70">Events & Registrations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Data Store Maintenance -->
+                <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                    <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">storage</span> Data Store & Backup
+                    </h3>
+                    <p class="text-xs text-cream-dark/70">Export full real JSON snapshots of the community data store, or restore previous backups.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="window.NUSC_DATA_STORE.backupData()" class="pixel-btn-gold bg-gold text-ink font-display font-bold text-xs px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">download</span> Download Data Backup (JSON)
+                        </button>
+                        <button onclick="triggerRestoreData()" class="pixel-btn-navy text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">upload</span> Restore Data Backup
+                        </button>
+                    </div>
+                    <input type="file" id="restore-file-input" class="hidden" accept=".json" onchange="handleRestoreFile(this)" />
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODALS -->
+    <!-- ===================================================================== -->
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-navy p-4 sm:p-6 max-w-sm w-[92%] pixel-border border-gold text-center space-y-3 sm:space-y-4">
+            <span class="material-symbols-outlined text-3xl sm:text-4xl text-gold" id="confirm-icon">warning</span>
+            <h3 id="confirm-title" class="font-display font-bold text-base sm:text-lg text-white">Are you sure?</h3>
+            <p id="confirm-msg" class="text-xs text-cream-dark/70">This action will change the applicant state.</p>
+            <div class="flex justify-center gap-3 pt-1 sm:pt-2">
+                <button id="confirm-cancel-btn" class="pixel-btn-navy text-xs px-3.5 py-1.5 sm:px-4 sm:py-2">Cancel</button>
+                <button id="confirm-ok-btn" class="pixel-btn-gold bg-gold text-ink text-xs font-bold px-3.5 py-1.5 sm:px-4 sm:py-2">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EVENT CREATE / EDIT MODAL -->
+    <div id="event-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-navy p-4 sm:p-6 max-w-lg w-[94%] max-h-[90vh] overflow-y-auto pixel-border border-gold space-y-3 sm:space-y-4 my-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2.5 sm:pb-3">
+                <h3 id="event-modal-title" class="font-display font-bold text-base sm:text-lg text-white">Create New Event</h3>
+                <button onclick="closeEventModal()" class="text-cream-dark/60 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="event-form" class="space-y-3 text-xs">
+                <input type="hidden" id="evt-id" />
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Event Title *</label>
+                    <input type="text" id="evt-title" class="pixel-input" required />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Category *</label>
+                        <select id="evt-category" class="pixel-input" required>
+                            <option>Beginner Training</option>
+                            <option>ICPC Training</option>
+                            <option>Workshop</option>
+                            <option>Contest</option>
+                            <option>Community Activity</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Level *</label>
+                        <select id="evt-level" class="pixel-input" required>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="All Levels">All Levels</option>
+                            <option value="All Levels (Beginner Friendly)">All Levels (Beginner Friendly)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Date *</label>
+                        <input type="text" id="evt-date" class="pixel-input" placeholder="e.g. Week 1" required />
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Time *</label>
+                        <input type="text" id="evt-time" class="pixel-input" placeholder="06:00 PM" required />
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Duration *</label>
+                        <input type="text" id="evt-duration" class="pixel-input" placeholder="2 Hours" required />
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Description *</label>
+                    <textarea id="evt-desc" rows="2" class="pixel-input" required></textarea>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Topics (comma separated)</label>
+                    <input type="text" id="evt-topics" class="pixel-input" placeholder="C++, Loops, STL, Graphs" />
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Status</label>
+                        <select id="evt-status" class="pixel-input">
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Registration Link</label>
+                        <input type="text" id="evt-reg-url" class="pixel-input" placeholder="https://... or /events/..." />
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-3 border-t border-white/10">
+                    <button type="button" id="evt-modal-delete-btn" onclick="deleteEventFromModal()" class="pixel-btn bg-red-950 text-red-300 border-red-500/60 hover:bg-red-700 hover:text-white px-3 py-2 text-xs font-label font-bold flex items-center gap-1 hidden">
+                        <span class="material-symbols-outlined text-sm">delete</span> Delete Event
+                    </button>
+                    <div class="flex gap-2 ml-auto">
+                        <button type="button" onclick="closeEventModal()" class="pixel-btn-navy px-3.5 py-1.5 sm:px-4 sm:py-2">Cancel</button>
+                        <button type="submit" class="pixel-btn-gold bg-gold text-ink font-bold px-3.5 py-1.5 sm:px-4 sm:py-2">Save Event</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EVENT REGISTRATIONS MODAL -->
+    <div id="event-regs-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-navy p-4 sm:p-6 max-w-2xl w-[94%] max-h-[90vh] overflow-y-auto pixel-border border-gold space-y-3 sm:space-y-4 my-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2.5 sm:pb-3">
+                <div>
+                    <h3 id="regs-modal-title" class="font-display font-bold text-base sm:text-lg text-white">Event Registrations</h3>
+                    <p id="regs-modal-subtitle" class="text-xs text-cream-dark/60">Registered participants</p>
+                </div>
+                <button onclick="closeRegsModal()" class="text-cream-dark/60 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <div class="overflow-x-auto max-h-80">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-navy-darkest text-cream-dark/60 font-label uppercase text-[10px]">
+                        <tr>
+                            <th class="py-2 px-3">Name</th>
+                            <th class="py-2 px-3">Email / Phone</th>
+                            <th class="py-2 px-3">University</th>
+                            <th class="py-2 px-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="regs-tbody" class="divide-y divide-white/5">
+                        <!-- Injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-end pt-2.5 sm:pt-3 border-t border-white/10">
+                <button onclick="closeRegsModal()" class="pixel-btn-navy text-xs px-4 py-1.5">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD QUESTION MODAL -->
+    <div id="question-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-navy p-4 sm:p-6 max-w-md w-[94%] max-h-[90vh] overflow-y-auto pixel-border border-gold space-y-3 sm:space-y-4 my-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                <h3 class="font-display font-bold text-base text-white">Add Application Question</h3>
+                <button onclick="closeQuestionModal()" class="text-cream-dark/60 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="question-form" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Department</label>
+                    <select id="q-dept" class="pixel-input" required>
+                        <option value="universal">Universal (All Applicants)</option>
+                        <option value="technical">Technical</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="media">Media</option>
+                        <option value="hr">HR</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Question Type</label>
+                    <select id="q-type" class="pixel-input" required>
+                        <option value="text">Short Text</option>
+                        <option value="textarea">Long Text / Paragraph</option>
+                        <option value="select">Dropdown Select</option>
+                        <option value="multiselect">Multi-select Checkboxes</option>
+                        <option value="url">URL Link</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Question Prompt Text *</label>
+                    <textarea id="q-text" rows="2" class="pixel-input" required placeholder="Type the question prompt..."></textarea>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Options (comma separated, if select/multiselect)</label>
+                    <input type="text" id="q-options" class="pixel-input" placeholder="Option 1, Option 2, Option 3" />
+                </div>
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="checkbox" id="q-required" class="pixel-input w-4 h-4" checked />
+                    <label for="q-required" class="text-xs text-white">Required field</label>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                    <button type="button" onclick="closeQuestionModal()" class="pixel-btn-navy px-4 py-2">Cancel</button>
+                    <button type="submit" class="pixel-btn-gold bg-gold text-ink font-bold px-4 py-2">Add Question</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Central Data Store & Auth Logic -->
+    <script src="/js/data-store.js"></script>
+
+    <!-- ADMIN SPA LOGIC -->
+    <script>
+        (function() {
+            'use strict';
+
+            // 1. Auth Guard
+            if (!window.NUSC_AUTH || !window.NUSC_AUTH.requireAuth()) {
+                return;
+            }
+
+            const currentUser = window.NUSC_AUTH.getAdminUser();
+            let currentActiveAppId = null;
+            let currentRubricScores = {};
+
+            document.getElementById('admin-user-name').textContent = currentUser.username || 'cassidy';
+            document.getElementById('admin-user-role').textContent = currentUser.role || 'Super Admin';
+            if (document.getElementById('settings-username')) {
+                document.getElementById('settings-username').textContent = currentUser.username || 'cassidy';
+            }
+
+            // Router
+            function handleRoute() {
+                const hash = window.location.hash || '#dashboard';
+                const [route, query] = hash.split('?');
+                
+                const views = ['dashboard', 'applications', 'applicant-detail', 'events', 'questions', 'settings'];
+                views.forEach(v => {
+                    const el = document.getElementById('view-' + v);
+                    if (el) el.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+                if (route === '#dashboard' || route === '') {
+                    document.getElementById('view-dashboard').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'DASHBOARD';
+                    renderDashboard();
+                    if (window.syncServerData) window.syncServerData(true);
+                } else if (route === '#applications') {
+                    document.getElementById('view-applications').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="applications"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'APPLICATIONS';
+                    renderApplicationsList();
+                    if (window.syncServerData) window.syncServerData(true);
+                } else if (route === '#application-detail') {
+                    document.getElementById('view-applicant-detail').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="applications"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'APPLICANT PROFILE';
+                    const params = new URLSearchParams(query || '');
+                    const id = params.get('id');
+                    if (id) renderApplicantDetail(id);
+                } else if (route === '#events') {
+                    document.getElementById('view-events').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="events"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'EVENT MANAGEMENT';
+                    renderEventsList();
+                } else if (route === '#questions') {
+                    document.getElementById('view-questions').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="questions"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'APPLICATION QUESTIONS';
+                    renderQuestionsList();
+                } else if (route === '#settings') {
+                    document.getElementById('view-settings').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="settings"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'SETTINGS';
+                }
+            }
+
+            window.addEventListener('hashchange', handleRoute);
+
+            // =========================================================================
+            // DASHBOARD RENDER
+            // =========================================================================
+            function renderDashboard() {
+                const stats = window.NUSC_DATA_STORE.getStats();
+                
+                document.getElementById('stat-total-apps').textContent = stats.totalApplications;
+                document.getElementById('stat-new-apps').textContent = stats.new;
+                document.getElementById('stat-review-apps').textContent = stats.underReview;
+                document.getElementById('stat-short-apps').textContent = stats.shortlisted;
+                document.getElementById('stat-acc-apps').textContent = stats.accepted;
+                document.getElementById('stat-rej-apps').textContent = stats.rejected;
+
+                document.getElementById('nav-new-badge').textContent = `${stats.new} NEW`;
+
+                document.getElementById('stat-active-events').textContent = stats.activeEvents;
+                document.getElementById('stat-upcoming-events').textContent = stats.upcomingEvents;
+                document.getElementById('stat-total-regs').textContent = stats.totalRegistrations;
+
+                // Department distribution
+                const deptContainer = document.getElementById('dept-overview-cards');
+                const depts = ['Technical', 'Marketing', 'Media', 'HR'];
+                deptContainer.innerHTML = depts.map(d => {
+                    const count = stats.deptCounts[d] || 0;
+                    const pct = stats.totalApplications > 0 ? Math.round((count / stats.totalApplications) * 100) : 0;
+                    return `
+                        <div class="bg-navy-darkest p-4 pixel-border border-navy-light/30">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-label text-xs font-bold text-white uppercase">${d}</span>
+                                <span class="font-minecraft text-xs text-gold">${count}</span>
+                            </div>
+                            <div class="w-full bg-navy h-2 border border-white/10 overflow-hidden mt-2">
+                                <div class="bg-gold h-full" style="width: ${pct}%;"></div>
+                            </div>
+                            <span class="text-[10px] text-cream-dark/50 block mt-1">${pct}% of applicants</span>
+                        </div>
+                    `;
+                }).join('');
+
+                // Recent applications
+                const recent = window.NUSC_DATA_STORE.getApplications().slice(0, 5);
+                const tbody = document.getElementById('recent-apps-tbody');
+                if (recent.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-cream-dark/60 font-body">
+                                <p class="font-display font-bold text-white mb-1">NO RECENT APPLICATIONS</p>
+                                <p class="text-xs">Applications submitted through the recruitment form will appear here.</p>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = recent.map(a => `
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="py-3 px-3">
+                                <span class="font-bold text-white block">${escapeHTML(a.fullName)}</span>
+                                <span class="text-[10px] text-cream-dark/50 block">${escapeHTML(a.university)}</span>
+                            </td>
+                            <td class="py-3 px-3"><span class="dept-tag">${a.firstPreference}</span></td>
+                            <td class="py-3 px-3"><span class="dept-tag">${a.secondPreference || 'None'}</span></td>
+                            <td class="py-3 px-3"><span class="status-pill status-${a.status}">${formatStatus(a.status)}</span></td>
+                            <td class="py-3 px-3 text-cream-dark/60 font-mono text-[11px]">${timeAgo(a.submittedAt)}</td>
+                            <td class="py-3 px-3 text-right space-x-1.5 whitespace-nowrap">
+                                <a href="#application-detail?id=${a.id}" class="pixel-btn-navy text-xs px-2.5 py-1 font-label">VIEW</a>
+                                <button onclick="promptDeleteApplication('${a.id}', '${escapeHTML(a.fullName)}')" class="pixel-btn text-xs px-2 py-1 font-label bg-red-950 text-red-300 border-red-500/60 hover:bg-red-700 hover:text-white inline-flex items-center gap-0.5 transition-colors" title="Delete Application">
+                                    <span class="material-symbols-outlined text-xs">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            }
+
+            // =========================================================================
+            // APPLICATIONS LIST RENDER
+            // =========================================================================
+            function renderApplicationsList() {
+                const apps = window.NUSC_DATA_STORE.getApplications();
+                const search = (document.getElementById('app-search-input').value || '').trim().toLowerCase();
+                const dept = document.getElementById('app-dept-filter').value;
+                const status = document.getElementById('app-status-filter').value;
+                const sort = document.getElementById('app-sort-filter').value;
+
+                let filtered = apps.filter(a => {
+                    if (dept !== 'all' && a.firstPreference !== dept && a.finalDepartment !== dept) return false;
+                    if (status !== 'all' && a.status !== status) return false;
+                    if (search) {
+                        const matchName = (a.fullName || '').toLowerCase().includes(search);
+                        const matchEmail = (a.email || '').toLowerCase().includes(search);
+                        const matchUni = (a.university || '').toLowerCase().includes(search);
+                        if (!matchName && !matchEmail && !matchUni) return false;
+                    }
+                    return true;
+                });
+
+                // Sorting
+                if (sort === 'newest') filtered.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                if (sort === 'oldest') filtered.sort((a, b) => new Date(a.submittedAt) - new Date(b.submittedAt));
+                if (sort === 'name') filtered.sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''));
+                if (sort === 'status') filtered.sort((a, b) => (a.status || '').localeCompare(b.status || ''));
+
+                document.getElementById('apps-count-label').textContent = `Showing ${filtered.length} of ${apps.length} applications`;
+
+                const tbody = document.getElementById('apps-tbody');
+                const emptyState = document.getElementById('apps-empty-state');
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    tbody.innerHTML = filtered.map(a => {
+                        const avgRating = calculateAvgRating(a.review);
+                        return `
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-white text-sm">${escapeHTML(a.fullName)}</div>
+                                    <div class="text-[11px] text-gold font-mono">${escapeHTML(a.email)}</div>
+                                    <div class="text-[10px] text-cream-dark/50">${escapeHTML(a.university)} • ${escapeHTML(a.academicYear)}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex flex-col gap-1">
+                                        <span class="dept-tag bg-gold/10 text-gold border-gold/40">${a.firstPreference} (1st)</span>
+                                        <span class="dept-tag text-cream-dark/60">${a.secondPreference || 'None'} (2nd)</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="font-bold text-xs ${a.finalDepartment ? 'text-green-400' : 'text-cream-dark/40'}">
+                                        ${a.finalDepartment || 'Not Assigned'}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="status-pill status-${a.status}">${formatStatus(a.status)}</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    ${avgRating ? `<span class="text-gold font-bold">★ ${avgRating}</span> <span class="text-[10px] text-cream-dark/50">/ 5</span>` : `<span class="text-cream-dark/40 italic text-[11px]">Unreviewed</span>`}
+                                </td>
+                                <td class="py-3 px-4 text-cream-dark/60 font-mono text-[11px]">
+                                    ${formatDate(a.submittedAt)}
+                                </td>
+                                <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+                                    <a href="#application-detail?id=${a.id}" class="pixel-btn-navy text-xs px-2.5 py-1.5 font-label inline-flex items-center gap-1">
+                                        <span>VIEW</span>
+                                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                    </a>
+                                    <button onclick="promptDeleteApplication('${a.id}', '${escapeHTML(a.fullName)}')" class="pixel-btn text-xs px-2.5 py-1.5 font-label bg-red-950 text-red-300 border-red-500/60 hover:bg-red-700 hover:text-white inline-flex items-center gap-1 transition-colors" title="Delete Application">
+                                        <span class="material-symbols-outlined text-xs">delete</span>
+                                        <span>DELETE</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // =========================================================================
+            // APPLICANT DETAILS RENDER
+            // =========================================================================
+            function renderApplicantDetail(id) {
+                const app = window.NUSC_DATA_STORE.getApplicationById(id);
+                if (!app) {
+                    alert('Applicant not found.');
+                    window.location.hash = '#applications';
+                    return;
+                }
+
+                currentActiveAppId = id;
+
+                document.getElementById('detail-name').textContent = app.fullName;
+                document.getElementById('detail-meta').textContent = `${app.university} • ${app.academicYear}`;
+                document.getElementById('detail-email').innerHTML = `<span class="material-symbols-outlined text-sm">mail</span> ${escapeHTML(app.email)}`;
+                document.getElementById('detail-phone').innerHTML = `<span class="material-symbols-outlined text-sm">call</span> ${escapeHTML(app.phone)}`;
+                document.getElementById('detail-date').innerHTML = `<span class="material-symbols-outlined text-sm">schedule</span> ${formatDate(app.submittedAt)}`;
+
+                const statusPill = document.getElementById('detail-status-pill');
+                statusPill.className = `status-pill status-${app.status}`;
+                statusPill.textContent = formatStatus(app.status);
+
+                document.getElementById('detail-status-select').value = app.status;
+                document.getElementById('detail-final-dept-select').value = app.finalDepartment || '';
+
+                document.getElementById('detail-pref1').textContent = app.firstPreference;
+                document.getElementById('detail-pref2').textContent = app.secondPreference || 'None';
+
+                // Render Universal QA
+                const universalContainer = document.getElementById('universal-qa-container');
+                const snapshot = app.answersSnapshot || {};
+                
+                const universalKeys = Object.keys(snapshot).filter(k => k.startsWith('universal_') || k.startsWith('personal_') || k.startsWith('dept_'));
+                universalContainer.innerHTML = universalKeys.map(key => {
+                    const item = snapshot[key];
+                    const val = Array.isArray(item.a) ? item.a.join(', ') : (item.a || '—');
+                    return `
+                        <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                            <span class="font-label text-[11px] text-gold uppercase font-bold block mb-1">${escapeHTML(item.q)}</span>
+                            <p class="text-xs text-cream font-body whitespace-pre-wrap leading-relaxed">${escapeHTML(val)}</p>
+                        </div>
+                    `;
+                }).join('');
+
+                // Render Department Specific & Additional QA
+                const deptContainer = document.getElementById('dept-qa-container');
+                const deptKeys = Object.keys(snapshot).filter(k => k.startsWith('tech_') || k.startsWith('mkt_') || k.startsWith('media_') || k.startsWith('hr_'));
+                
+                // Also include any other question answers so NO applicant data is ever omitted
+                const covered = new Set([...universalKeys, ...deptKeys]);
+                const otherKeys = Object.keys(snapshot).filter(k => !covered.has(k));
+                const allDetailKeys = [...deptKeys, ...otherKeys];
+
+                if (allDetailKeys.length === 0) {
+                    deptContainer.innerHTML = `<p class="text-xs text-cream-dark/50 italic">No department-specific answers recorded.</p>`;
+                } else {
+                    deptContainer.innerHTML = allDetailKeys.map(key => {
+                        const item = snapshot[key] || {};
+                        const val = Array.isArray(item.a) ? item.a.join(', ') : (item.a || '—');
+                        return `
+                            <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                                <span class="font-label text-[11px] text-gold uppercase font-bold block mb-1">${escapeHTML(item.q || key)}</span>
+                                <p class="text-xs text-cream font-body whitespace-pre-wrap leading-relaxed">${escapeHTML(val)}</p>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // Render Review Scores
+                currentRubricScores = Object.assign({
+                    communication: null,
+                    technicalAbility: null,
+                    commitment: null,
+                    teamwork: null,
+                    problemSolving: null,
+                    cultureFit: null
+                }, app.review || {});
+
+                renderRubricStars();
+                document.getElementById('review-summary-input').value = (app.review && app.review.summary) || '';
+
+                // Render Internal Notes
+                renderNotesThread(app.internalNotes || []);
+            }
+
+            function renderRubricStars() {
+                const fields = ['communication', 'technicalAbility', 'commitment', 'teamwork', 'problemSolving', 'cultureFit'];
+                fields.forEach(f => {
+                    const container = document.querySelector(`.star-rating[data-field="${f}"]`);
+                    if (!container) return;
+                    const val = currentRubricScores[f] || 0;
+                    container.innerHTML = [1, 2, 3, 4, 5].map(n => `
+                        <span class="material-symbols-outlined star-btn ${n <= val ? 'filled' : ''}" onclick="setRubricScore('${f}', ${n})">star</span>
+                    `).join('');
+                });
+            }
+
+            window.setRubricScore = function(field, score) {
+                currentRubricScores[field] = score;
+                renderRubricStars();
+            };
+
+            window.saveApplicantReview = async function() {
+                if (!currentActiveAppId) return;
+                const summary = document.getElementById('review-summary-input').value.trim();
+                const reviewObj = Object.assign({}, currentRubricScores, { summary: summary });
+                await window.NUSC_DATA_STORE.updateApplication(currentActiveAppId, { review: reviewObj });
+                showToast('Review evaluation saved.');
+                renderDashboard();
+            };
+
+            // Notes
+            function renderNotesThread(notes) {
+                document.getElementById('notes-tab-count').textContent = notes.length;
+                const container = document.getElementById('notes-thread-container');
+                if (notes.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-cream-dark/50 italic">No internal notes added yet.</p>`;
+                    return;
+                }
+                container.innerHTML = notes.map(n => `
+                    <div class="bg-navy-darkest p-3.5 pixel-border border-navy-light/30 flex justify-between items-start gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-label text-xs text-gold font-bold">${escapeHTML(n.author)}</span>
+                                <span class="text-[10px] text-cream-dark/50 font-mono">${formatDate(n.timestamp)}</span>
+                            </div>
+                            <p class="text-xs text-cream font-body whitespace-pre-wrap leading-relaxed">${escapeHTML(n.text)}</p>
+                        </div>
+                        <button onclick="deleteNote('${n.id}')" class="text-cream-dark/40 hover:text-red-400 p-1" title="Delete note">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            window.submitInternalNote = async function() {
+                if (!currentActiveAppId) return;
+                const input = document.getElementById('new-note-text');
+                const text = input.value.trim();
+                if (!text) return;
+                const user = window.NUSC_AUTH.getAdminUser();
+                const updated = await window.NUSC_DATA_STORE.addInternalNote(currentActiveAppId, user.username || 'cassidy', text);
+                input.value = '';
+                if (updated) renderNotesThread(updated.internalNotes || []);
+                showToast('Note added.');
+            };
+
+            window.deleteNote = async function(noteId) {
+                if (!currentActiveAppId) return;
+                const updated = await window.NUSC_DATA_STORE.deleteInternalNote(currentActiveAppId, noteId);
+                if (updated) renderNotesThread(updated.internalNotes || []);
+                showToast('Note deleted.');
+            };
+
+            // Status Transitions with Confirmation
+            window.onStatusSelectChange = function(newStatus) {
+                if (!currentActiveAppId) return;
+                if (newStatus === 'accepted' || newStatus === 'rejected') {
+                    showConfirmModal(
+                        `Mark Applicant as ${newStatus.toUpperCase()}?`,
+                        `Are you sure you want to transition this application to ${newStatus.toUpperCase()}?`,
+                        async () => {
+                            await window.NUSC_DATA_STORE.updateApplication(currentActiveAppId, { status: newStatus });
+                            renderApplicantDetail(currentActiveAppId);
+                            renderDashboard();
+                            showToast(`Status updated to ${newStatus.toUpperCase()}`);
+                        },
+                        () => {
+                            const app = window.NUSC_DATA_STORE.getApplicationById(currentActiveAppId);
+                            document.getElementById('detail-status-select').value = app.status;
+                        }
+                    );
+                } else {
+                    window.NUSC_DATA_STORE.updateApplication(currentActiveAppId, { status: newStatus });
+                    renderApplicantDetail(currentActiveAppId);
+                    renderDashboard();
+                    showToast(`Status updated to ${newStatus.toUpperCase()}`);
+                }
+            };
+
+            window.onFinalDeptChange = function(newDept) {
+                if (!currentActiveAppId) return;
+                window.NUSC_DATA_STORE.updateApplication(currentActiveAppId, { finalDepartment: newDept || null });
+                showToast(`Final department: ${newDept || 'None'}`);
+            };
+
+            // =========================================================================
+            // EVENTS LIST RENDER
+            // =========================================================================
+            function renderEventsList() {
+                const events = window.NUSC_DATA_STORE.getEvents();
+                const tbody = document.getElementById('events-tbody');
+                if (events.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-cream-dark/50"><p class="font-bold text-white">NO EVENTS YET</p><p class="text-xs">Create an event to make it available on the public website.</p></td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = events.map(e => {
+                    const regs = window.NUSC_DATA_STORE.getRegistrations(e.id);
+                    return `
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="py-3 px-4 font-bold text-white">${escapeHTML(e.title)}</td>
+                            <td class="py-3 px-4"><span class="dept-tag text-gold border-gold/30">${escapeHTML(e.category)}</span></td>
+                            <td class="py-3 px-4 text-cream-dark/80 font-mono text-xs">${escapeHTML(e.date)} • ${escapeHTML(e.time)}</td>
+                            <td class="py-3 px-4"><span class="dept-tag">${escapeHTML(e.level)}</span></td>
+                            <td class="py-3 px-4">
+                                <span class="status-pill ${e.status === 'published' ? 'status-accepted' : 'status-new'}">${e.status.toUpperCase()}</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button onclick="openRegsModal('${e.id}')" class="text-gold font-bold hover:underline">
+                                    ${regs.length} Registrations
+                                </button>
+                            </td>
+                            <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+                                <button onclick="openEditEventModal('${e.id}')" class="pixel-btn-navy text-xs px-2.5 py-1 font-label">Edit</button>
+                                <button onclick="toggleEventStatus('${e.id}')" class="pixel-btn-navy text-xs px-2.5 py-1 font-label">${e.status === 'published' ? 'Unpublish' : 'Publish'}</button>
+                                <button onclick="promptDeleteEvent('${e.id}', '${escapeHTML(e.title)}')" class="pixel-btn text-xs px-2 py-1 font-label bg-red-950 text-red-300 border-red-500/60 hover:bg-red-700 hover:text-white inline-flex items-center gap-0.5 transition-colors" title="Delete Event">
+                                    <span class="material-symbols-outlined text-xs">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            window.openCreateEventModal = function() {
+                document.getElementById('event-form').reset();
+                document.getElementById('evt-id').value = '';
+                document.getElementById('event-modal-title').textContent = 'Create New Event';
+                const delBtn = document.getElementById('evt-modal-delete-btn');
+                if (delBtn) delBtn.classList.add('hidden');
+                document.getElementById('event-modal').classList.remove('hidden');
+            };
+
+            window.openEditEventModal = function(id) {
+                const e = window.NUSC_DATA_STORE.getEventById(id);
+                if (!e) return;
+                document.getElementById('evt-id').value = e.id;
+                document.getElementById('evt-title').value = e.title || '';
+                
+                // Set category or add option if missing
+                const catSelect = document.getElementById('evt-category');
+                if (e.category && !Array.from(catSelect.options).some(o => o.value === e.category)) {
+                    catSelect.add(new Option(e.category, e.category));
+                }
+                catSelect.value = e.category || 'Beginner Training';
+
+                // Set level or add option if missing
+                const lvlSelect = document.getElementById('evt-level');
+                if (e.level && !Array.from(lvlSelect.options).some(o => o.value === e.level)) {
+                    lvlSelect.add(new Option(e.level, e.level));
+                }
+                lvlSelect.value = e.level || 'Beginner';
+
+                document.getElementById('evt-date').value = e.date || '';
+                document.getElementById('evt-time').value = e.time || '';
+                document.getElementById('evt-duration').value = e.duration || '2 Hours';
+                document.getElementById('evt-desc').value = e.description || '';
+                document.getElementById('evt-topics').value = (e.topics || []).join(', ');
+                document.getElementById('evt-status').value = e.status || 'published';
+                document.getElementById('evt-reg-url').value = e.registrationUrl || '';
+                
+                document.getElementById('event-modal-title').textContent = 'Edit Event';
+                const delBtn = document.getElementById('evt-modal-delete-btn');
+                if (delBtn) delBtn.classList.remove('hidden');
+                document.getElementById('event-modal').classList.remove('hidden');
+            };
+
+            window.closeEventModal = function() {
+                document.getElementById('event-modal').classList.add('hidden');
+            };
+
+            window.deleteEventFromModal = function() {
+                const id = document.getElementById('evt-id').value;
+                const title = document.getElementById('evt-title').value;
+                if (id) {
+                    promptDeleteEvent(id, title);
+                }
+            };
+
+            window.promptDeleteEvent = function(id, title) {
+                if (!id) return;
+                const displayTitle = title || 'this event';
+                showConfirmModal(
+                    'Delete Event?',
+                    `Are you sure you want to permanently delete event "${displayTitle}"? This cannot be undone.`,
+                    async () => {
+                        await window.NUSC_DATA_STORE.deleteEvent(id);
+                        closeEventModal();
+                        renderEventsList();
+                        renderDashboard();
+                        showToast(`Event "${displayTitle}" deleted.`);
+                    }
+                );
+            };
+
+            document.getElementById('event-form').addEventListener('submit', async function(ev) {
+                ev.preventDefault();
+                const id = document.getElementById('evt-id').value;
+                const topicsArr = document.getElementById('evt-topics').value.split(',').map(t => t.trim()).filter(Boolean);
+                const data = {
+                    title: document.getElementById('evt-title').value.trim(),
+                    category: document.getElementById('evt-category').value,
+                    level: document.getElementById('evt-level').value,
+                    date: document.getElementById('evt-date').value.trim(),
+                    time: document.getElementById('evt-time').value.trim(),
+                    duration: document.getElementById('evt-duration').value.trim(),
+                    description: document.getElementById('evt-desc').value.trim(),
+                    topics: topicsArr,
+                    status: document.getElementById('evt-status').value,
+                    registrationUrl: document.getElementById('evt-reg-url').value.trim()
+                };
+
+                if (id) {
+                    await window.NUSC_DATA_STORE.updateEvent(id, data);
+                    showToast('Event updated.');
+                } else {
+                    await window.NUSC_DATA_STORE.saveEvent(data);
+                    showToast('New event created.');
+                }
+                closeEventModal();
+                renderEventsList();
+                renderDashboard();
+            });
+
+            window.toggleEventStatus = async function(id) {
+                const e = window.NUSC_DATA_STORE.getEventById(id);
+                if (!e) return;
+                const newStatus = e.status === 'published' ? 'draft' : 'published';
+                await window.NUSC_DATA_STORE.updateEvent(id, { status: newStatus });
+                renderEventsList();
+                renderDashboard();
+                showToast(`Event marked as ${newStatus}.`);
+            };
+
+            // Registrations Modal
+            window.openRegsModal = function(eventId) {
+                const e = window.NUSC_DATA_STORE.getEventById(eventId);
+                if (!e) return;
+                const regs = window.NUSC_DATA_STORE.getRegistrations(eventId);
+                document.getElementById('regs-modal-title').textContent = e.title;
+                document.getElementById('regs-modal-subtitle').textContent = `${regs.length} Real Registrations`;
+                
+                const tbody = document.getElementById('regs-tbody');
+                if (regs.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="py-6 text-center text-cream-dark/50">
+                                <p class="font-bold text-white mb-1">NO REGISTRATIONS YET</p>
+                                <p class="text-xs">Event registrations will appear here when students register.</p>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    tbody.innerHTML = regs.map(r => `
+                        <tr>
+                            <td class="py-2.5 px-3 font-bold text-white">${escapeHTML(r.fullName)}</td>
+                            <td class="py-2.5 px-3 text-cream-dark/70 font-mono text-[11px]">${escapeHTML(r.email)}<br/>${escapeHTML(r.phone || '')}</td>
+                            <td class="py-2.5 px-3 text-cream-dark/60 text-[11px]">${escapeHTML(r.university || '—')}</td>
+                            <td class="py-2.5 px-3">
+                                <span class="status-pill ${r.status === 'CONFIRMED' ? 'status-accepted' : 'status-under_review'}">${r.status}</span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                document.getElementById('event-regs-modal').classList.remove('hidden');
+            };
+
+            window.closeRegsModal = function() {
+                document.getElementById('event-regs-modal').classList.add('hidden');
+            };
+
+            // =========================================================================
+            // QUESTIONS LIST RENDER
+            // =========================================================================
+            let currentQDeptFilter = 'all';
+            function renderQuestionsList() {
+                const qs = window.NUSC_DATA_STORE.getQuestions(currentQDeptFilter);
+                const tbody = document.getElementById('questions-tbody');
+                tbody.innerHTML = qs.map((q, idx) => `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="py-3 px-4 font-mono text-cream-dark/40">${idx + 1}</td>
+                        <td class="py-3 px-4 font-bold text-white text-xs">
+                            ${escapeHTML(q.question)}
+                            <div class="text-[10px] text-cream-dark/40 font-mono mt-0.5">ID: ${q.id}</div>
+                        </td>
+                        <td class="py-3 px-4"><span class="dept-tag">${q.department}</span></td>
+                        <td class="py-3 px-4 text-cream-dark/70 font-mono text-xs">${q.type}</td>
+                        <td class="py-3 px-4"><span class="text-xs ${q.required ? 'text-red-400 font-bold' : 'text-cream-dark/40'}">${q.required ? 'Yes' : 'Optional'}</span></td>
+                        <td class="py-3 px-4">
+                            <span class="status-pill ${q.active ? 'status-accepted' : 'status-rejected'}">${q.active ? 'ACTIVE' : 'INACTIVE'}</span>
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <button onclick="toggleQActive('${q.id}')" class="pixel-btn-navy text-xs px-2 py-1 font-label">
+                                ${q.active ? 'Disable' : 'Enable'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            document.querySelectorAll('.q-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.q-tab-btn').forEach(b => {
+                        b.classList.remove('active', 'border-gold', 'text-gold');
+                        b.classList.add('border-transparent', 'text-cream-dark/60');
+                    });
+                    btn.classList.add('active', 'border-gold', 'text-gold');
+                    btn.classList.remove('border-transparent', 'text-cream-dark/60');
+                    currentQDeptFilter = btn.getAttribute('data-dept');
+                    renderQuestionsList();
+                });
+            });
+
+            window.toggleQActive = async function(id) {
+                await window.NUSC_DATA_STORE.toggleQuestionActive(id);
+                renderQuestionsList();
+                showToast('Question status updated.');
+            };
+
+            window.openAddQuestionModal = function() {
+                document.getElementById('question-form').reset();
+                document.getElementById('question-modal').classList.remove('hidden');
+            };
+
+            window.closeQuestionModal = function() {
+                document.getElementById('question-modal').classList.add('hidden');
+            };
+
+            document.getElementById('question-form').addEventListener('submit', async function(ev) {
+                ev.preventDefault();
+                const optRaw = document.getElementById('q-options').value;
+                const options = optRaw ? optRaw.split(',').map(o => o.trim()).filter(Boolean) : [];
+                const data = {
+                    department: document.getElementById('q-dept').value,
+                    type: document.getElementById('q-type').value,
+                    question: document.getElementById('q-text').value,
+                    options: options,
+                    required: document.getElementById('q-required').checked
+                };
+                await window.NUSC_DATA_STORE.addQuestion(data);
+                closeQuestionModal();
+                renderQuestionsList();
+                showToast('New question created.');
+            });
+
+            // =========================================================================
+            // HELPERS & LISTENERS
+            // =========================================================================
+            document.querySelectorAll('.detail-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.detail-tab-btn').forEach(b => {
+                        b.classList.remove('active', 'border-gold', 'text-gold');
+                        b.classList.add('border-transparent', 'text-cream-dark/60');
+                    });
+                    btn.classList.add('active', 'border-gold', 'text-gold');
+                    btn.classList.remove('border-transparent', 'text-cream-dark/60');
+
+                    const tab = btn.getAttribute('data-tab');
+                    document.querySelectorAll('.detail-tab-panel').forEach(p => p.classList.add('hidden'));
+                    document.getElementById('tab-content-' + tab).classList.remove('hidden');
+                });
+            });
+
+            ['app-search-input', 'app-dept-filter', 'app-status-filter', 'app-sort-filter'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', renderApplicationsList);
+            });
+
+            window.resetAppFilters = function() {
+                document.getElementById('app-search-input').value = '';
+                document.getElementById('app-dept-filter').value = 'all';
+                document.getElementById('app-status-filter').value = 'all';
+                document.getElementById('app-sort-filter').value = 'newest';
+                renderApplicationsList();
+            };
+
+            window.exportApplications = function() {
+                const search = (document.getElementById('app-search-input').value || '').trim().toLowerCase();
+                const dept = document.getElementById('app-dept-filter').value;
+                const status = document.getElementById('app-status-filter').value;
+                const apps = window.NUSC_DATA_STORE.getApplications().filter(a => {
+                    if (dept !== 'all' && a.firstPreference !== dept && a.finalDepartment !== dept) return false;
+                    if (status !== 'all' && a.status !== status) return false;
+                    if (search && !((a.fullName||'').toLowerCase().includes(search) || (a.email||'').toLowerCase().includes(search))) return false;
+                    return true;
+                });
+                window.NUSC_DATA_STORE.exportApplicationsCSV(apps);
+            };
+
+            // Confirmation Modal Helper
+            let confirmCallback = null;
+            let cancelCallback = null;
+            function showConfirmModal(title, msg, onConfirm, onCancel) {
+                document.getElementById('confirm-title').textContent = title;
+                document.getElementById('confirm-msg').textContent = msg;
+                confirmCallback = onConfirm;
+                cancelCallback = onCancel;
+                document.getElementById('confirm-modal').classList.remove('hidden');
+            }
+
+            document.getElementById('confirm-ok-btn').addEventListener('click', () => {
+                document.getElementById('confirm-modal').classList.add('hidden');
+                if (confirmCallback) confirmCallback();
+            });
+
+            document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
+                document.getElementById('confirm-modal').classList.add('hidden');
+                if (cancelCallback) cancelCallback();
+            });
+
+            // Restore Data
+            window.triggerRestoreData = function() {
+                document.getElementById('restore-file-input').click();
+            };
+
+            window.handleRestoreFile = function(input) {
+                const file = input.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const ok = window.NUSC_DATA_STORE.restoreData(e.target.result);
+                    if (ok) {
+                        showToast('Real data restored.');
+                        renderDashboard();
+                    } else {
+                        alert('Invalid backup JSON file.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            // Delete Application Handler
+            window.promptDeleteApplication = function(id, name) {
+                if (!id) return;
+                const displayName = name || 'this applicant';
+                showConfirmModal(
+                    'Delete Application?',
+                    `Are you sure you want to permanently delete the application for "${displayName}"? This action cannot be undone.`,
+                    async () => {
+                        await window.NUSC_DATA_STORE.deleteApplication(id);
+                        showToast(`Application for ${displayName} deleted.`);
+                        if (window.location.hash.startsWith('#application-detail')) {
+                            window.location.hash = '#applications';
+                        } else {
+                            renderApplicationsList();
+                            renderDashboard();
+                        }
+                    }
+                );
+            };
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                showConfirmModal('Sign Out?', 'Are you sure you want to sign out of the NUSC Admin Portal?', () => {
+                    window.NUSC_AUTH.logout();
+                });
+            });
+
+            // Global search
+            document.getElementById('global-search').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const q = e.target.value.trim();
+                    if (q) {
+                        window.location.hash = '#applications';
+                        document.getElementById('app-search-input').value = q;
+                        renderApplicationsList();
+                    }
+                }
+            });
+
+            // Utilities
+            function escapeHTML(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            function formatStatus(status) {
+                if (!status) return 'UNKNOWN';
+                return status.replace(/_/g, ' ').toUpperCase();
+            }
+
+            function formatDate(iso) {
+                if (!iso) return '—';
+                try {
+                    const d = new Date(iso);
+                    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                } catch(e) { return iso; }
+            }
+
+            function timeAgo(iso) {
+                if (!iso) return '—';
+                try {
+                    const sec = Math.floor((new Date() - new Date(iso)) / 1000);
+                    if (sec < 60) return 'Just now';
+                    const min = Math.floor(sec / 60);
+                    if (min < 60) return `${min}m ago`;
+                    const hrs = Math.floor(min / 60);
+                    if (hrs < 24) return `${hrs}h ago`;
+                    const days = Math.floor(hrs / 24);
+                    return `${days}d ago`;
+                } catch(e) { return 'recently'; }
+            }
+
+            function calculateAvgRating(review) {
+                if (!review) return null;
+                const scores = [review.communication, review.technicalAbility, review.commitment, review.teamwork, review.problemSolving, review.cultureFit].filter(s => typeof s === 'number' && s > 0);
+                if (scores.length === 0) return null;
+                const sum = scores.reduce((a, b) => a + b, 0);
+                return (sum / scores.length).toFixed(1);
+            }
+
+            function showToast(msg) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-6 right-6 z-50 bg-gold text-ink font-display font-bold text-xs px-4 py-2.5 pixel-border border-ink shadow-lg flex items-center gap-2';
+                toast.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> ${escapeHTML(msg)}`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+
+            // =========================================================================
+            // LIVE SERVER SYNC & REAL-TIME POLLING
+            // =========================================================================
+            let isSyncing = false;
+            window.syncServerData = async function(silent = false) {
+                if (isSyncing) return;
+                isSyncing = true;
+                const syncIcon = document.getElementById('sync-icon');
+                const syncLabel = document.getElementById('sync-label');
+                const statusBadge = document.getElementById('server-status-badge');
+
+                if (syncIcon) syncIcon.classList.add('animate-spin');
+                if (syncLabel && !silent) syncLabel.textContent = 'SYNCING...';
+
+                try {
+                    const apps = await window.NUSC_DATA_STORE.fetchApplications();
+                    if (statusBadge) {
+                        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> <span>${apps.length} REAL APPLICATION${apps.length === 1 ? '' : 'S'}</span>`;
+                        statusBadge.className = 'hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono bg-navy-darkest border border-green-500/50 text-green-300';
+                    }
+                    if (!silent) showToast(`Synced with server: ${apps.length} real application(s).`);
+                } catch(e) {
+                    if (statusBadge) {
+                        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> <span>SYNC OFFLINE</span>`;
+                        statusBadge.className = 'hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono bg-navy-darkest border border-red-500/50 text-red-300';
+                    }
+                } finally {
+                    isSyncing = false;
+                    if (syncIcon) syncIcon.classList.remove('animate-spin');
+                    if (syncLabel) syncLabel.textContent = 'SYNC DATA';
+
+                    // Re-render currently active view
+                    const hash = window.location.hash || '#dashboard';
+                    if (hash === '#dashboard' || hash === '') {
+                        renderDashboard();
+                    } else if (hash === '#applications') {
+                        renderApplicationsList();
+                    }
+                }
+            };
+
+            // Periodic background sync: poll for new applicants every 20 seconds
+            setInterval(() => {
+                const hash = window.location.hash || '#dashboard';
+                if (hash === '#dashboard' || hash === '' || hash === '#applications') {
+                    window.syncServerData(true);
+                }
+            }, 20000);
+
+            // Init Router & Hash Change Listener
+            window.addEventListener('hashchange', handleRoute);
+            handleRoute();
+
+            // Run initial sync right on start
+            setTimeout(() => {
+                window.syncServerData(true);
+            }, 300);
+
+        })();
+    </script>
+</body>
+</html>
