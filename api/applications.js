@@ -51,28 +51,14 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // POST /api/applications -> Form Submission directly into PostgreSQL
+    // POST /api/applications -> Recruitment is now CLOSED
     if (req.method === 'POST') {
-        const body = await parseBody(req);
-
-        if (!body.fullName || !body.email || !body.firstPreference) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Missing required applicant fields.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        try {
-            const newApp = await CloudDB.saveApplication(body);
-            res.writeHead ? res.writeHead(201, { 'Content-Type': 'application/json' }) : res.status(201);
-            const out = JSON.stringify({ success: true, application: newApp });
-            res.end ? res.end(out) : res.send(out);
-        } catch (err) {
-            console.error('[API applications POST Error]:', err.message);
-            res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
-            const errOut = JSON.stringify({ error: 'Database persistence error: ' + err.message });
-            res.end ? res.end(errOut) : res.send(errOut);
-        }
+        res.writeHead ? res.writeHead(403, { 'Content-Type': 'application/json' }) : res.status(403);
+        const err = JSON.stringify({
+            error: 'Recruitment for the organizing team is now officially closed. Thank you for your interest!',
+            code: 'RECRUITMENT_CLOSED'
+        });
+        res.end ? res.end(err) : res.send(err);
         return;
     }
 
