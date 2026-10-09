@@ -615,12 +615,20 @@
         },
 
         isAuthenticated: function () {
-            const token = loadLocal(TOKEN_KEY, null);
-            return !!token;
+            const token = this.getToken();
+            return !!token && token !== 'null' && token !== 'undefined';
         },
 
         getToken: function () {
-            return loadLocal(TOKEN_KEY, '');
+            let t = loadLocal(TOKEN_KEY, '');
+            if (!t) {
+                t = localStorage.getItem(TOKEN_KEY) || '';
+            }
+            if (typeof t === 'string' && t.startsWith('"') && t.endsWith('"')) {
+                try { t = JSON.parse(t); } catch(e) {}
+            }
+            if (!t || t === 'null' || t === 'undefined') return '';
+            return t;
         },
 
         getAdminUser: function () {

@@ -190,12 +190,18 @@ function verifySessionToken(token) {
 function extractToken(req) {
     const authHeader = req.headers && (req.headers.authorization || req.headers.Authorization);
     if (authHeader && authHeader.startsWith('Bearer ')) {
-        return authHeader.substring(7).trim();
+        const t = authHeader.substring(7).trim();
+        if (t && t !== 'null' && t !== 'undefined' && t !== '""') {
+            return t;
+        }
     }
     const cookieHeader = req.headers && req.headers.cookie;
     if (cookieHeader) {
         const match = cookieHeader.match(/nusc_admin_token=([^;]+)/);
-        if (match) return match[1];
+        if (match && match[1]) {
+            const t = match[1].trim();
+            if (t && t !== 'null' && t !== 'undefined') return t;
+        }
     }
     return null;
 }

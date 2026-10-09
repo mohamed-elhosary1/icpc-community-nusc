@@ -422,9 +422,6 @@
                                     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">emoji_events</span>
                                     <span>CONFIRM REGISTRATION & SAVE</span>
                                 </button>
-                                <span class="text-[11px] text-cream-dark/50 text-center block mt-2">
-                                    Your data is saved securely to our PostgreSQL database. A unique Registration ID will be generated upon confirmation.
-                                </span>
                             </div>
                         </form>
 
@@ -440,7 +437,7 @@
                                     Registration Successful!
                                 </h3>
                                 <p class="text-sm text-cream-dark/80 max-w-md mx-auto font-body">
-                                    Your application has been submitted and saved successfully in the production database.
+                                    Your application has been submitted and confirmed successfully.
                                 </p>
                             </div>
 
@@ -463,6 +460,43 @@
                                     <span class="material-symbols-outlined text-sm">content_copy</span>
                                     <span id="copy-btn-text">Copy Registration ID</span>
                                 </button>
+                            </div>
+
+                            <!-- Google Meet Session Details & Link -->
+                            <div class="p-6 bg-navy-darkest pixel-border border-2 border-gold max-w-md mx-auto text-center space-y-4 shadow-xl">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gold/20 border border-gold text-gold font-pixel text-xs uppercase">
+                                    <span class="material-symbols-outlined text-sm">videocam</span>
+                                    <span>اجتماع Google Meet</span>
+                                </div>
+
+                                <div class="space-y-1">
+                                    <h4 class="font-display font-black text-lg text-white">Google Meet joining info</h4>
+                                    <div class="p-2 bg-navy border border-gold/40 text-gold font-display font-bold text-sm">
+                                        Saturday, Oct 10 &bull; 21:00 &ndash; 22:00
+                                    </div>
+                                    <p class="font-body text-xs text-cream-dark/70">
+                                        السبت، ١٠ أكتوبر &bull; من الساعة ٩:٠٠ إلى ١٠:٠٠ مساءً
+                                    </p>
+                                </div>
+
+                                <div class="bg-navy p-3 border border-white/20 text-left font-mono text-xs text-cream-dark break-all flex items-center justify-between gap-2">
+                                    <div>
+                                        <span class="text-[10px] text-gold uppercase tracking-wider block font-label">Video call link:</span>
+                                        <a href="https://meet.google.com/fea-kbqm-pkz" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gold underline font-bold">
+                                            https://meet.google.com/fea-kbqm-pkz
+                                        </a>
+                                    </div>
+                                    <button type="button" onclick="copyMeetLink()" class="pixel-btn bg-gold text-ink p-1.5 flex-shrink-0" title="Copy meeting link">
+                                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                                    </button>
+                                </div>
+
+                                <div class="pt-1">
+                                    <a href="https://meet.google.com/fea-kbqm-pkz" target="_blank" rel="noopener noreferrer" class="pixel-btn-gold bg-gold text-ink font-display font-black text-sm px-6 py-3 inline-flex items-center gap-2 w-full justify-center">
+                                        <span class="material-symbols-outlined text-base">video_call</span>
+                                        <span>JOIN GOOGLE MEET</span>
+                                    </a>
+                                </div>
                             </div>
 
                             <!-- Action Buttons -->
@@ -581,6 +615,11 @@
                 // Smooth scroll to confirmation
                 document.getElementById('confirmation-screen').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+                // Alert with Date, Time, and Google Meet Link
+                setTimeout(() => {
+                    alert(`اجتماع Google Meet\nSaturday, Oct 10 • 21:00 – 22:00\n\nGoogle Meet joining info\nVideo call link: https://meet.google.com/fea-kbqm-pkz\n\nRegistration ID: ${data.registrationId}`);
+                }, 200);
+
             } catch (err) {
                 console.error('[Registration Submission Error]:', err);
                 errorTitle.textContent = 'Registration Error';
@@ -592,6 +631,15 @@
                     <span>CONFIRM REGISTRATION & SAVE</span>
                 `;
             }
+        }
+
+        function copyMeetLink() {
+            const link = 'https://meet.google.com/fea-kbqm-pkz';
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Copied Google Meet link:\nhttps://meet.google.com/fea-kbqm-pkz');
+            }).catch(e => {
+                prompt('Google Meet Video call link:', link);
+            });
         }
 
         function copyRegistrationId() {

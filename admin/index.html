@@ -2074,11 +2074,60 @@
                 }
 
                 try {
-                    const token = window.NUSC_AUTH.getToken();
+                    let token = window.NUSC_AUTH ? window.NUSC_AUTH.getToken() : '';
+                    if (!token) {
+                        token = localStorage.getItem('NUSC_REAL_AUTH_TOKEN') || '';
+                        if (typeof token === 'string' && token.startsWith('"') && token.endsWith('"')) {
+                            try { token = JSON.parse(token); } catch(e) {}
+                        }
+                    }
+
+                    const headers = {};
+                    if (token && token !== 'null' && token !== 'undefined') {
+                        headers['Authorization'] = 'Bearer ' + token;
+                    }
+
                     const url = eventFilter ? `/api/registrations?eventId=${encodeURIComponent(eventFilter)}` : '/api/registrations';
                     const res = await fetch(url, {
-                        headers: { 'Authorization': 'Bearer ' + token }
+                        headers: headers,
+                        credentials: 'include'
                     });
+
+                    if (res.status === 401) {
+                        localStorage.removeItem('NUSC_REAL_AUTH_TOKEN');
+                        if (tbody) {
+                            tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="py-12 px-4 text-center">
+                                        <div class="max-w-md mx-auto bg-navy-darkest p-6 pixel-border border-2 border-gold space-y-4 shadow-2xl">
+                                            <div class="w-12 h-12 rounded-full bg-gold/15 border border-gold flex items-center justify-center mx-auto text-gold">
+                                                <span class="material-symbols-outlined text-2xl">lock</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-display font-black text-white text-base uppercase tracking-wider">Admin Session Required (401)</h4>
+                                                <p class="text-xs text-cream-dark/70 mt-1 font-body">Attendee registrations are confidential. Please enter your administrator password to unlock real database records.</p>
+                                            </div>
+                                            <form onsubmit="handleQuickAdminUnlock(event)" class="space-y-3 pt-1">
+                                                <div>
+                                                    <input type="password" id="admin-unlock-password" placeholder="Enter administrator password..." class="pixel-input text-xs w-full py-2.5 px-3 bg-navy text-white border-2 border-navy-light focus:border-gold outline-none" required autofocus autocomplete="current-password" />
+                                                </div>
+                                                <button type="submit" id="admin-unlock-btn" class="w-full pixel-btn-gold bg-gold text-ink font-display font-black text-xs py-2.5 flex items-center justify-center gap-1.5 uppercase tracking-wider">
+                                                    <span class="material-symbols-outlined text-sm">lock_open</span>
+                                                    <span>SIGN IN &amp; UNLOCK REGISTRATIONS</span>
+                                                </button>
+                                            </form>
+                                            <p id="unlock-error" class="text-xs text-red-400 hidden"></p>
+                                            <div class="pt-2 border-t border-white/10 flex justify-between items-center text-[11px]">
+                                                <a href="/admin/login" class="text-gold hover:underline">Full Sign In page &rarr;</a>
+                                                <button type="button" onclick="loadEventRegistrations(true)" class="text-cream-dark/60 hover:text-white">Retry Connection</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                        return;
+                    }
 
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const data = await res.json();
@@ -2101,6 +2150,53 @@
                                 </td>
                             </tr>
                         `;
+                    }
+                }
+            };
+
+            window.handleQuickAdminUnlock = async function(e) {
+                if (e) e.preventDefault();
+                const passInput = document.getElementById('admin-unlock-password');
+                const errP = document.getElementById('unlock-error');
+                const btn = document.getElementById('admin-unlock-btn');
+                if (!passInput) return;
+
+                const password = passInput.value.trim();
+                if (!password) return;
+
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> VERIFYING...';
+                }
+                if (errP) errP.classList.add('hidden');
+
+                try {
+                    const res = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: 'cassidy', password: password })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success && data.token) {
+                        localStorage.setItem('NUSC_REAL_AUTH_TOKEN', JSON.stringify(data.token));
+                        localStorage.setItem('NUSC_REAL_AUTH_USER', JSON.stringify(data.user));
+                        showToast('Authenticated as Admin successfully!');
+                        await window.loadEventRegistrations(true);
+                    } else {
+                        if (errP) {
+                            errP.textContent = data.error || 'Invalid administrator password.';
+                            errP.classList.remove('hidden');
+                        }
+                    }
+                } catch(err) {
+                    if (errP) {
+                        errP.textContent = 'Connection error: ' + err.message;
+                        errP.classList.remove('hidden');
+                    }
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<span class="material-symbols-outlined text-sm">lock_open</span> <span>SIGN IN &amp; UNLOCK REGISTRATIONS</span>';
                     }
                 }
             };
