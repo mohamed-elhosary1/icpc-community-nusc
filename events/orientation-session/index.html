@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orientation Session | ICPC Community NUSC</title>
+    <meta name="description" content="Register for the ICPC Community NUSC Orientation Session with Abdel Aleem Ahmed (Coach Academy, Noon, ICPC World Finalist). Saturday, 10 October 2026 at 9:00 PM." />
+    <meta property="og:title" content="Orientation Session | ICPC Community NUSC" />
+    <meta property="og:description" content="Your ICPC journey starts here. Special session with Abdel Aleem Ahmed & Coach Academy." />
+    <meta property="og:image" content="/assets/events/orientation-session-2026.jpg" />
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'cream-darker': '#efeeea',
+                        'ink': '#1b1c1a',
+                        'ink-light': '#434751',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    },
+                    maxWidth: {
+                        'site': '1280px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-border-navy { border: 2px solid #002e69; }
+        .pixel-shadow { box-shadow: 4px 4px 0px 0px #00122e; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 4px 4px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #00122e;
+        }
+        .pixel-btn-gold:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #00122e;
+        }
+
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .pixel-input:focus {
+            background-color: #00183b !important;
+            border-color: #fea520 !important;
+            box-shadow: 3px 3px 0px 0px #fea520 !important;
+        }
+        .pixel-input::placeholder {
+            color: rgba(251, 249, 245, 0.45) !important;
+        }
+
+        select.pixel-input option {
+            background-color: #001a41 !important;
+            color: #ffffff !important;
+            padding: 10px !important;
+        }
+
+        .pixel-card {
+            border: 2px solid #1b1c1a;
+            box-shadow: 4px 4px 0px 0px #00122e;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23002e69' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .float-slow { animation: floatSlow 5s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-cream text-ink font-body min-h-screen selection:bg-gold selection:text-navy">
+
+    <!-- Top Announcement Strip -->
+    <header class="bg-navy-darkest text-cream py-2.5 px-4 border-b-2 border-gold/40 text-center">
+        <div class="max-w-site mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
+            <a href="/" class="flex items-center gap-2 text-gold hover:underline font-minecraft">
+                <span class="material-symbols-outlined text-sm">arrow_back</span> Back to ICPC NUSC
+            </a>
+            <div class="flex items-center gap-2 mx-auto font-label">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="font-bold text-white uppercase tracking-wider text-[11px]">Official Orientation Event • Saturday 10/10 • 9:00 PM</span>
+            </div>
+            <a href="#register-form" class="hidden sm:inline-block text-[11px] font-minecraft bg-gold text-ink px-2.5 py-1 pixel-border hover:bg-white transition-colors">
+                REGISTER NOW
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Hero / Event Showcase -->
+    <main class="max-w-site mx-auto px-4 md:px-8 py-10 md:py-16">
+        
+        <!-- Breadcrumb & Badge -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-2 text-xs font-label text-ink-light">
+                <a href="/" class="hover:text-navy underline">Home</a>
+                <span>/</span>
+                <a href="/#activities" class="hover:text-navy underline">Events</a>
+                <span>/</span>
+                <span class="text-navy font-bold">Orientation Session</span>
+            </div>
+            <div class="inline-flex items-center gap-2 bg-gold/15 border-2 border-gold px-3 py-1 font-minecraft text-[11px] text-gold-dark">
+                <span class="material-symbols-outlined text-base text-gold-dark" style="font-variation-settings:'FILL' 1">stars</span>
+                <span>OFFICIAL COMMUNITY LAUNCH</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
+            
+            <!-- Left Column: Poster + Meta Details (5 cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                <!-- Event Poster Card -->
+                <div class="pixel-card bg-navy-darkest p-2 rounded-none border-2 border-navy overflow-hidden">
+                    <img 
+                        src="/assets/events/orientation-session-2026.jpg" 
+                        alt="ICPC Community NUSC Orientation Session with Abdel Aleem Ahmed & Coach Academy" 
+                        class="w-full h-auto object-cover border border-white/10 shadow-lg"
+                    />
+                    <div class="p-4 bg-navy-darkest text-white border-t border-white/10 flex justify-between items-center">
+                        <span class="font-minecraft text-[11px] text-gold">FREE ADMISSION</span>
+                        <span class="text-xs text-cream-dark/70 font-label">Official Sponsor: Coach Academy</span>
+                    </div>
+                </div>
+
+                <!-- Event Quick Info Card -->
+                <div class="pixel-card bg-cream-dark p-6 space-y-4">
+                    <h3 class="font-minecraft text-xs text-navy uppercase tracking-wider flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">event</span> SESSION DETAILS
+                    </h3>
+                    <div class="space-y-3 font-label text-sm">
+                        <div class="flex items-start gap-3 pb-3 border-b border-navy/10">
+                            <span class="material-symbols-outlined text-navy text-xl">calendar_month</span>
+                            <div>
+                                <span class="text-ink-light text-xs block">Date</span>
+                                <span class="font-bold text-navy">Saturday, 10 October 2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pb-3 border-b border-navy/10">
+                            <span class="material-symbols-outlined text-navy text-xl">schedule</span>
+                            <div>
+                                <span class="text-ink-light text-xs block">Time</span>
+                                <span class="font-bold text-navy">9:00 PM (Cairo Time)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pb-3 border-b border-navy/10">
+                            <span class="material-symbols-outlined text-navy text-xl">videocam</span>
+                            <div>
+                                <span class="text-ink-light text-xs block">Location</span>
+                                <span class="font-bold text-navy">Online Live Session</span>
+                                <span class="text-[11px] text-ink-light block">Meeting link will be sent to registered students via Email & WhatsApp.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-navy text-xl">verified</span>
+                            <div>
+                                <span class="text-ink-light text-xs block">Eligibility</span>
+                                <span class="font-bold text-navy">National University of Sadat City (NUSC) Students</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#register-form" class="pixel-btn-gold bg-gold text-ink font-display font-black text-center py-3.5 block text-sm tracking-wide">
+                        JUMP TO REGISTRATION FORM &darr;
+                    </a>
+                </div>
+
+                <!-- Speaker Spotlight Card -->
+                <div class="pixel-card bg-navy p-6 text-white space-y-3">
+                    <div class="flex items-center gap-2 text-gold font-minecraft text-xs uppercase">
+                        <span class="material-symbols-outlined text-gold">mic</span> Special Guest Speaker
+                    </div>
+                    <h4 class="font-display font-black text-xl text-white">Abdel Aleem Ahmed</h4>
+                    <p class="text-xs text-cream-dark/80 font-body leading-relaxed">
+                        Software Engineer 2 at Noon & Managing Partner at Coach Academy.
+                    </p>
+                    <ul class="text-xs space-y-1.5 text-cream-dark/90 font-label pt-2 border-t border-white/10">
+                        <li class="flex items-center gap-1.5"><span class="text-gold">★</span> ICPC World Finalist 2024</li>
+                        <li class="flex items-center gap-1.5"><span class="text-gold">★</span> 2× Top 10 at ECPC Finals</li>
+                        <li class="flex items-center gap-1.5"><span class="text-gold">★</span> Silver Medalist at ECPC 2024</li>
+                        <li class="flex items-center gap-1.5"><span class="text-gold">★</span> Bronze Medalist at ECPC 2023 & ACPC 2024</li>
+                        <li class="flex items-center gap-1.5"><span class="text-gold">★</span> On-site Judge at ECPC 2025 & Tunisia CPC 2025</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Description & Registration Form (7 cols) -->
+            <div class="lg:col-span-7 space-y-8">
+                
+                <!-- Event Header & Description -->
+                <div class="space-y-4">
+                    <span class="font-minecraft text-xs text-gold-dark uppercase tracking-widest block">🎮 YOUR ICPC JOURNEY STARTS HERE!</span>
+                    <h1 class="font-display font-black text-3xl md:text-5xl text-navy leading-tight">
+                        ICPC COMMUNITY NUSC — ORIENTATION SESSION 🚀
+                    </h1>
+
+                    <!-- Bilingual Description Block -->
+                    <div class="space-y-4 font-body text-base text-ink-light leading-relaxed pt-2">
+                        <div class="p-5 bg-white pixel-border border-navy/20 space-y-3 text-right" dir="rtl">
+                            <p class="font-bold text-navy text-lg leading-relaxed">
+                                عمرك فكرت تدخل عالم الـ Competitive Programming؟ 💻<br/>
+                                سمعت عن ICPC والمسابقات البرمجية، لكن مش عارف تبدأ منين؟ أو عندك أساسيات في البرمجة وعايز تطور مستواك، تحل مشاكل أصعب، وتكون جزء من مجتمع يساعدك توصل لأهدافك؟ 👀
+                            </p>
+                            <p class="text-gold-dark font-black text-xl">
+                                دي فرصتك تبدأ صح! 💙💛
+                            </p>
+                            <p class="text-sm text-ink-light">
+                                يسرّنا في <strong class="text-navy">ICPC Community NUSC</strong> دعوتكم لحضور الـ <strong>Orientation Session</strong>، واللي هتكون أول خطوة ليك علشان تتعرف علينا، تفهم إحنا بنعمل إيه، وإزاي تقدر تكون جزء من رحلتنا!
+                            </p>
+                        </div>
+
+                        <div class="p-5 bg-white pixel-border border-navy/20 space-y-3">
+                            <h3 class="font-display font-black text-navy text-lg">What is ICPC NUSC all about?</h3>
+                            <p class="text-sm">
+                                The Orientation Session is not just an introductory meeting — it is your direct gateway to discovering competitive programming, problem solving patterns, algorithmic thinking, and how teamwork prepares you for prestigious global contests.
+                            </p>
+                            <p class="text-sm">
+                                Whether you are learning your first programming language or have already started solving problems on Codeforces, <strong>there is a place for you in our community!</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Section Anchor -->
+                <div id="register-form" class="pt-4">
+                    
+                    <!-- Form Container Card -->
+                    <div class="pixel-card bg-navy-darkest p-6 md:p-8 text-white space-y-6">
+                        
+                        <!-- Header inside card -->
+                        <div class="border-b border-white/10 pb-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <h2 class="font-display font-black text-2xl text-gold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-gold">how_to_reg</span> REGISTER FOR THE SESSION
+                                </h2>
+                                <span class="font-minecraft text-[10px] text-cream-dark/60">PHASE 1 REGISTRATION</span>
+                            </div>
+                            <p class="text-xs text-cream-dark/70 font-body mt-1">
+                                Complete your information below to reserve your seat. All submissions are saved directly to our production database.
+                            </p>
+                        </div>
+
+                        <!-- Error Banner (Hidden by default) -->
+                        <div id="form-error-banner" class="hidden p-4 bg-red-950/80 border-2 border-red-500 text-red-200 text-xs font-label space-y-1">
+                            <div class="flex items-center gap-2 font-bold text-red-400">
+                                <span class="material-symbols-outlined text-sm">error</span>
+                                <span id="error-title">Submission Error</span>
+                            </div>
+                            <p id="error-message"></p>
+                        </div>
+
+                        <!-- University Restriction Notice (Shown if unchecked) -->
+                        <div id="uni-warning-banner" class="hidden p-4 bg-yellow-950/80 border-2 border-yellow-500 text-yellow-200 text-xs font-label">
+                            <div class="flex items-center gap-2 font-bold text-yellow-400 mb-1">
+                                <span class="material-symbols-outlined text-base">warning</span>
+                                <span>University Restriction Notice</span>
+                            </div>
+                            <p>
+                                Registration for this specific session is currently restricted exclusively to enrolled students of the <strong>National University of Sadat City (NUSC)</strong>. If you are from another university, follow our social pages for upcoming open community events!
+                            </p>
+                        </div>
+
+                        <!-- The Actual Form -->
+                        <form id="orientation-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-5">
+                            
+                            <!-- 1. Full Name -->
+                            <div>
+                                <label for="field-fullName" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
+                                    1. Full Name (الاسم بالكامل) <span class="text-red-400">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="field-fullName" 
+                                    name="fullName" 
+                                    class="pixel-input" 
+                                    placeholder="e.g. Ahmed Mohamed Ali" 
+                                    required 
+                                    minlength="3" 
+                                />
+                                <span class="text-[11px] text-cream-dark/50 mt-1 block">Please enter your official full name.</span>
+                            </div>
+
+                            <!-- 2. Phone Number -->
+                            <div>
+                                <label for="field-phone" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
+                                    2. Phone Number (WhatsApp) (رقم الهاتف والواتساب) <span class="text-red-400">*</span>
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    id="field-phone" 
+                                    name="phone" 
+                                    class="pixel-input" 
+                                    placeholder="e.g. 01012345678 or +201012345678" 
+                                    required 
+                                />
+                                <span class="text-[11px] text-cream-dark/50 mt-1 block">We will send the session link and instructions to this number.</span>
+                            </div>
+
+                            <!-- 3. Email Address -->
+                            <div>
+                                <label for="field-email" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
+                                    3. Email Address (البريد الإلكتروني) <span class="text-red-400">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="field-email" 
+                                    name="email" 
+                                    class="pixel-input" 
+                                    placeholder="e.g. student@nusc.edu.eg or your personal email" 
+                                    required 
+                                />
+                                <span class="text-[11px] text-cream-dark/50 mt-1 block">A confirmation email will be sent upon submission.</span>
+                            </div>
+
+                            <!-- 4. Academic Year -->
+                            <div>
+                                <label for="field-academicYear" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
+                                    4. Level / Academic Year (الفرقة الدراسية) <span class="text-red-400">*</span>
+                                </label>
+                                <select id="field-academicYear" name="academicYear" class="pixel-input" required>
+                                    <option value="" disabled selected>-- Select Your Academic Level --</option>
+                                    <option value="First Year">First Year (الفرقة الأولى)</option>
+                                    <option value="Second Year">Second Year (الفرقة الثانية)</option>
+                                    <option value="Third Year">Third Year (الفرقة الثالثة)</option>
+                                    <option value="Fourth Year">Fourth Year (الفرقة الرابعة)</option>
+                                    <option value="Other">Other / Postgraduate (أخرى / دراسات عليا)</option>
+                                </select>
+                            </div>
+
+                            <!-- 5. Faculty (Strict options) -->
+                            <div>
+                                <label for="field-faculty" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
+                                    5. Faculty (الكلية) <span class="text-red-400">*</span>
+                                </label>
+                                <select id="field-faculty" name="faculty" class="pixel-input" required>
+                                    <option value="" disabled selected>-- Select Your Faculty --</option>
+                                    <option value="Computers and AI">Computers and AI (الحاسبات والذكاء الاصطناعي)</option>
+                                    <option value="Vet">Vet (الطب البيطري)</option>
+                                    <option value="Pharmacy">Pharmacy (الصيدلة)</option>
+                                    <option value="Science">Science (العلوم)</option>
+                                    <option value="Business">Business (التجارة)</option>
+                                    <option value="Tourism">Tourism (السياحة والفنادق)</option>
+                                    <option value="Sports">Sports (التربية الرياضية)</option>
+                                </select>
+                            </div>
+
+                            <!-- 6. University Declaration Checkbox -->
+                            <div class="p-4 bg-navy/60 border border-gold/40 rounded-none space-y-2">
+                                <label class="flex items-start gap-3 cursor-pointer select-none">
+                                    <input 
+                                        type="checkbox" 
+                                        id="field-isNuscStudent" 
+                                        name="isNuscStudent" 
+                                        class="mt-1 w-4 h-4 text-gold rounded border-navy-light focus:ring-gold" 
+                                        required 
+                                        onchange="handleUniCheckChange(this)"
+                                    />
+                                    <span class="text-xs text-white leading-relaxed">
+                                        <strong class="text-gold block mb-0.5">6. University Declaration (إقرار الجامعة) *</strong>
+                                        I confirm that I am an actively enrolled student at <strong>National University of Sadat City</strong> (جامعة السادات الأهلية).
+                                    </span>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-2">
+                                <button 
+                                    type="submit" 
+                                    id="submit-reg-btn" 
+                                    class="w-full pixel-btn-gold bg-gold text-ink font-display font-black text-base py-4 flex items-center justify-center gap-2"
+                                >
+                                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">emoji_events</span>
+                                    <span>CONFIRM REGISTRATION & SAVE</span>
+                                </button>
+                                <span class="text-[11px] text-cream-dark/50 text-center block mt-2">
+                                    Your data is saved securely to our PostgreSQL database. A unique Registration ID will be generated upon confirmation.
+                                </span>
+                            </div>
+                        </form>
+
+                        <!-- Phase 5 Confirmation Screen (Shown upon verified DB insert) -->
+                        <div id="confirmation-screen" class="hidden text-center space-y-6 py-6 animate-fade-in">
+                            <div class="w-16 h-16 bg-green-500/20 border-2 border-green-400 rounded-full flex items-center justify-center mx-auto text-green-300">
+                                <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1">check_circle</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <span class="font-minecraft text-xs text-gold uppercase tracking-widest block">REGISTRATION CONFIRMED</span>
+                                <h3 class="font-display font-black text-2xl md:text-3xl text-white">
+                                    Registration Successful!
+                                </h3>
+                                <p class="text-sm text-cream-dark/80 max-w-md mx-auto font-body">
+                                    Your application has been submitted and saved successfully in the production database.
+                                </p>
+                            </div>
+
+                            <!-- Unique Registration Code Display -->
+                            <div class="p-6 bg-navy border-2 border-gold/60 max-w-md mx-auto space-y-3">
+                                <span class="text-[11px] font-label uppercase tracking-wider text-gold block">Your Official Registration ID</span>
+                                <div class="font-mono font-black text-2xl md:text-3xl text-white tracking-widest select-all bg-black/40 py-2.5 px-4 pixel-border border-gold" id="confirmed-reg-id">
+                                    NUSC-OS26-XXXXX
+                                </div>
+                                <p class="text-xs text-cream-dark/70 font-body">
+                                    Please keep this ID for future reference and session attendance.
+                                </p>
+
+                                <button 
+                                    type="button" 
+                                    onclick="copyRegistrationId()" 
+                                    id="copy-id-btn" 
+                                    class="pixel-btn-gold bg-gold text-ink font-label font-bold text-xs px-4 py-2 inline-flex items-center gap-1.5"
+                                >
+                                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                                    <span id="copy-btn-text">Copy Registration ID</span>
+                                </button>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+                                <a href="/" class="pixel-btn-navy bg-navy text-xs font-display font-bold px-6 py-3 border border-white/20 text-white">
+                                    Return to Home Page
+                                </a>
+                                <button onclick="resetRegistrationForm()" class="text-xs text-cream-dark/60 hover:text-gold underline">
+                                    Register another student
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-darkest py-10 mt-16 border-t-2 border-navy text-center text-xs text-cream-dark/60 font-body">
+        <div class="max-w-site mx-auto px-4 space-y-2">
+            <p>&copy; 2026 ICPC Community NUSC • National University of Sadat City</p>
+            <p class="font-minecraft text-[10px] text-gold/60 uppercase">Together We Code. Together We Win.</p>
+        </div>
+    </footer>
+
+    <!-- Client-side Controller -->
+    <script>
+        let currentRegistrationId = null;
+
+        function handleUniCheckChange(checkbox) {
+            const warningBanner = document.getElementById('uni-warning-banner');
+            const submitBtn = document.getElementById('submit-reg-btn');
+            if (!checkbox.checked) {
+                warningBanner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                warningBanner.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        async function handleRegistrationSubmit(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('orientation-form');
+            const submitBtn = document.getElementById('submit-reg-btn');
+            const errorBanner = document.getElementById('form-error-banner');
+            const errorMessage = document.getElementById('error-message');
+            const errorTitle = document.getElementById('error-title');
+
+            errorBanner.classList.add('hidden');
+
+            const isNuscStudent = document.getElementById('field-isNuscStudent').checked;
+            if (!isNuscStudent) {
+                handleUniCheckChange(document.getElementById('field-isNuscStudent'));
+                return;
+            }
+
+            const payload = {
+                fullName: document.getElementById('field-fullName').value.trim(),
+                phone: document.getElementById('field-phone').value.trim(),
+                email: document.getElementById('field-email').value.trim().toLowerCase(),
+                academicYear: document.getElementById('field-academicYear').value,
+                faculty: document.getElementById('field-faculty').value,
+                isNuscStudent: true,
+                eventId: 'orientation-session-2026'
+            };
+
+            // Loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <span class="material-symbols-outlined animate-spin text-sm">sync</span>
+                <span>SAVING TO DATABASE...</span>
+            `;
+
+            try {
+                const res = await fetch('/api/registrations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    if (res.status === 409 && data.existingRegistrationId) {
+                        // Duplicate registration handling
+                        errorTitle.textContent = 'Already Registered';
+                        errorMessage.innerHTML = `You have already registered with this email address. Your Registration ID is: <strong class="text-white">${data.existingRegistrationId}</strong>.`;
+                        errorBanner.classList.remove('hidden');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `
+                            <span class="material-symbols-outlined">emoji_events</span>
+                            <span>CONFIRM REGISTRATION & SAVE</span>
+                        `;
+                        return;
+                    }
+                    throw new Error(data.error || `Server responded with status ${res.status}`);
+                }
+
+                if (!data.success || !data.registrationId) {
+                    throw new Error('Database transaction did not return a valid confirmation ID.');
+                }
+
+                // SUCCESS: Switch to Phase 5 Success Screen
+                currentRegistrationId = data.registrationId;
+                document.getElementById('confirmed-reg-id').textContent = data.registrationId;
+                form.classList.add('hidden');
+                document.getElementById('confirmation-screen').classList.remove('hidden');
+
+                // Smooth scroll to confirmation
+                document.getElementById('confirmation-screen').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            } catch (err) {
+                console.error('[Registration Submission Error]:', err);
+                errorTitle.textContent = 'Registration Error';
+                errorMessage.textContent = err.message || 'A network or database error occurred. Your form data has been preserved; please try submitting again.';
+                errorBanner.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    <span>CONFIRM REGISTRATION & SAVE</span>
+                `;
+            }
+        }
+
+        function copyRegistrationId() {
+            if (!currentRegistrationId) return;
+            navigator.clipboard.writeText(currentRegistrationId).then(() => {
+                const textSpan = document.getElementById('copy-btn-text');
+                textSpan.textContent = 'Copied to Clipboard!';
+                setTimeout(() => {
+                    textSpan.textContent = 'Copy Registration ID';
+                }, 2500);
+            }).catch(e => {
+                alert('Registration ID: ' + currentRegistrationId);
+            });
+        }
+
+        function resetRegistrationForm() {
+            document.getElementById('orientation-form').reset();
+            document.getElementById('orientation-form').classList.remove('hidden');
+            document.getElementById('confirmation-screen').classList.add('hidden');
+            const submitBtn = document.getElementById('submit-reg-btn');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                <span class="material-symbols-outlined">emoji_events</span>
+                <span>CONFIRM REGISTRATION & SAVE</span>
+            `;
+        }
+    </script>
+</body>
+</html>

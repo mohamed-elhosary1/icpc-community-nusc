@@ -1,10 +1,11 @@
 /**
  * API: /api/applications
- * Applications Management Endpoint (In-Memory / Pure Ephemeral)
- * No database connection.
+ * Applications Management Endpoint (Supabase PostgreSQL Persistence)
+ * Saves all organizing team applications directly to the production database.
  */
 
 const DB = require('./_db');
+const CloudDB = require('./_cloud');
 
 function parseBody(req) {
     return new Promise((resolve) => {
@@ -29,23 +30,28 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // GET /api/applications -> Returns current in-memory applications
+    // GET /api/applications -> Returns applications directly from production database
     if (req.method === 'GET') {
         const session = DB.requireAuth(req, res);
         if (!session) return;
 
-        const apps = DB.getApplications();
-
-        res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
-        const out = JSON.stringify({
-            applications: apps,
-            count: apps.length
-        });
-        res.end ? res.end(out) : res.send(out);
+        try {
+            const apps = await CloudDB.getApplications();
+            res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
+            const out = JSON.stringify({
+                applications: apps,
+                count: apps.length
+            });
+            res.end ? res.end(out) : res.send(out);
+        } catch (err) {
+            console.error('[API applications GET Error]:', err.message);
+            res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+            res.end ? res.end(JSON.stringify({ error: 'Database read failed: ' + err.message })) : res.send({ error: err.message });
+        }
         return;
     }
 
-    // POST /api/applications -> Form Submission
+    // POST /api/applications -> Form Submission directly into PostgreSQL
     if (req.method === 'POST') {
         const body = await parseBody(req);
 
@@ -56,15 +62,21 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const newApp = DB.saveApplication(body);
-
-        res.writeHead ? res.writeHead(201, { 'Content-Type': 'application/json' }) : res.status(201);
-        const out = JSON.stringify({ success: true, application: newApp });
-        res.end ? res.end(out) : res.send(out);
+        try {
+            const newApp = await CloudDB.saveApplication(body);
+            res.writeHead ? res.writeHead(201, { 'Content-Type': 'application/json' }) : res.status(201);
+            const out = JSON.stringify({ success: true, application: newApp });
+            res.end ? res.end(out) : res.send(out);
+        } catch (err) {
+            console.error('[API applications POST Error]:', err.message);
+            res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+            const errOut = JSON.stringify({ error: 'Database persistence error: ' + err.message });
+            res.end ? res.end(errOut) : res.send(errOut);
+        }
         return;
     }
 
-    // PATCH /api/applications -> Admin Update
+    // PATCH /api/applications -> Admin Update in PostgreSQL
     if (req.method === 'PATCH') {
         const session = DB.requireAuth(req, res);
         if (!session) return;
@@ -81,22 +93,27 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const updated = DB.updateApplication(id, updates);
+        try {
+            const updated = await CloudDB.updateApplication(id, updates);
+            if (!updated) {
+                res.writeHead ? res.writeHead(404, { 'Content-Type': 'application/json' }) : res.status(404);
+                const err = JSON.stringify({ error: 'Application not found.' });
+                res.end ? res.end(err) : res.send(err);
+                return;
+            }
 
-        if (!updated) {
-            res.writeHead ? res.writeHead(404, { 'Content-Type': 'application/json' }) : res.status(404);
-            const err = JSON.stringify({ error: 'Application not found.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
+            res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
+            const out = JSON.stringify({ success: true, application: updated });
+            res.end ? res.end(out) : res.send(out);
+        } catch (err) {
+            console.error('[API applications PATCH Error]:', err.message);
+            res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+            res.end ? res.end(JSON.stringify({ error: err.message })) : res.send({ error: err.message });
         }
-
-        res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
-        const out = JSON.stringify({ success: true, application: updated });
-        res.end ? res.end(out) : res.send(out);
         return;
     }
 
-    // DELETE /api/applications -> Admin Delete
+    // DELETE /api/applications -> Admin Delete in PostgreSQL
     if (req.method === 'DELETE') {
         const session = DB.requireAuth(req, res);
         if (!session) return;
@@ -111,11 +128,16 @@ module.exports = async (req, res) => {
             return;
         }
 
-        DB.deleteApplication(id);
-
-        res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
-        const out = JSON.stringify({ success: true, message: 'Application deleted.' });
-        res.end ? res.end(out) : res.send(out);
+        try {
+            await CloudDB.deleteApplication(id);
+            res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
+            const out = JSON.stringify({ success: true, message: 'Application deleted from database.' });
+            res.end ? res.end(out) : res.send(out);
+        } catch (err) {
+            console.error('[API applications DELETE Error]:', err.message);
+            res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+            res.end ? res.end(JSON.stringify({ error: err.message })) : res.send({ error: err.message });
+        }
         return;
     }
 

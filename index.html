@@ -387,8 +387,20 @@
 </head>
 <body class="bg-cream text-ink font-body min-h-screen selection:bg-gold selection:text-navy">
 
+<!-- ========== TOP EVENT ANNOUNCEMENT BANNER ========== -->
+<div id="top-announcement-banner" class="bg-gold text-ink font-label font-bold text-xs py-2 px-4 border-b-2 border-ink flex items-center justify-between relative z-50">
+    <div class="max-w-site mx-auto flex items-center justify-center gap-2 sm:gap-3 text-center flex-wrap">
+        <span class="font-minecraft text-[10px] bg-navy text-white px-2 py-0.5 pixel-border border-ink">NEXT EVENT</span>
+        <span>🎮 ICPC NUSC Orientation Session with Abdel Aleem Ahmed (Coach Academy) • Saturday 10/10 at 9:00 PM</span>
+        <a href="/events/orientation-session" class="bg-navy text-gold px-3 py-1 pixel-btn font-minecraft text-[10px] hover:bg-navy-light transition-colors inline-flex items-center gap-1">
+            REGISTER NOW &rarr;
+        </a>
+    </div>
+    <button onclick="document.getElementById('top-announcement-banner').remove()" class="text-ink hover:text-navy p-1 text-base font-bold ml-2 leading-none" aria-label="Close Announcement">&times;</button>
+</div>
+
 <!-- ========== NAVBAR ========== -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 border-primary/20" role="navigation">
+<nav id="navbar" class="sticky top-0 left-0 right-0 z-40 transition-all duration-300 border-b-2 border-primary/20 bg-cream" role="navigation">
     <div class="max-w-site mx-auto px-4 md:px-8 h-14 md:h-16 flex justify-between items-center">
         <!-- Logo Brand -->
         <a href="#" class="flex items-center gap-2 group">
@@ -397,7 +409,11 @@
         </a>
 
         <!-- Desktop Navigation -->
-        <div class="hidden lg:flex items-center gap-6">
+        <div class="hidden lg:flex items-center gap-5">
+            <a href="/events/orientation-session" class="font-label text-sm text-gold-dark hover:text-navy transition-colors font-bold flex items-center gap-1.5 px-2 py-1 bg-gold/15 border border-gold/40">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span>Orientation Session</span>
+            </a>
             <a href="#about" class="font-label text-sm text-ink-light hover:text-navy transition-colors">About</a>
             <a href="#activities" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Activities</a>
             <a href="#roadmap" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Roadmap</a>
@@ -534,6 +550,82 @@
     </div>
     <span class="sprite-npc-female ml-4 z-10 flip-h" title="Teammate"></span>
 </div>
+
+<!-- ========== FEATURED EVENT PROMOTION: ORIENTATION SESSION ========== -->
+<section id="featured-event" class="py-12 md:py-16 bg-navy relative border-y-4 border-gold overflow-hidden">
+    <div class="absolute inset-0 bg-circuit-dark opacity-35 pointer-events-none"></div>
+    <div class="max-w-site mx-auto px-4 md:px-12 relative z-10">
+        
+        <div class="pixel-card bg-navy-darkest p-6 md:p-8 border-2 border-gold shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Event Poster (Responsive) -->
+                <div class="lg:col-span-5 relative group">
+                    <div class="pixel-card p-1.5 bg-navy border-2 border-gold overflow-hidden">
+                        <img 
+                            src="assets/events/orientation-session-2026.jpg" 
+                            alt="ICPC Community NUSC Orientation Session" 
+                            class="w-full h-auto object-cover transform group-hover:scale-[1.01] transition-transform duration-300"
+                        />
+                    </div>
+                    <div class="absolute top-4 left-4 bg-red-accent text-white font-minecraft text-[10px] px-2.5 py-1 pixel-border border-white shadow-md">
+                        LIVE EVENT • SAT 10/10
+                    </div>
+                </div>
+
+                <!-- Event Details & CTA -->
+                <div class="lg:col-span-7 space-y-4 text-white">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="font-minecraft text-[10px] bg-gold text-ink px-2.5 py-1 font-bold">
+                            NEXT OFFICIAL SESSION
+                        </span>
+                        <span class="text-xs text-cream-dark/70 font-label">
+                            Sponsored by Coach Academy
+                        </span>
+                    </div>
+
+                    <h2 class="font-display font-black text-2xl md:text-4xl text-white leading-tight">
+                        ICPC COMMUNITY NUSC — ORIENTATION SESSION 🚀
+                    </h2>
+
+                    <p class="font-body text-sm md:text-base text-cream-dark/90 leading-relaxed" dir="rtl">
+                        عمرك فكرت تدخل عالم الـ Competitive Programming؟ دي فرصتك تبدأ صح مع <strong class="text-gold">ICPC Community NUSC</strong> في لقاء تعريفي استثنائي يفتحلك آفاق التدريب والمسابقات البرمجية!
+                    </p>
+
+                    <!-- Key Event Facts -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 py-2 font-label text-xs">
+                        <div class="bg-navy p-3 border border-white/10">
+                            <span class="text-gold block font-bold mb-0.5">🗓️ DATE</span>
+                            <span class="font-bold text-white">Saturday, 10 Oct 2026</span>
+                        </div>
+                        <div class="bg-navy p-3 border border-white/10">
+                            <span class="text-gold block font-bold mb-0.5">⏰ TIME</span>
+                            <span class="font-bold text-white">9:00 PM (Online)</span>
+                        </div>
+                        <div class="bg-navy p-3 border border-white/10">
+                            <span class="text-gold block font-bold mb-0.5">🎤 SPECIAL GUEST</span>
+                            <span class="font-bold text-white">Abdel Aleem Ahmed</span>
+                            <span class="text-[10px] text-cream-dark/60 block">ICPC World Finalist 2024</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <a href="/events/orientation-session" class="pixel-btn-gold bg-gold text-ink font-display font-black text-base px-8 py-3.5 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">how_to_reg</span>
+                            <span>REGISTER NOW (FREE)</span>
+                        </a>
+                        <a href="/events/orientation-session" class="pixel-btn bg-cream text-navy font-display font-bold text-sm px-6 py-3.5 flex items-center justify-center gap-1.5 border-2 border-navy">
+                            <span>VIEW FULL DETAILS &rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
 
 <!-- ========== ABOUT SECTION ========== -->
 <section id="about" class="py-20 md:py-28 bg-cream-dark relative">
@@ -905,7 +997,18 @@
             discord: { url: '#', label: 'Discord' },
             github: { url: '#', label: 'GitHub' }
         },
-        events: [],
+        events: [
+            {
+                title: 'Orientation Session 🚀',
+                category: 'COMMUNITY LAUNCH',
+                date: 'Saturday, 10 Oct 2026',
+                time: '9:00 PM (Online)',
+                description: 'Special launch session with Eng. Abdel Aleem Ahmed (Coach Academy & Noon). Learn how competitive programming builds your career.',
+                status: 'REGISTRATION OPEN',
+                icon: 'assets/Objects/Bedroom/Trophy.png',
+                url: '/events/orientation-session'
+            }
+        ],
 
         journey: [
             { number: 1, title: 'START', description: 'Welcome to NUSC. Your first step into the world of competitive programming begins here.', icon: 'assets/Objects/Bedroom/Backpack_blue.png' },

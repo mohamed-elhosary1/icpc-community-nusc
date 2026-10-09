@@ -1,10 +1,10 @@
 /**
  * API: /api/stats
  * Real-time Dashboard Statistics
- * Calculated 100% dynamically from actual submitted records.
+ * Calculated dynamically from actual production database records in PostgreSQL.
  */
 
-const DB = require('./_db');
+const CloudDB = require('./_cloud');
 
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,8 +23,14 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const stats = DB.getCalculatedStats();
-    res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
-    const out = JSON.stringify(stats);
-    res.end ? res.end(out) : res.send(out);
+    try {
+        const stats = await CloudDB.getCalculatedStats();
+        res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
+        const out = JSON.stringify(stats);
+        res.end ? res.end(out) : res.send(out);
+    } catch (err) {
+        console.error('[API stats Error]:', err.message);
+        res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+        res.end ? res.end(JSON.stringify({ error: err.message })) : res.send({ error: err.message });
+    }
 };

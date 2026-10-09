@@ -264,6 +264,11 @@
                     <span class="material-symbols-outlined text-lg">event</span>
                     Events
                 </a>
+                <a href="#registrations" class="nav-item" data-view="registrations">
+                    <span class="material-symbols-outlined text-lg">how_to_reg</span>
+                    Event Registrations
+                    <span id="nav-reg-badge" class="ml-auto bg-navy-darkest text-gold text-[10px] font-minecraft px-1.5 py-0.5 border border-gold/40">0</span>
+                </a>
                 <a href="#questions" class="nav-item" data-view="questions">
                     <span class="material-symbols-outlined text-lg">quiz</span>
                     Questions
@@ -801,6 +806,88 @@
                 </div>
             </section>
 
+            <!-- VIEW: EVENT REGISTRATIONS -->
+            <section id="view-registrations" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">EVENT REGISTRATIONS</h1>
+                        <p class="font-body text-xs text-cream-dark/70">View, search, filter, and export verified registrations saved directly to PostgreSQL.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportRegistrationsCSV()" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">download</span> EXPORT CSV
+                        </button>
+                        <button onclick="loadEventRegistrations(true)" class="pixel-btn-navy bg-navy text-white text-xs font-display font-bold px-3 py-2 flex items-center gap-1.5 border border-white/20">
+                            <span class="material-symbols-outlined text-sm">refresh</span> REFRESH
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Selector & Search Filters Bar -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 space-y-3">
+                    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                        <div class="flex-grow flex items-center gap-2 bg-navy-darkest px-3 py-1.5 pixel-border border-navy-light/30">
+                            <span class="material-symbols-outlined text-cream-dark/40 text-lg">search</span>
+                            <input type="text" id="reg-search-input" oninput="filterRegistrations()" placeholder="Search by name, email, phone, or registration ID (e.g. NUSC-OS26)..." class="bg-transparent text-white text-xs w-full outline-none font-body placeholder:text-cream-dark/30">
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="reg-event-filter" onchange="loadEventRegistrations()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="orientation-session-2026">Orientation Session (10 Oct 2026)</option>
+                                <option value="">All Events</option>
+                            </select>
+                            <select id="reg-faculty-filter" onchange="filterRegistrations()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Faculties</option>
+                                <option value="Computers and AI">Computers and AI</option>
+                                <option value="Vet">Vet</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Science">Science</option>
+                                <option value="Business">Business</option>
+                                <option value="Tourism">Tourism</option>
+                                <option value="Sports">Sports</option>
+                            </select>
+                            <select id="reg-level-filter" onchange="filterRegistrations()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Academic Levels</option>
+                                <option value="First Year">First Year</option>
+                                <option value="Second Year">Second Year</option>
+                                <option value="Third Year">Third Year</option>
+                                <option value="Fourth Year">Fourth Year</option>
+                                <option value="Other">Other / Postgraduate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-cream-dark/60 border-t border-white/5 pt-2">
+                        <span id="reg-counts-label">Showing 0 confirmed registrations</span>
+                        <span class="text-gold font-mono" id="reg-db-status">● CONNECTED TO POSTGRESQL</span>
+                    </div>
+                </div>
+
+                <!-- Registrations Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-navy-darkest/60 border-b-2 border-navy-light/60 text-cream-dark/60 font-label uppercase text-[11px]">
+                                <tr>
+                                    <th class="py-3 px-4">Registration ID</th>
+                                    <th class="py-3 px-4">Student Name</th>
+                                    <th class="py-3 px-4">Email Address</th>
+                                    <th class="py-3 px-4">Phone Number</th>
+                                    <th class="py-3 px-4">Faculty & Level</th>
+                                    <th class="py-3 px-4">University Status</th>
+                                    <th class="py-3 px-4">Registration Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registrations-tbody" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="7" class="py-8 text-center text-cream-dark/50 font-body">
+                                        Loading verified registrations from database...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
             <!-- VIEW: QUESTIONS -->
             <section id="view-questions" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -1136,7 +1223,7 @@
                 const hash = window.location.hash || '#dashboard';
                 const [route, query] = hash.split('?');
                 
-                const views = ['dashboard', 'applications', 'applicant-detail', 'events', 'questions', 'settings'];
+                const views = ['dashboard', 'applications', 'applicant-detail', 'events', 'registrations', 'questions', 'settings'];
                 views.forEach(v => {
                     const el = document.getElementById('view-' + v);
                     if (el) el.classList.add('hidden');
@@ -1168,6 +1255,11 @@
                     document.querySelector('.nav-item[data-view="events"]').classList.add('active');
                     document.getElementById('top-title').textContent = 'EVENT MANAGEMENT';
                     renderEventsList();
+                } else if (route === '#registrations') {
+                    document.getElementById('view-registrations').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="registrations"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'EVENT REGISTRATIONS';
+                    loadEventRegistrations();
                 } else if (route === '#questions') {
                     document.getElementById('view-questions').classList.remove('hidden');
                     document.querySelector('.nav-item[data-view="questions"]').classList.add('active');
@@ -1958,6 +2050,172 @@
                 document.body.appendChild(toast);
                 setTimeout(() => toast.remove(), 3000);
             }
+
+            // =========================================================================
+            // EVENT REGISTRATIONS CONTROLLER (POSTGRESQL REAL DATA)
+            // =========================================================================
+            let allEventRegistrations = [];
+
+            window.loadEventRegistrations = async function(forceToast = false) {
+                const tbody = document.getElementById('registrations-tbody');
+                const countsLabel = document.getElementById('reg-counts-label');
+                const navBadge = document.getElementById('nav-reg-badge');
+                const eventFilter = document.getElementById('reg-event-filter') ? document.getElementById('reg-event-filter').value : '';
+
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="py-8 text-center text-cream-dark/50 font-body">
+                                <span class="material-symbols-outlined animate-spin text-lg text-gold mb-1 block">sync</span>
+                                Loading verified registrations from PostgreSQL...
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                try {
+                    const token = window.NUSC_AUTH.getToken();
+                    const url = eventFilter ? `/api/registrations?eventId=${encodeURIComponent(eventFilter)}` : '/api/registrations';
+                    const res = await fetch(url, {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    allEventRegistrations = Array.isArray(data.registrations) ? data.registrations : [];
+
+                    if (navBadge) navBadge.textContent = allEventRegistrations.length;
+                    filterRegistrations();
+
+                    if (forceToast) {
+                        showToast(`Loaded ${allEventRegistrations.length} registration(s) from database.`);
+                    }
+                } catch (err) {
+                    console.error('[Admin loadEventRegistrations error]:', err);
+                    if (tbody) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="py-8 text-center text-red-400 font-body text-xs">
+                                    <span class="material-symbols-outlined text-xl mb-1 block">error</span>
+                                    Failed to load registrations: ${escapeHTML(err.message)}
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+            };
+
+            window.filterRegistrations = function() {
+                const search = (document.getElementById('reg-search-input')?.value || '').trim().toLowerCase();
+                const faculty = document.getElementById('reg-faculty-filter')?.value || '';
+                const level = document.getElementById('reg-level-filter')?.value || '';
+
+                const filtered = allEventRegistrations.filter(r => {
+                    if (faculty && r.faculty !== faculty) return false;
+                    if (level && r.academic_year !== level) return false;
+                    if (search) {
+                        const hay = `${r.full_name || ''} ${r.email || ''} ${r.phone || ''} ${r.registration_id || ''}`.toLowerCase();
+                        if (!hay.includes(search)) return false;
+                    }
+                    return true;
+                });
+
+                renderRegistrationsTable(filtered);
+            };
+
+            window.renderRegistrationsTable = function(list) {
+                const tbody = document.getElementById('registrations-tbody');
+                const countsLabel = document.getElementById('reg-counts-label');
+                if (!tbody) return;
+
+                if (countsLabel) {
+                    countsLabel.textContent = `Showing ${list.length} of ${allEventRegistrations.length} confirmed registration(s)`;
+                }
+
+                if (list.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="py-8 text-center text-cream-dark/60 font-body text-xs">
+                                <span class="material-symbols-outlined text-2xl text-gold mb-1 block">inbox</span>
+                                No event registrations found matching your criteria.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = list.map(r => `
+                    <tr class="hover:bg-white/5 transition-colors font-body text-xs">
+                        <td class="py-3 px-4">
+                            <button onclick="copyRegCode('${escapeHTML(r.registration_id)}')" class="font-mono text-gold font-bold bg-black/40 px-2 py-0.5 pixel-border border-gold/40 hover:border-gold hover:text-white transition-colors flex items-center gap-1" title="Click to copy ID">
+                                <span>${escapeHTML(r.registration_id)}</span>
+                                <span class="material-symbols-outlined text-[11px]">content_copy</span>
+                            </button>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="font-bold text-white block">${escapeHTML(r.full_name)}</span>
+                            <span class="text-[10px] text-cream-dark/50 block">${escapeHTML(r.event_id || 'orientation-session-2026')}</span>
+                        </td>
+                        <td class="py-3 px-4 text-cream-dark/90 font-mono text-[11px]">
+                            <a href="mailto:${escapeHTML(r.email)}" class="hover:text-gold hover:underline block">${escapeHTML(r.email)}</a>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-[11px] text-cream-dark/80">
+                            <a href="tel:${escapeHTML(r.phone)}" class="hover:text-gold">${escapeHTML(r.phone)}</a>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="font-bold text-white block">${escapeHTML(r.faculty)}</span>
+                            <span class="text-[10px] text-gold-light block">${escapeHTML(r.academic_year)}</span>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-label font-bold bg-green-950 border border-green-500/50 text-green-300 uppercase">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> NUSC STUDENT
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-cream-dark/60 font-mono text-[11px]">
+                            ${formatDate(r.created_at)}
+                        </td>
+                    </tr>
+                `).join('');
+            };
+
+            window.copyRegCode = function(code) {
+                if (!code) return;
+                navigator.clipboard.writeText(code).then(() => {
+                    showToast(`Copied ID: ${code}`);
+                }).catch(() => {
+                    showToast(`Registration ID: ${code}`);
+                });
+            };
+
+            window.exportRegistrationsCSV = function() {
+                if (allEventRegistrations.length === 0) {
+                    alert('No registrations available to export.');
+                    return;
+                }
+
+                const headers = ['Registration ID', 'Event ID', 'Full Name', 'Email', 'Phone', 'Faculty', 'Academic Year', 'NUSC Student', 'Created At'];
+                const rows = allEventRegistrations.map(r => [
+                    r.registration_id || '',
+                    r.event_id || '',
+                    `"${(r.full_name || '').replace(/"/g, '""')}"`,
+                    r.email || '',
+                    `'${r.phone || ''}`,
+                    `"${(r.faculty || '').replace(/"/g, '""')}"`,
+                    `"${(r.academic_year || '').replace(/"/g, '""')}"`,
+                    r.is_nusc_student ? 'Yes' : 'No',
+                    r.created_at || ''
+                ]);
+
+                const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement('a');
+                link.setAttribute('href', encodedUri);
+                link.setAttribute('download', `nusc_event_registrations_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                showToast('Exported registrations to CSV.');
+            };
 
 
             // =========================================================================
