@@ -99,6 +99,18 @@ module.exports = async (req, res) => {
             eventId
         } = body;
 
+        const targetEventId = (eventId || body.event_id || 'orientation-session-2026').trim();
+
+        // Check if event registration has concluded
+        if (targetEventId === 'orientation-session-2026') {
+            res.writeHead ? res.writeHead(403, { 'Content-Type': 'application/json' }) : res.status(403);
+            const err = JSON.stringify({
+                error: 'Registration for the Orientation Session has ended. The event duration has concluded.'
+            });
+            res.end ? res.end(err) : res.send(err);
+            return;
+        }
+
         // 1. Validate Full Name
         if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 3) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
@@ -151,7 +163,6 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const targetEventId = eventId || 'orientation-session-2026';
 
         try {
             const savedRecord = await CloudDB.saveEventRegistration({

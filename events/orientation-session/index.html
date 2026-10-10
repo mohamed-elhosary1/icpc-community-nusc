@@ -129,11 +129,11 @@
                 <span class="material-symbols-outlined text-sm">arrow_back</span> Back to ICPC NUSC
             </a>
             <div class="flex items-center gap-2 mx-auto font-label">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span class="font-bold text-white uppercase tracking-wider text-[11px]">Official Orientation Event • Saturday 10/10 • 9:00 PM</span>
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                <span class="font-bold text-white uppercase tracking-wider text-[11px]">Event Concluded • Saturday 10/10 • 9:00 PM</span>
             </div>
-            <a href="#register-form" class="hidden sm:inline-block text-[11px] font-minecraft bg-gold text-ink px-2.5 py-1 pixel-border hover:bg-white transition-colors">
-                REGISTER NOW
+            <a href="/" class="text-[11px] font-minecraft bg-gold text-ink px-2.5 py-1 pixel-border hover:bg-white transition-colors">
+                RETURN TO HOMEPAGE
             </a>
         </div>
     </header>
@@ -150,9 +150,9 @@
                 <span>/</span>
                 <span class="text-navy font-bold">Orientation Session</span>
             </div>
-            <div class="inline-flex items-center gap-2 bg-gold/15 border-2 border-gold px-3 py-1 font-minecraft text-[11px] text-gold-dark">
-                <span class="material-symbols-outlined text-base text-gold-dark" style="font-variation-settings:'FILL' 1">stars</span>
-                <span>OFFICIAL COMMUNITY LAUNCH</span>
+            <div class="inline-flex items-center gap-2 bg-slate-800 border-2 border-slate-600 px-3 py-1 font-minecraft text-[11px] text-slate-300">
+                <span class="material-symbols-outlined text-base text-slate-400" style="font-variation-settings:'FILL' 1">event_busy</span>
+                <span>EVENT CONCLUDED</span>
             </div>
         </div>
 
@@ -168,7 +168,7 @@
                         class="w-full h-auto object-cover border border-white/10 shadow-lg"
                     />
                     <div class="p-4 bg-navy-darkest text-white border-t border-white/10 flex justify-between items-center">
-                        <span class="font-minecraft text-[11px] text-gold">FREE ADMISSION</span>
+                        <span class="font-minecraft text-[11px] text-slate-400">SESSION CONCLUDED</span>
                         <span class="text-xs text-cream-dark/70 font-label">Official Sponsor: Coach Academy</span>
                     </div>
                 </div>
@@ -271,248 +271,50 @@
                     </div>
                 </div>
 
-                <!-- Registration Section Anchor -->
+                <!-- Event Concluded Section Anchor -->
                 <div id="register-form" class="pt-4">
                     
-                    <!-- Form Container Card -->
-                    <div class="pixel-card bg-navy-darkest p-6 md:p-8 text-white space-y-6">
+                    <!-- Event Concluded Card -->
+                    <div class="pixel-card bg-navy-darkest p-6 md:p-8 text-white space-y-6 border-2 border-gold shadow-2xl">
                         
                         <!-- Header inside card -->
-                        <div class="border-b border-white/10 pb-4">
-                            <div class="flex items-center justify-between gap-2">
-                                <h2 class="font-display font-black text-2xl text-gold flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-gold">how_to_reg</span> REGISTER FOR THE SESSION
-                                </h2>
-                                <span class="font-minecraft text-[10px] text-cream-dark/60">PHASE 1 REGISTRATION</span>
+                        <div class="border-b border-white/10 pb-5 text-center">
+                            <div class="w-16 h-16 rounded-full bg-navy border-2 border-gold flex items-center justify-center mx-auto text-gold mb-3">
+                                <span class="material-symbols-outlined text-3xl">task_alt</span>
                             </div>
-                            <p class="text-xs text-cream-dark/70 font-body mt-1">
-                                Complete your information below to reserve your seat. All submissions are saved directly to our production database.
+                            <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block mb-1">EVENT STATUS</span>
+                            <h2 class="font-display font-black text-2xl md:text-3xl text-white">
+                                Event Successfully Concluded 🎉
+                            </h2>
+                            <p class="text-xs text-cream-dark/70 font-body mt-2 max-w-md mx-auto">
+                                The ICPC Community NUSC Orientation Session with Eng. Abdel Aleem Ahmed was held on <strong>Saturday, 10 October 2026</strong>.
                             </p>
                         </div>
 
-                        <!-- Error Banner (Hidden by default) -->
-                        <div id="form-error-banner" class="hidden p-4 bg-red-950/80 border-2 border-red-500 text-red-200 text-xs font-label space-y-1">
-                            <div class="flex items-center gap-2 font-bold text-red-400">
-                                <span class="material-symbols-outlined text-sm">error</span>
-                                <span id="error-title">Submission Error</span>
-                            </div>
-                            <p id="error-message"></p>
-                        </div>
-
-                        <!-- University Restriction Notice (Shown if unchecked) -->
-                        <div id="uni-warning-banner" class="hidden p-4 bg-yellow-950/80 border-2 border-yellow-500 text-yellow-200 text-xs font-label">
-                            <div class="flex items-center gap-2 font-bold text-yellow-400 mb-1">
-                                <span class="material-symbols-outlined text-base">warning</span>
-                                <span>University Restriction Notice</span>
-                            </div>
+                        <!-- Concluded Message Body -->
+                        <div class="p-5 bg-navy border border-white/10 text-sm text-cream-dark/90 leading-relaxed text-center space-y-3">
                             <p>
-                                Registration for this specific session is currently restricted exclusively to enrolled students of the <strong>National University of Sadat City (NUSC)</strong>. If you are from another university, follow our social pages for upcoming open community events!
+                                Thank you to all the enthusiastic students who attended! Registrations for this session are now officially closed.
+                            </p>
+                            <p class="text-xs text-cream-dark/70">
+                                Session recordings, roadmaps, and follow-up competitive programming materials will be shared with registered students. Stay tuned on our social channels for our upcoming training seasons!
                             </p>
                         </div>
 
-                        <!-- The Actual Form -->
-                        <form id="orientation-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-5">
-                            
-                            <!-- 1. Full Name -->
-                            <div>
-                                <label for="field-fullName" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
-                                    1. Full Name (الاسم بالكامل) <span class="text-red-400">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="field-fullName" 
-                                    name="fullName" 
-                                    class="pixel-input" 
-                                    placeholder="e.g. Ahmed Mohamed Ali" 
-                                    required 
-                                    minlength="3" 
-                                />
-                                <span class="text-[11px] text-cream-dark/50 mt-1 block">Please enter your official full name.</span>
-                            </div>
-
-                            <!-- 2. Phone Number -->
-                            <div>
-                                <label for="field-phone" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
-                                    2. Phone Number (WhatsApp) (رقم الهاتف والواتساب) <span class="text-red-400">*</span>
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    id="field-phone" 
-                                    name="phone" 
-                                    class="pixel-input" 
-                                    placeholder="e.g. 01012345678 or +201012345678" 
-                                    required 
-                                />
-                                <span class="text-[11px] text-cream-dark/50 mt-1 block">We will send the session link and instructions to this number.</span>
-                            </div>
-
-                            <!-- 3. Email Address -->
-                            <div>
-                                <label for="field-email" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
-                                    3. Email Address (البريد الإلكتروني) <span class="text-red-400">*</span>
-                                </label>
-                                <input 
-                                    type="email" 
-                                    id="field-email" 
-                                    name="email" 
-                                    class="pixel-input" 
-                                    placeholder="e.g. student@nusc.edu.eg or your personal email" 
-                                    required 
-                                />
-                                <span class="text-[11px] text-cream-dark/50 mt-1 block">A confirmation email will be sent upon submission.</span>
-                            </div>
-
-                            <!-- 4. Academic Year -->
-                            <div>
-                                <label for="field-academicYear" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
-                                    4. Level / Academic Year (الفرقة الدراسية) <span class="text-red-400">*</span>
-                                </label>
-                                <select id="field-academicYear" name="academicYear" class="pixel-input" required>
-                                    <option value="" disabled selected>-- Select Your Academic Level --</option>
-                                    <option value="First Year">First Year (الفرقة الأولى)</option>
-                                    <option value="Second Year">Second Year (الفرقة الثانية)</option>
-                                    <option value="Third Year">Third Year (الفرقة الثالثة)</option>
-                                    <option value="Fourth Year">Fourth Year (الفرقة الرابعة)</option>
-                                    <option value="Other">Other / Postgraduate (أخرى / دراسات عليا)</option>
-                                </select>
-                            </div>
-
-                            <!-- 5. Faculty (Strict options) -->
-                            <div>
-                                <label for="field-faculty" class="block font-label text-xs uppercase text-gold font-bold mb-1.5">
-                                    5. Faculty (الكلية) <span class="text-red-400">*</span>
-                                </label>
-                                <select id="field-faculty" name="faculty" class="pixel-input" required>
-                                    <option value="" disabled selected>-- Select Your Faculty --</option>
-                                    <option value="Computers and AI">Computers and AI (الحاسبات والذكاء الاصطناعي)</option>
-                                    <option value="Vet">Vet (الطب البيطري)</option>
-                                    <option value="Pharmacy">Pharmacy (الصيدلة)</option>
-                                    <option value="Science">Science (العلوم)</option>
-                                    <option value="Business">Business (التجارة)</option>
-                                    <option value="Tourism">Tourism (السياحة والفنادق)</option>
-                                    <option value="Sports">Sports (التربية الرياضية)</option>
-                                </select>
-                            </div>
-
-                            <!-- 6. University Declaration Checkbox -->
-                            <div class="p-4 bg-navy/60 border border-gold/40 rounded-none space-y-2">
-                                <label class="flex items-start gap-3 cursor-pointer select-none">
-                                    <input 
-                                        type="checkbox" 
-                                        id="field-isNuscStudent" 
-                                        name="isNuscStudent" 
-                                        class="mt-1 w-4 h-4 text-gold rounded border-navy-light focus:ring-gold" 
-                                        required 
-                                        onchange="handleUniCheckChange(this)"
-                                    />
-                                    <span class="text-xs text-white leading-relaxed">
-                                        <strong class="text-gold block mb-0.5">6. University Declaration (إقرار الجامعة) *</strong>
-                                        I confirm that I am an actively enrolled student at <strong>National University of Sadat City</strong> (جامعة السادات الأهلية).
-                                    </span>
-                                </label>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="pt-2">
-                                <button 
-                                    type="submit" 
-                                    id="submit-reg-btn" 
-                                    class="w-full pixel-btn-gold bg-gold text-ink font-display font-black text-base py-4 flex items-center justify-center gap-2"
-                                >
-                                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">emoji_events</span>
-                                    <span>CONFIRM REGISTRATION & SAVE</span>
-                                </button>
-                            </div>
-                        </form>
-
-                        <!-- Phase 5 Confirmation Screen (Shown upon verified DB insert) -->
-                        <div id="confirmation-screen" class="hidden text-center space-y-6 py-6 animate-fade-in">
-                            <div class="w-16 h-16 bg-green-500/20 border-2 border-green-400 rounded-full flex items-center justify-center mx-auto text-green-300">
-                                <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1">check_circle</span>
-                            </div>
-
-                            <div class="space-y-2">
-                                <span class="font-minecraft text-xs text-gold uppercase tracking-widest block">REGISTRATION CONFIRMED</span>
-                                <h3 class="font-display font-black text-2xl md:text-3xl text-white">
-                                    Registration Successful!
-                                </h3>
-                                <p class="text-sm text-cream-dark/80 max-w-md mx-auto font-body">
-                                    Your application has been submitted and confirmed successfully.
-                                </p>
-                            </div>
-
-                            <!-- Unique Registration Code Display -->
-                            <div class="p-6 bg-navy border-2 border-gold/60 max-w-md mx-auto space-y-3">
-                                <span class="text-[11px] font-label uppercase tracking-wider text-gold block">Your Official Registration ID</span>
-                                <div class="font-mono font-black text-2xl md:text-3xl text-white tracking-widest select-all bg-black/40 py-2.5 px-4 pixel-border border-gold" id="confirmed-reg-id">
-                                    NUSC-OS26-XXXXX
-                                </div>
-                                <p class="text-xs text-cream-dark/70 font-body">
-                                    Please keep this ID for future reference and session attendance.
-                                </p>
-
-                                <button 
-                                    type="button" 
-                                    onclick="copyRegistrationId()" 
-                                    id="copy-id-btn" 
-                                    class="pixel-btn-gold bg-gold text-ink font-label font-bold text-xs px-4 py-2 inline-flex items-center gap-1.5"
-                                >
-                                    <span class="material-symbols-outlined text-sm">content_copy</span>
-                                    <span id="copy-btn-text">Copy Registration ID</span>
-                                </button>
-                            </div>
-
-                            <!-- Google Meet Session Details & Link -->
-                            <div class="p-6 bg-navy-darkest pixel-border border-2 border-gold max-w-md mx-auto text-center space-y-4 shadow-xl">
-                                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gold/20 border border-gold text-gold font-pixel text-xs uppercase">
-                                    <span class="material-symbols-outlined text-sm">videocam</span>
-                                    <span>اجتماع Google Meet</span>
-                                </div>
-
-                                <div class="space-y-1">
-                                    <h4 class="font-display font-black text-lg text-white">Google Meet joining info</h4>
-                                    <div class="p-2 bg-navy border border-gold/40 text-gold font-display font-bold text-sm">
-                                        Saturday, Oct 10 &bull; 21:00 &ndash; 22:00
-                                    </div>
-                                    <p class="font-body text-xs text-cream-dark/70">
-                                        السبت، ١٠ أكتوبر &bull; من الساعة ٩:٠٠ إلى ١٠:٠٠ مساءً
-                                    </p>
-                                </div>
-
-                                <div class="bg-navy p-3 border border-white/20 text-left font-mono text-xs text-cream-dark break-all flex items-center justify-between gap-2">
-                                    <div>
-                                        <span class="text-[10px] text-gold uppercase tracking-wider block font-label">Video call link:</span>
-                                        <a href="https://meet.google.com/fea-kbqm-pkz" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gold underline font-bold">
-                                            https://meet.google.com/fea-kbqm-pkz
-                                        </a>
-                                    </div>
-                                    <button type="button" onclick="copyMeetLink()" class="pixel-btn bg-gold text-ink p-1.5 flex-shrink-0" title="Copy meeting link">
-                                        <span class="material-symbols-outlined text-sm">content_copy</span>
-                                    </button>
-                                </div>
-
-                                <div class="pt-1">
-                                    <a href="https://meet.google.com/fea-kbqm-pkz" target="_blank" rel="noopener noreferrer" class="pixel-btn-gold bg-gold text-ink font-display font-black text-sm px-6 py-3 inline-flex items-center gap-2 w-full justify-center">
-                                        <span class="material-symbols-outlined text-base">video_call</span>
-                                        <span>JOIN GOOGLE MEET</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
-                                <a href="/" class="pixel-btn-navy bg-navy text-xs font-display font-bold px-6 py-3 border border-white/20 text-white">
-                                    Return to Home Page
-                                </a>
-                                <button onclick="resetRegistrationForm()" class="text-xs text-cream-dark/60 hover:text-gold underline">
-                                    Register another student
-                                </button>
-                            </div>
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                            <a href="/" class="pixel-btn-gold bg-gold text-ink font-display font-black text-xs px-6 py-3.5 inline-flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">home</span>
+                                <span>RETURN TO HOMEPAGE</span>
+                            </a>
+                            <a href="https://www.facebook.com/profile.php?id=61592853218679" target="_blank" rel="noopener noreferrer" class="pixel-btn bg-navy text-xs font-display font-bold px-6 py-3.5 border border-white/20 text-white hover:text-gold flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">share</span>
+                                <span>FOLLOW ON FACEBOOK</span>
+                            </a>
                         </div>
 
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
@@ -525,147 +327,5 @@
         </div>
     </footer>
 
-    <!-- Client-side Controller -->
-    <script>
-        let currentRegistrationId = null;
-
-        function handleUniCheckChange(checkbox) {
-            const warningBanner = document.getElementById('uni-warning-banner');
-            const submitBtn = document.getElementById('submit-reg-btn');
-            if (!checkbox.checked) {
-                warningBanner.classList.remove('hidden');
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                warningBanner.classList.add('hidden');
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        async function handleRegistrationSubmit(event) {
-            event.preventDefault();
-
-            const form = document.getElementById('orientation-form');
-            const submitBtn = document.getElementById('submit-reg-btn');
-            const errorBanner = document.getElementById('form-error-banner');
-            const errorMessage = document.getElementById('error-message');
-            const errorTitle = document.getElementById('error-title');
-
-            errorBanner.classList.add('hidden');
-
-            const isNuscStudent = document.getElementById('field-isNuscStudent').checked;
-            if (!isNuscStudent) {
-                handleUniCheckChange(document.getElementById('field-isNuscStudent'));
-                return;
-            }
-
-            const payload = {
-                fullName: document.getElementById('field-fullName').value.trim(),
-                phone: document.getElementById('field-phone').value.trim(),
-                email: document.getElementById('field-email').value.trim().toLowerCase(),
-                academicYear: document.getElementById('field-academicYear').value,
-                faculty: document.getElementById('field-faculty').value,
-                isNuscStudent: true,
-                eventId: 'orientation-session-2026'
-            };
-
-            // Loading state
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <span class="material-symbols-outlined animate-spin text-sm">sync</span>
-                <span>SAVING TO DATABASE...</span>
-            `;
-
-            try {
-                const res = await fetch('/api/registrations', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await res.json();
-
-                if (!res.ok) {
-                    if (res.status === 409 && data.existingRegistrationId) {
-                        // Duplicate registration handling
-                        errorTitle.textContent = 'Already Registered';
-                        errorMessage.innerHTML = `You have already registered with this email address. Your Registration ID is: <strong class="text-white">${data.existingRegistrationId}</strong>.`;
-                        errorBanner.classList.remove('hidden');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = `
-                            <span class="material-symbols-outlined">emoji_events</span>
-                            <span>CONFIRM REGISTRATION & SAVE</span>
-                        `;
-                        return;
-                    }
-                    throw new Error(data.error || `Server responded with status ${res.status}`);
-                }
-
-                if (!data.success || !data.registrationId) {
-                    throw new Error('Database transaction did not return a valid confirmation ID.');
-                }
-
-                // SUCCESS: Switch to Phase 5 Success Screen
-                currentRegistrationId = data.registrationId;
-                document.getElementById('confirmed-reg-id').textContent = data.registrationId;
-                form.classList.add('hidden');
-                document.getElementById('confirmation-screen').classList.remove('hidden');
-
-                // Smooth scroll to confirmation
-                document.getElementById('confirmation-screen').scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // Alert with Date, Time, and Google Meet Link
-                setTimeout(() => {
-                    alert(`اجتماع Google Meet\nSaturday, Oct 10 • 21:00 – 22:00\n\nGoogle Meet joining info\nVideo call link: https://meet.google.com/fea-kbqm-pkz\n\nRegistration ID: ${data.registrationId}`);
-                }, 200);
-
-            } catch (err) {
-                console.error('[Registration Submission Error]:', err);
-                errorTitle.textContent = 'Registration Error';
-                errorMessage.textContent = err.message || 'A network or database error occurred. Your form data has been preserved; please try submitting again.';
-                errorBanner.classList.remove('hidden');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `
-                    <span class="material-symbols-outlined">emoji_events</span>
-                    <span>CONFIRM REGISTRATION & SAVE</span>
-                `;
-            }
-        }
-
-        function copyMeetLink() {
-            const link = 'https://meet.google.com/fea-kbqm-pkz';
-            navigator.clipboard.writeText(link).then(() => {
-                alert('Copied Google Meet link:\nhttps://meet.google.com/fea-kbqm-pkz');
-            }).catch(e => {
-                prompt('Google Meet Video call link:', link);
-            });
-        }
-
-        function copyRegistrationId() {
-            if (!currentRegistrationId) return;
-            navigator.clipboard.writeText(currentRegistrationId).then(() => {
-                const textSpan = document.getElementById('copy-btn-text');
-                textSpan.textContent = 'Copied to Clipboard!';
-                setTimeout(() => {
-                    textSpan.textContent = 'Copy Registration ID';
-                }, 2500);
-            }).catch(e => {
-                alert('Registration ID: ' + currentRegistrationId);
-            });
-        }
-
-        function resetRegistrationForm() {
-            document.getElementById('orientation-form').reset();
-            document.getElementById('orientation-form').classList.remove('hidden');
-            document.getElementById('confirmation-screen').classList.add('hidden');
-            const submitBtn = document.getElementById('submit-reg-btn');
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `
-                <span class="material-symbols-outlined">emoji_events</span>
-                <span>CONFIRM REGISTRATION & SAVE</span>
-            `;
-        }
-    </script>
 </body>
 </html>
