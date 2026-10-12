@@ -260,6 +260,11 @@
                     Applications
                     <span id="nav-new-badge" class="ml-auto bg-navy-darkest text-gold text-[10px] font-minecraft px-1.5 py-0.5 border border-gold/40">0 NEW</span>
                 </a>
+                <a href="#participants" class="nav-item" data-view="participants">
+                    <span class="material-symbols-outlined text-lg">groups</span>
+                    Participants
+                    <span id="nav-participant-badge" class="ml-auto bg-navy-darkest text-gold text-[10px] font-minecraft px-1.5 py-0.5 border border-gold/40">0</span>
+                </a>
                 <a href="#events" class="nav-item" data-view="events">
                     <span class="material-symbols-outlined text-lg">event</span>
                     Events
@@ -806,6 +811,111 @@
                 </div>
             </section>
 
+            <!-- VIEW: PARTICIPANTS (2026 RECRUITMENT) -->
+            <section id="view-participants" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">PARTICIPANT RECRUITMENT</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Verified participant registrations for training tracks (Beginner, Intermediate, Advanced) saved directly to PostgreSQL.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportParticipantsCSV()" class="pixel-btn-gold bg-gold text-ink text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm">download</span> EXPORT CSV
+                        </button>
+                        <button onclick="loadParticipants(true)" class="pixel-btn-navy bg-navy text-white text-xs font-display font-bold px-3 py-2 flex items-center gap-1.5 border border-white/20">
+                            <span class="material-symbols-outlined text-sm">refresh</span> REFRESH
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Breakdown -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-navy p-4 pixel-border border-navy-light/40">
+                        <span class="font-label text-[11px] text-cream-dark/60 uppercase font-bold block">Total Registered</span>
+                        <span id="part-stat-total" class="font-minecraft text-2xl text-gold block mt-1">0</span>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-blue-500/40">
+                        <span class="font-label text-[11px] text-blue-300 uppercase font-bold block">Level 1: Beginner</span>
+                        <span id="part-stat-l1" class="font-minecraft text-2xl text-blue-400 block mt-1">0</span>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-yellow-500/40">
+                        <span class="font-label text-[11px] text-yellow-300 uppercase font-bold block">Level 2: Intermediate</span>
+                        <span id="part-stat-l2" class="font-minecraft text-2xl text-yellow-400 block mt-1">0</span>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-green-500/40">
+                        <span class="font-label text-[11px] text-green-300 uppercase font-bold block">Level 3: Advanced</span>
+                        <span id="part-stat-l3" class="font-minecraft text-2xl text-green-400 block mt-1">0</span>
+                    </div>
+                </div>
+
+                <!-- Search & Filters Bar -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 space-y-3">
+                    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                        <div class="flex-grow flex items-center gap-2 bg-navy-darkest px-3 py-1.5 pixel-border border-navy-light/30">
+                            <span class="material-symbols-outlined text-cream-dark/40 text-lg">search</span>
+                            <input type="text" id="part-search-input" oninput="filterParticipants()" placeholder="Search by name, email, phone, Codeforces handle, or ID (e.g. NUSC-PAR26)..." class="bg-transparent text-white text-xs w-full outline-none font-body placeholder:text-cream-dark/30">
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="part-level-filter" onchange="filterParticipants()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Training Levels</option>
+                                <option value="Level 1">Level 1: Beginner</option>
+                                <option value="Level 2">Level 2: Intermediate</option>
+                                <option value="Level 3">Level 3: Advanced</option>
+                            </select>
+                            <select id="part-faculty-filter" onchange="filterParticipants()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Faculties</option>
+                                <option value="Computers and AI">Computers and AI</option>
+                                <option value="Science">Science</option>
+                                <option value="Vet">Vet</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Business">Business</option>
+                                <option value="Tourism">Tourism</option>
+                                <option value="Sports">Sports</option>
+                            </select>
+                            <select id="part-year-filter" onchange="filterParticipants()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Academic Years</option>
+                                <option value="First Year">Level 1 (First Year)</option>
+                                <option value="Second Year">Level 2 (Second Year)</option>
+                                <option value="Third Year">Level 3 (Third Year)</option>
+                                <option value="Fourth Year">Level 4 (Fourth Year)</option>
+                                <option value="Graduate">Graduate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-cream-dark/60 border-t border-white/5 pt-2">
+                        <span id="part-counts-label">Showing 0 participants</span>
+                        <span class="text-gold font-mono">● POSTGRESQL (public.nusc_participants)</span>
+                    </div>
+                </div>
+
+                <!-- Participants Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-navy-darkest/60 border-b-2 border-navy-light/60 text-cream-dark/60 font-label uppercase text-[11px]">
+                                <tr>
+                                    <th class="py-3 px-4">Registration ID</th>
+                                    <th class="py-3 px-4">Full Name</th>
+                                    <th class="py-3 px-4">Email Address</th>
+                                    <th class="py-3 px-4">Phone Number</th>
+                                    <th class="py-3 px-4">Faculty & Year</th>
+                                    <th class="py-3 px-4">Training Level</th>
+                                    <th class="py-3 px-4">Codeforces</th>
+                                    <th class="py-3 px-4">Registered</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participants-tbody" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="8" class="py-8 text-center text-cream-dark/50 font-body">
+                                        Loading verified participants from PostgreSQL...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
             <!-- VIEW: EVENT REGISTRATIONS -->
             <section id="view-registrations" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -832,8 +942,9 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
                             <select id="reg-event-filter" onchange="loadEventRegistrations()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
+                                <option value="">All Events &amp; Recruitments</option>
+                                <option value="participant-recruitment-2026">Participant Recruitment 2026</option>
                                 <option value="orientation-session-2026">Orientation Session (10 Oct 2026)</option>
-                                <option value="">All Events</option>
                             </select>
                             <select id="reg-faculty-filter" onchange="filterRegistrations()" class="pixel-input text-xs !py-1.5 !px-3 !w-auto">
                                 <option value="">All Faculties</option>
@@ -1250,7 +1361,7 @@
                 const hash = window.location.hash || '#dashboard';
                 const [route, query] = hash.split('?');
                 
-                const views = ['dashboard', 'applications', 'applicant-detail', 'events', 'registrations', 'questions', 'settings'];
+                const views = ['dashboard', 'applications', 'applicant-detail', 'participants', 'events', 'registrations', 'questions', 'settings'];
                 views.forEach(v => {
                     const el = document.getElementById('view-' + v);
                     if (el) el.classList.add('hidden');
@@ -1270,6 +1381,11 @@
                     document.getElementById('top-title').textContent = 'APPLICATIONS';
                     renderApplicationsList();
                     if (window.syncServerData) window.syncServerData(true);
+                } else if (route === '#participants') {
+                    document.getElementById('view-participants').classList.remove('hidden');
+                    document.querySelector('.nav-item[data-view="participants"]').classList.add('active');
+                    document.getElementById('top-title').textContent = 'PARTICIPANTS RECRUITMENT';
+                    loadParticipants();
                 } else if (route === '#application-detail') {
                     document.getElementById('view-applicant-detail').classList.remove('hidden');
                     document.querySelector('.nav-item[data-view="applications"]').classList.add('active');
@@ -1321,6 +1437,8 @@
                 document.getElementById('stat-total-regs').textContent = actualRegsCount;
                 const regBadge = document.getElementById('nav-reg-badge');
                 if (regBadge) regBadge.textContent = actualRegsCount;
+                const partBadge = document.getElementById('nav-participant-badge');
+                if (partBadge) partBadge.textContent = (allParticipants || []).length;
 
                 // Department distribution
                 const deptContainer = document.getElementById('dept-overview-cards');
@@ -2342,6 +2460,241 @@
                 showToast('Exported registrations to CSV.');
             };
 
+            // =========================================================================
+            // PARTICIPANTS CONTROLLER (POSTGRESQL REAL DATA)
+            // =========================================================================
+            let allParticipants = [];
+
+            window.loadParticipants = async function(forceToast = false) {
+                const tbody = document.getElementById('participants-tbody');
+                const countsLabel = document.getElementById('part-counts-label');
+                const navBadge = document.getElementById('nav-participant-badge');
+
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="py-8 text-center text-cream-dark/50 font-body">
+                                <span class="material-symbols-outlined animate-spin text-lg text-gold mb-1 block">sync</span>
+                                Loading verified participants from PostgreSQL...
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                try {
+                    let token = window.NUSC_AUTH ? window.NUSC_AUTH.getToken() : '';
+                    if (!token) {
+                        token = localStorage.getItem('NUSC_REAL_AUTH_TOKEN') || '';
+                        if (typeof token === 'string' && token.startsWith('"') && token.endsWith('"')) {
+                            try { token = JSON.parse(token); } catch(e) {}
+                        }
+                    }
+
+                    const headers = {};
+                    if (token && token !== 'null' && token !== 'undefined') {
+                        headers['Authorization'] = 'Bearer ' + token;
+                    }
+
+                    const res = await fetch('/api/participants', {
+                        headers: headers,
+                        credentials: 'include'
+                    });
+
+                    if (res.status === 401) {
+                        localStorage.removeItem('NUSC_REAL_AUTH_TOKEN');
+                        if (tbody) {
+                            tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="8" class="py-12 px-4 text-center">
+                                        <div class="max-w-md mx-auto bg-navy-darkest p-6 pixel-border border-2 border-gold space-y-4 shadow-2xl">
+                                            <div class="w-12 h-12 rounded-full bg-gold/15 border border-gold flex items-center justify-center mx-auto text-gold">
+                                                <span class="material-symbols-outlined text-2xl">lock</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-display font-black text-white text-base uppercase tracking-wider">Admin Session Required (401)</h4>
+                                                <p class="text-xs text-cream-dark/70 mt-1 font-body">Participant records are protected. Enter administrator password to view database records.</p>
+                                            </div>
+                                            <form onsubmit="handleQuickAdminUnlock(event)" class="space-y-3 pt-1">
+                                                <div>
+                                                    <input type="password" id="admin-unlock-password" placeholder="Enter administrator password..." class="pixel-input text-xs w-full py-2.5 px-3 bg-navy text-white border-2 border-navy-light focus:border-gold outline-none" required autofocus autocomplete="current-password" />
+                                                </div>
+                                                <button type="submit" id="admin-unlock-btn" class="w-full pixel-btn-gold bg-gold text-ink font-display font-black text-xs py-2.5 flex items-center justify-center gap-1.5 uppercase tracking-wider">
+                                                    <span class="material-symbols-outlined text-sm">lock_open</span>
+                                                    <span>SIGN IN &amp; UNLOCK PARTICIPANTS</span>
+                                                </button>
+                                            </form>
+                                            <p id="unlock-error" class="text-xs text-red-400 hidden"></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                        return;
+                    }
+
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    allParticipants = Array.isArray(data.participants) ? data.participants : [];
+
+                    // Update metric cards
+                    if (document.getElementById('part-stat-total')) {
+                        document.getElementById('part-stat-total').textContent = allParticipants.length;
+                    }
+                    if (document.getElementById('part-stat-l1')) {
+                        document.getElementById('part-stat-l1').textContent = allParticipants.filter(p => (p.level || '').includes('1') || (p.level || '').toLowerCase().includes('beginner')).length;
+                    }
+                    if (document.getElementById('part-stat-l2')) {
+                        document.getElementById('part-stat-l2').textContent = allParticipants.filter(p => (p.level || '').includes('2') || (p.level || '').toLowerCase().includes('intermediate')).length;
+                    }
+                    if (document.getElementById('part-stat-l3')) {
+                        document.getElementById('part-stat-l3').textContent = allParticipants.filter(p => (p.level || '').includes('3') || (p.level || '').toLowerCase().includes('advanced')).length;
+                    }
+
+                    if (navBadge) navBadge.textContent = allParticipants.length;
+                    filterParticipants();
+
+                    if (forceToast) {
+                        showToast(`Loaded ${allParticipants.length} participant(s) from database.`);
+                    }
+                } catch (err) {
+                    console.error('[Admin loadParticipants error]:', err);
+                    if (tbody) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="8" class="py-8 text-center text-red-400 font-body text-xs">
+                                    <span class="material-symbols-outlined text-xl mb-1 block">error</span>
+                                    Failed to load participants: ${escapeHTML(err.message)}
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+            };
+
+            window.filterParticipants = function() {
+                const search = (document.getElementById('part-search-input')?.value || '').trim().toLowerCase();
+                const level = document.getElementById('part-level-filter')?.value || '';
+                const faculty = document.getElementById('part-faculty-filter')?.value || '';
+                const year = document.getElementById('part-year-filter')?.value || '';
+
+                const filtered = allParticipants.filter(p => {
+                    if (level && !(p.level || '').toLowerCase().includes(level.toLowerCase())) return false;
+                    if (faculty && p.faculty !== faculty) return false;
+                    if (year && !(p.academic_year || '').toLowerCase().includes(year.toLowerCase())) return false;
+                    if (search) {
+                        const hay = `${p.full_name || ''} ${p.email || ''} ${p.phone || ''} ${p.registration_id || ''} ${p.codeforces_handle || ''}`.toLowerCase();
+                        if (!hay.includes(search)) return false;
+                    }
+                    return true;
+                });
+
+                renderParticipantsTable(filtered);
+            };
+
+            window.renderParticipantsTable = function(list) {
+                const tbody = document.getElementById('participants-tbody');
+                const countsLabel = document.getElementById('part-counts-label');
+                if (!tbody) return;
+
+                if (countsLabel) {
+                    countsLabel.textContent = `Showing ${list.length} of ${allParticipants.length} verified participant(s)`;
+                }
+
+                if (list.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="py-8 text-center text-cream-dark/60 font-body text-xs">
+                                <span class="material-symbols-outlined text-2xl text-gold mb-1 block">inbox</span>
+                                No participants found matching your criteria.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = list.map(p => {
+                    const cfHandle = p.codeforces_handle ? escapeHTML(p.codeforces_handle) : null;
+                    const levelStr = escapeHTML(p.level || 'Level 1: Beginner');
+                    let levelColor = 'bg-blue-950 text-blue-300 border-blue-500/50';
+                    if (levelStr.includes('2') || levelStr.toLowerCase().includes('intermediate')) {
+                        levelColor = 'bg-yellow-950 text-yellow-300 border-yellow-500/50';
+                    } else if (levelStr.includes('3') || levelStr.toLowerCase().includes('advanced')) {
+                        levelColor = 'bg-green-950 text-green-300 border-green-500/50';
+                    }
+
+                    return `
+                        <tr class="hover:bg-white/5 transition-colors font-body text-xs">
+                            <td class="py-3 px-4">
+                                <button onclick="copyRegCode('${escapeHTML(p.registration_id)}')" class="font-mono text-gold font-bold bg-black/40 px-2 py-0.5 pixel-border border-gold/40 hover:border-gold hover:text-white transition-colors flex items-center gap-1" title="Click to copy ID">
+                                    <span>${escapeHTML(p.registration_id)}</span>
+                                    <span class="material-symbols-outlined text-[11px]">content_copy</span>
+                                </button>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="font-bold text-white block">${escapeHTML(p.full_name)}</span>
+                                <span class="text-[10px] text-cream-dark/50 block">National Univ of Sadat City</span>
+                            </td>
+                            <td class="py-3 px-4 text-cream-dark/90 font-mono text-[11px]">
+                                <a href="mailto:${escapeHTML(p.email)}" class="hover:text-gold hover:underline block">${escapeHTML(p.email)}</a>
+                            </td>
+                            <td class="py-3 px-4 font-mono text-[11px] text-cream-dark/80">
+                                <a href="tel:${escapeHTML(p.phone)}" class="hover:text-gold">${escapeHTML(p.phone)}</a>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="font-bold text-white block">${escapeHTML(p.faculty)}</span>
+                                <span class="text-[10px] text-gold-light block">${escapeHTML(p.academic_year)}</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-label font-bold border ${levelColor} uppercase">
+                                    ${levelStr}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                ${cfHandle ? `
+                                    <a href="https://codeforces.com/profile/${cfHandle}" target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-gold hover:text-white inline-flex items-center gap-1 underline font-bold" title="Open Codeforces profile">
+                                        <span>${cfHandle}</span>
+                                        <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+                                    </a>
+                                ` : `<span class="text-cream-dark/40 italic">—</span>`}
+                            </td>
+                            <td class="py-3 px-4 text-cream-dark/60 font-mono text-[11px]">
+                                ${formatDate(p.created_at)}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            };
+
+            window.exportParticipantsCSV = function() {
+                if (allParticipants.length === 0) {
+                    alert('No participants available to export.');
+                    return;
+                }
+
+                const headers = ['Registration ID', 'Full Name', 'Email', 'Phone', 'Faculty', 'Academic Year', 'Target Level', 'Codeforces Handle', 'Status', 'Registered At'];
+                const rows = allParticipants.map(p => [
+                    p.registration_id || '',
+                    `"${(p.full_name || '').replace(/"/g, '""')}"`,
+                    p.email || '',
+                    `'${p.phone || ''}`,
+                    `"${(p.faculty || '').replace(/"/g, '""')}"`,
+                    `"${(p.academic_year || '').replace(/"/g, '""')}"`,
+                    `"${(p.level || '').replace(/"/g, '""')}"`,
+                    p.codeforces_handle || '',
+                    p.status || 'confirmed',
+                    p.created_at || ''
+                ]);
+
+                const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement('a');
+                link.setAttribute('href', encodedUri);
+                link.setAttribute('download', `nusc_participants_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                showToast('Exported participants to CSV.');
+            };
 
             // =========================================================================
             // LIVE SERVER SYNC & REAL-TIME POLLING
@@ -2360,17 +2713,19 @@
                 try {
                     await ensureAdminSession();
 
-                    const [apps, _] = await Promise.all([
+                    const [apps, _, parts] = await Promise.all([
                         window.NUSC_DATA_STORE.fetchApplications(),
-                        window.loadEventRegistrations(false)
+                        window.loadEventRegistrations(false),
+                        window.loadParticipants(false)
                     ]);
 
                     const regCount = (allEventRegistrations || []).length;
+                    const partCount = (allParticipants || []).length;
                     if (statusBadge) {
-                        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> <span>${apps.length} APPS &bull; ${regCount} REGS (POSTGRESQL)</span>`;
+                        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> <span>${apps.length} APPS &bull; ${partCount} PARTS &bull; ${regCount} REGS</span>`;
                         statusBadge.className = 'hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono bg-navy-darkest border border-green-500/50 text-green-300';
                     }
-                    if (!silent) showToast(`Synced with server: ${apps.length} application(s), ${regCount} registration(s).`);
+                    if (!silent) showToast(`Synced: ${apps.length} app(s), ${partCount} participant(s), ${regCount} registration(s).`);
                 } catch(e) {
                     if (statusBadge) {
                         statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span> <span>SYNC OFFLINE</span>`;
@@ -2387,6 +2742,8 @@
                         renderDashboard();
                     } else if (hash === '#applications') {
                         renderApplicationsList();
+                    } else if (hash === '#participants') {
+                        filterParticipants();
                     } else if (hash === '#registrations') {
                         filterRegistrations();
                     }

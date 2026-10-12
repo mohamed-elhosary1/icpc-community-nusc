@@ -151,6 +151,125 @@ const CloudDB = {
     },
 
     /**
+     * Save a participant training registration with strict validation and unique ID generation.
+     */
+    saveParticipant: async function(pData) {
+        if (!pData.fullName || !pData.email || !pData.phone || !pData.faculty || !pData.academicYear || !pData.level) {
+            throw new Error('Missing required participant fields.');
+        }
+
+        const cleanEmail = String(pData.email).trim().toLowerCase();
+        const cleanPhone = String(pData.phone).trim();
+        const cleanName = String(pData.fullName).trim();
+        const cleanFaculty = String(pData.faculty).trim();
+        const cleanYear = String(pData.academicYear).trim();
+        const cleanLevel = String(pData.level).trim();
+        const cleanCf = pData.codeforcesHandle ? String(pData.codeforcesHandle).trim() : null;
+
+        // 1. Check for duplicate participant registration by email
+        const checkUrl = `${SUPABASE_URL}/rest/v1/nusc_participants?email=ilike.${encodeURIComponent(cleanEmail)}&select=registration_id,full_name,created_at`;
+        const checkRes = await fetch(checkUrl, { headers: getHeaders(false) });
+        if (checkRes.ok) {
+            const existing = await checkRes.json();
+            if (Array.isArray(existing) && existing.length > 0) {
+                const err = new Error('You have already registered for the participant training program.');
+                err.code = 'DUPLICATE_REGISTRATION';
+                err.existingRegistrationId = existing[0].registration_id;
+                throw err;
+            }
+        }
+
+        // 2. Generate unique participant registration ID (e.g. NUSC-PAR26-XXXXX)
+        let attempts = 0;
+        let savedRecord = null;
+
+        while (attempts < 3 && !savedRecord) {
+            attempts++;
+            const regId = generateRegistrationId('NUSC-PAR26-');
+            const record = {
+                registration_id: regId,
+                full_name: cleanName,
+                email: cleanEmail,
+                phone: cleanPhone,
+                faculty: cleanFaculty,
+                academic_year: cleanYear,
+                codeforces_handle: cleanCf,
+                level: cleanLevel,
+                status: 'confirmed',
+                metadata: {
+                    source: 'participant_recruitment',
+                    registeredAt: new Date().toISOString()
+                }
+            };
+
+            const postUrl = `${SUPABASE_URL}/rest/v1/nusc_participants`;
+            const postRes = await fetch(postUrl, {
+                method: 'POST',
+                headers: getHeaders(true),
+                body: JSON.stringify(record)
+            });
+
+            if (postRes.ok) {
+                const result = await postRes.json();
+                savedRecord = Array.isArray(result) ? result[0] : result;
+            } else if (postRes.status === 409) {
+                continue;
+            } else {
+                const errBody = await postRes.text();
+                throw new Error(`Database error saving participant: ${errBody}`);
+            }
+        }
+
+        if (!savedRecord) {
+            throw new Error('Failed to generate a unique participant registration ID. Please try again.');
+        }
+
+        // Also mirror into nusc_event_registrations for unified event registration queries
+        try {
+            const mirrorRecord = {
+                registration_id: savedRecord.registration_id,
+                event_id: 'participant-recruitment-2026',
+                full_name: cleanName,
+                email: cleanEmail,
+                phone: cleanPhone,
+                academic_year: cleanYear,
+                faculty: cleanFaculty,
+                codeforces_handle: cleanCf,
+                level: cleanLevel,
+                is_nusc_student: true,
+                status: 'confirmed',
+                metadata: {
+                    type: 'participant',
+                    codeforcesHandle: cleanCf,
+                    level: cleanLevel
+                }
+            };
+            await fetch(`${SUPABASE_URL}/rest/v1/nusc_event_registrations`, {
+                method: 'POST',
+                headers: getHeaders(false),
+                body: JSON.stringify(mirrorRecord)
+            });
+        } catch (e) {
+            console.warn('[CloudDB mirror warning]:', e.message);
+        }
+
+        return savedRecord;
+    },
+
+    /**
+     * Retrieve all participants ordered by created_at desc
+     */
+    getParticipants: async function() {
+        const queryUrl = `${SUPABASE_URL}/rest/v1/nusc_participants?select=*&order=created_at.desc`;
+        const res = await fetch(queryUrl, { headers: getHeaders(false) });
+        if (!res.ok) {
+            const errBody = await res.text();
+            throw new Error(`Database query failed: ${errBody}`);
+        }
+        return await res.json();
+    },
+
+    /**
      * Find single registration by registration_id
      */
     getRegistrationByCode: async function(code) {
@@ -302,13 +421,15 @@ const CloudDB = {
      * Calculate live aggregate statistics directly from PostgreSQL
      */
     getCalculatedStats: async function() {
-        const [appsRes, regRes] = await Promise.all([
+        const [appsRes, regRes, partRes] = await Promise.all([
             fetch(`${SUPABASE_URL}/rest/v1/nusc_applications?select=status,first_preference,final_department`, { headers: getHeaders(false) }),
-            fetch(`${SUPABASE_URL}/rest/v1/nusc_event_registrations?select=event_id`, { headers: getHeaders(false) })
+            fetch(`${SUPABASE_URL}/rest/v1/nusc_event_registrations?select=event_id`, { headers: getHeaders(false) }),
+            fetch(`${SUPABASE_URL}/rest/v1/nusc_participants?select=level,faculty`, { headers: getHeaders(false) })
         ]);
 
         const apps = appsRes.ok ? await appsRes.json() : [];
         const regs = regRes.ok ? await regRes.json() : [];
+        const parts = partRes.ok ? await partRes.json() : [];
 
         return {
             totalApplications: apps.length,
@@ -326,7 +447,13 @@ const CloudDB = {
             },
             activeEvents: 1,
             totalRegistrations: regs.length,
-            orientationRegistrations: regs.filter(r => r.event_id === 'orientation-session-2026').length
+            orientationRegistrations: regs.filter(r => r.event_id === 'orientation-session-2026').length,
+            totalParticipants: parts.length,
+            participantLevels: {
+                level1: parts.filter(p => (p.level || '').includes('1') || (p.level || '').toLowerCase().includes('beginner')).length,
+                level2: parts.filter(p => (p.level || '').includes('2') || (p.level || '').toLowerCase().includes('intermediate')).length,
+                level3: parts.filter(p => (p.level || '').includes('3') || (p.level || '').toLowerCase().includes('advanced')).length,
+            }
         };
     }
 };

@@ -445,16 +445,21 @@
         <div class="md:w-2/3">
             <!-- Registration Status Badge -->
             <div class="mb-4 inline-flex items-center gap-2 bg-navy border border-gold/40 px-3 py-1.5 pixel-border text-xs text-gold">
-                <span class="material-symbols-outlined text-sm text-gold">info</span>
-                <span>Participant training is currently closed. <strong>Organizing Team recruitment is OPEN!</strong></span>
-                <a href="/organizing-team/apply" class="underline font-bold text-white hover:text-gold ml-1">Apply For Team &rarr;</a>
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span>Participant Training Recruitment is <strong>OFFICIALLY OPEN!</strong></span>
+                <a href="#register" class="underline font-bold text-white hover:text-gold ml-1">Register Now &rarr;</a>
             </div>
 
             <h1 class="font-display font-black text-4xl md:text-6xl text-white mb-4">START YOUR <span class="text-gold">ICPC JOURNEY</span>.</h1>
             <p class="font-body text-lg text-cream-dark/80 max-w-2xl mb-8">Competitive programming is the ultimate sport for the mind. Learn the fundamentals of algorithms, solve complex problems, and compete with the brightest minds across the globe.</p>
             <div class="flex flex-wrap gap-4">
-                <a href="#tracks" class="pixel-btn-gold bg-gold text-ink font-display font-black px-6 py-3 flex items-center gap-2"><img src="/assets/Furniture/Bedroom/Laptop.png" class="pixel-art w-5 h-5"/> EXPLORE TRACKS &rarr;</a>
-                <a href="/organizing-team/apply" class="pixel-btn bg-navy text-white border-gold font-display font-bold px-6 py-3 flex items-center gap-2 hover:bg-gold hover:text-ink transition-colors">JOIN ORGANIZING TEAM &rarr;</a>
+                <a href="#register" class="pixel-btn-gold bg-gold text-ink font-display font-black px-6 py-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">how_to_reg</span>
+                    <span>REGISTER AS PARTICIPANT &rarr;</span>
+                </a>
+                <a href="#tracks" class="pixel-btn bg-navy text-white border-gold font-display font-bold px-6 py-3 flex items-center gap-2 hover:bg-gold hover:text-ink transition-colors">
+                    EXPLORE TRACKS &rarr;
+                </a>
             </div>
         </div>
         <div class="md:w-1/3 flex justify-center relative">
@@ -621,6 +626,284 @@
     </div>
 </section>
 
+<!-- ========== PARTICIPANT REGISTRATION FORM ========== -->
+<section id="register" class="py-20 bg-navy-dark relative border-t-4 border-gold overflow-hidden">
+    <div class="absolute inset-0 bg-circuit opacity-10 pointer-events-none"></div>
+    <div class="max-w-3xl mx-auto px-4 md:px-8 relative z-10">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 bg-navy border border-gold/40 px-3 py-1 pixel-border mb-3">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="font-minecraft text-xs text-gold uppercase tracking-widest">Season 2026 Recruitment</span>
+            </div>
+            <h2 class="font-display font-black text-3xl md:text-5xl text-white mb-3">
+                JOIN AS A <span class="text-gold">PARTICIPANT</span>
+            </h2>
+            <p class="font-body text-cream-dark/80 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                Fill out the application below to join ICPC Community NUSC training sessions, contests, and mentorship programs.
+            </p>
+        </div>
+
+        <!-- Card Container -->
+        <div class="bg-navy pixel-border-gold pixel-shadow-gold p-6 sm:p-8 md:p-10 relative">
+            
+            <!-- Corner Accents -->
+            <div class="hidden sm:block absolute -top-1 -left-1 w-3 h-3 bg-gold"></div>
+            <div class="hidden sm:block absolute -top-1 -right-1 w-3 h-3 bg-gold"></div>
+            <div class="hidden sm:block absolute -bottom-1 -left-1 w-3 h-3 bg-gold"></div>
+            <div class="hidden sm:block absolute -bottom-1 -right-1 w-3 h-3 bg-gold"></div>
+
+            <!-- Error Banner -->
+            <div id="participant-error-banner" class="hidden mb-6 p-4 bg-red-950/80 border-2 border-red-500 text-red-200 text-sm rounded flex items-start gap-3">
+                <span class="material-symbols-outlined text-red-400 flex-shrink-0">error</span>
+                <div id="participant-error-message" class="font-body text-xs sm:text-sm"></div>
+            </div>
+
+            <!-- Form View -->
+            <form id="participant-reg-form" class="space-y-6" novalidate>
+                
+                <!-- 1. Full Name -->
+                <div>
+                    <label for="p-fullName" class="block font-display font-bold text-sm text-white mb-2">
+                        1. Full Name <span class="text-gold">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="p-fullName" 
+                        name="fullName" 
+                        required 
+                        placeholder="e.g. Ahmed Mohamed Ali" 
+                        class="pixel-input w-full"
+                        autocomplete="name"
+                    />
+                    <p class="text-[11px] text-cream-dark/50 mt-1">Please enter your real full name.</p>
+                </div>
+
+                <!-- 2. Phone Number -->
+                <div>
+                    <label for="p-phone" class="block font-display font-bold text-sm text-white mb-2">
+                        2. Phone Number <span class="text-gold">*</span>
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="p-phone" 
+                        name="phone" 
+                        required 
+                        placeholder="e.g. 01012345678" 
+                        class="pixel-input w-full"
+                        autocomplete="tel"
+                    />
+                    <p class="text-[11px] text-cream-dark/50 mt-1">Egyptian mobile number (010, 011, 012, 015) or international format.</p>
+                </div>
+
+                <!-- 3. Email Address -->
+                <div>
+                    <label for="p-email" class="block font-display font-bold text-sm text-white mb-2">
+                        3. Email Address <span class="text-gold">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="p-email" 
+                        name="email" 
+                        required 
+                        placeholder="e.g. yourname@gmail.com" 
+                        class="pixel-input w-full"
+                        autocomplete="email"
+                    />
+                    <p class="text-[11px] text-cream-dark/50 mt-1">Used for training updates, contest invites, and confirmation.</p>
+                </div>
+
+                <!-- 4. Faculty -->
+                <div>
+                    <label for="p-faculty" class="block font-display font-bold text-sm text-white mb-2">
+                        4. Faculty <span class="text-gold">*</span>
+                    </label>
+                    <select id="p-faculty" name="faculty" required class="pixel-input w-full">
+                        <option value="" disabled selected>-- Select your faculty --</option>
+                        <option value="Computers and AI">Computers and AI</option>
+                        <option value="Science">Science</option>
+                        <option value="Vet">Vet</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                        <option value="Business">Business</option>
+                        <option value="Tourism">Tourism</option>
+                        <option value="Sports">Sports</option>
+                    </select>
+                </div>
+
+                <!-- 5. Academic Year / Grade -->
+                <div>
+                    <label for="p-academicYear" class="block font-display font-bold text-sm text-white mb-2">
+                        5. Level / Academic Year <span class="text-gold">*</span>
+                    </label>
+                    <select id="p-academicYear" name="academicYear" required class="pixel-input w-full">
+                        <option value="" disabled selected>-- Select your academic year --</option>
+                        <option value="Level 1 (First Year)">Level 1 (First Year)</option>
+                        <option value="Level 2 (Second Year)">Level 2 (Second Year)</option>
+                        <option value="Level 3 (Third Year)">Level 3 (Third Year)</option>
+                        <option value="Level 4 (Fourth Year)">Level 4 (Fourth Year)</option>
+                        <option value="Graduate">Graduate</option>
+                    </select>
+                </div>
+
+                <!-- 6. Codeforces Handle (Optional) -->
+                <div>
+                    <label for="p-codeforces" class="block font-display font-bold text-sm text-white mb-2">
+                        6. Codeforces Handle <span class="text-cream-dark/50 font-normal text-xs">(Optional)</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="p-codeforces" 
+                        name="codeforcesHandle" 
+                        placeholder="e.g. tourist" 
+                        class="pixel-input w-full"
+                        autocomplete="off"
+                    />
+                    <p class="text-[11px] text-cream-dark/50 mt-1">Leave empty if you do not have an active Codeforces account yet.</p>
+                </div>
+
+                <!-- 7. Target Training Level -->
+                <div>
+                    <label for="p-level" class="block font-display font-bold text-sm text-white mb-2">
+                        7. Target Training Level <span class="text-gold">*</span>
+                    </label>
+                    <select id="p-level" name="level" required class="pixel-input w-full">
+                        <option value="" disabled selected>-- Select target training level --</option>
+                        <option value="Level 1: Beginner">Level 1: Beginner (C++ Basics, STL, Big O, Basic Problem Solving)</option>
+                        <option value="Level 2: Intermediate">Level 2: Intermediate (Number Theory, Greedy, Graph DFS/BFS, Binary Search)</option>
+                        <option value="Level 3: Advanced">Level 3: Advanced (Dynamic Programming, Segment Trees, Advanced Graphs)</option>
+                    </select>
+                </div>
+
+                <!-- University Restriction Declaration -->
+                <div class="p-4 bg-navy-dark/90 border-2 border-gold/40 rounded">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            id="p-university" 
+                            name="universityConfirmed" 
+                            required 
+                            class="mt-1 w-4 h-4 rounded text-gold focus:ring-gold bg-navy border-gold"
+                        />
+                        <span class="font-body text-xs sm:text-sm text-white">
+                            I am a student at <strong class="text-gold">National University of Sadat City</strong>. <span class="text-gold">*</span>
+                        </span>
+                    </label>
+                    <p class="text-[11px] text-cream-dark/50 mt-2 pl-7">
+                        Participation is strictly reserved for students of National University of Sadat City.
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button 
+                        type="submit" 
+                        id="p-submit-btn" 
+                        class="w-full bg-gold text-ink font-display font-black text-base sm:text-lg py-4 pixel-btn-gold flex items-center justify-center gap-2 hover:bg-gold-light transition-all cursor-pointer"
+                    >
+                        <span class="material-symbols-outlined text-xl">how_to_reg</span>
+                        <span id="p-btn-text">SUBMIT PARTICIPANT REGISTRATION</span>
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- Success View (Hidden by Default) -->
+            <div id="participant-success-view" class="hidden text-center py-6">
+                <div class="w-16 h-16 bg-gold text-ink rounded-full mx-auto mb-4 flex items-center justify-center pixel-shadow-gold">
+                    <span class="material-symbols-outlined text-3xl font-black">check</span>
+                </div>
+                
+                <span class="font-minecraft text-xs text-gold uppercase tracking-widest block mb-1">Registration Confirmed</span>
+                <h3 class="font-display font-black text-2xl sm:text-3xl text-white mb-2">
+                    WELCOME TO ICPC NUSC!
+                </h3>
+                <p class="font-body text-cream-dark/80 text-sm max-w-md mx-auto mb-6">
+                    Your registration has been successfully saved to our database. Save your unique registration ID below for check-in and attendance.
+                </p>
+
+                <!-- ID Card Box -->
+                <div class="bg-navy-dark p-6 pixel-border-gold max-w-md mx-auto mb-8 relative">
+                    <span class="text-[10px] font-minecraft text-cream-dark/50 uppercase tracking-widest block mb-1">Your Registration ID</span>
+                    <div id="p-confirmed-id" class="font-minecraft text-xl sm:text-2xl text-gold tracking-wider font-bold mb-4 select-all">
+                        NUSC-PAR26-XXXXX
+                    </div>
+                    <button 
+                        type="button" 
+                        id="p-copy-id-btn" 
+                        class="bg-gold text-ink font-display font-bold text-xs sm:text-sm px-4 py-2 pixel-btn flex items-center justify-center gap-1.5 mx-auto hover:bg-white transition-colors"
+                    >
+                        <span class="material-symbols-outlined text-base">content_copy</span>
+                        <span id="p-copy-btn-text">Copy Registration ID</span>
+                    </button>
+                </div>
+
+                <!-- Registration Summary Details -->
+                <div id="p-summary-box" class="bg-navy-dark/60 p-4 pixel-border border-white/10 max-w-md mx-auto mb-8 text-left text-xs sm:text-sm space-y-1.5">
+                    <div class="flex justify-between border-b border-white/10 pb-1">
+                        <span class="text-cream-dark/60">Applicant:</span>
+                        <span id="p-sum-name" class="font-bold text-white"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-1">
+                        <span class="text-cream-dark/60">Faculty:</span>
+                        <span id="p-sum-faculty" class="text-gold"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-1">
+                        <span class="text-cream-dark/60">Training Level:</span>
+                        <span id="p-sum-level" class="text-green-400 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-cream-dark/60">University:</span>
+                        <span class="text-white">National University of Sadat City</span>
+                    </div>
+                </div>
+
+                <!-- Orientation & Community Info -->
+                <div class="p-5 bg-navy-dark border-2 border-gold/30 rounded max-w-md mx-auto mb-6 text-left">
+                    <div class="flex items-center gap-2 text-gold font-display font-bold text-sm mb-2">
+                        <span class="material-symbols-outlined text-base">video_camera_front</span>
+                        <span>Orientation & Setup Meeting</span>
+                    </div>
+                    <p class="font-body text-xs text-cream-dark/80 mb-2">
+                        <strong>Date & Time:</strong> Saturday, Oct 10 &bull; 21:00 &ndash; 22:00
+                    </p>
+                    <p class="font-body text-xs text-cream-dark/80 mb-3">
+                        Join us online to meet mentors, configure your development environment, and receive problem sets.
+                    </p>
+                    <a 
+                        href="https://meet.google.com/fea-kbqm-pkz" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="inline-flex items-center gap-1.5 text-xs text-gold font-bold underline hover:text-white"
+                    >
+                        <span>Video call link: https://meet.google.com/fea-kbqm-pkz</span>
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-center gap-3">
+                    <button 
+                        type="button" 
+                        id="p-register-another-btn" 
+                        class="bg-navy border border-gold/60 text-gold hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn"
+                    >
+                        Register Another Participant
+                    </button>
+                    <a 
+                        href="/#" 
+                        class="bg-gold text-ink font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn-gold"
+                    >
+                        Return to Homepage &rarr;
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
 
 <!-- ========== PREMIUM JOIN MODAL (GATEWAY) ========== -->
 <div id="join-modal" class="fixed inset-0 z-[100] bg-navy-dark/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto">
@@ -637,47 +920,47 @@
             
             <h2 class="font-display font-black text-lg sm:text-2xl md:text-3xl text-navy mb-0.5 sm:mb-1.5">JOIN ICPC NUSC</h2>
             <p class="font-body text-ink-light text-[11px] sm:text-sm mb-3 sm:mb-6 max-w-lg mx-auto leading-tight">
-                Recruitment is currently <strong class="text-gold-dark">OPEN for the Organizing Team</strong>. Participant training registration is closed for now.
+                Recruitment is currently <strong class="text-gold-dark">OPEN for Participants</strong>! Organizing team applications are closed.
             </p>
             
             <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-5 relative z-10">
-                <!-- Option 1: Participant (CLOSED) -->
-                <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
-                    <div class="w-full flex justify-center mb-1">
-                        <span class="bg-red-950/80 text-red-300 border border-red-500/50 font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 uppercase tracking-wider">CLOSED FOR NOW</span>
-                    </div>
-                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full opacity-60">
-                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0 grayscale"></span>
-                    </div>
-                    <div class="flex-grow flex flex-col items-center">
-                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-ink-lighter mb-0.5 uppercase tracking-wider">Participant</h3>
-                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-ink-lighter mb-1 leading-tight">LEARN + COMPETE</h4>
-                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-lighter mb-2 sm:mb-4 leading-tight">Training registrations are not available at this moment. Stay tuned!</p>
-                    </div>
-                    <div class="w-full bg-slate-700/60 text-slate-300 font-display font-bold text-[10px] sm:text-xs md:text-sm py-1 sm:py-2 pixel-btn flex justify-center items-center gap-1 cursor-not-allowed">
-                        NOT AVAILABLE NOW
-                    </div>
-                </div>
-                
-                <!-- Option 2: Organizing Team (OPEN) -->
-                <a href="/organizing-team/apply" class="group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
+                <!-- Option 1: Participant (OPEN) -->
+                <a href="#register" class="close-modal group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
                     <div class="w-full flex justify-center mb-1">
                         <span class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
                     </div>
-                    <div class="h-10 sm:h-16 md:h-20 flex flex-row items-end justify-center gap-1 sm:gap-2 md:gap-3 mb-1.5 sm:mb-2 relative w-full">
-                        <span class="sprite-npc-male scale-75 sm:scale-90 md:scale-100 transform-origin-bottom"></span>
-                        <img src="/assets/Furniture/Bedroom/Laptop.png" class="pixel-art w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 mb-1 sm:mb-2 relative z-10" alt="Laptop" />
-                        <span class="sprite-npc-female flip-h scale-75 sm:scale-90 md:scale-100 transform-origin-bottom"></span>
+                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full">
+                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0"></span>
                     </div>
                     <div class="flex-grow flex flex-col items-center">
-                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-gold-dark mb-0.5 uppercase tracking-wider font-bold">Organizing Team</h3>
-                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">BUILD + LEAD</h4>
-                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join Technical, Marketing, Media, or HR and help lead NUSC.</p>
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-gold-dark mb-0.5 uppercase tracking-wider font-bold">Participant</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">LEARN + COMPETE</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join weekly training, solve problems, and compete in contests.</p>
                     </div>
                     <div class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
-                        APPLY FOR TEAM &rarr;
+                        REGISTER NOW &rarr;
                     </div>
                 </a>
+                
+                <!-- Option 2: Organizing Team (CLOSED) -->
+                <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
+                    <div class="w-full flex justify-center mb-1">
+                        <span class="bg-red-950/80 text-red-300 border border-red-500/50 font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 uppercase tracking-wider">CLOSED</span>
+                    </div>
+                    <div class="h-10 sm:h-16 md:h-20 flex flex-row items-end justify-center gap-1 sm:gap-2 md:gap-3 mb-1.5 sm:mb-2 relative w-full opacity-60">
+                        <span class="sprite-npc-male scale-75 sm:scale-90 md:scale-100 transform-origin-bottom grayscale"></span>
+                        <img src="/assets/Furniture/Bedroom/Laptop.png" class="pixel-art w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 mb-1 sm:mb-2 relative z-10 grayscale" alt="Laptop" />
+                        <span class="sprite-npc-female flip-h scale-75 sm:scale-90 md:scale-100 transform-origin-bottom grayscale"></span>
+                    </div>
+                    <div class="flex-grow flex flex-col items-center">
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-ink-lighter mb-0.5 uppercase tracking-wider">Organizing Team</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-ink-lighter mb-1 leading-tight">APPLICATIONS CLOSED</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-lighter mb-2 sm:mb-4 leading-tight">Recruitment for the organizing team is currently closed. Thank you!</p>
+                    </div>
+                    <div class="w-full bg-slate-700/60 text-slate-300 font-display font-bold text-[10px] sm:text-xs md:text-sm py-1 sm:py-2 pixel-btn flex justify-center items-center gap-1 cursor-not-allowed">
+                        CLOSED
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1080,13 +1363,159 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
+    }
 
-        form.addEventListener('submit', (e) => {
+    function initParticipantRegistration() {
+        const form = document.getElementById('participant-reg-form');
+        const submitBtn = document.getElementById('p-submit-btn');
+        const btnText = document.getElementById('p-btn-text');
+        const errorBanner = document.getElementById('participant-error-banner');
+        const errorMsg = document.getElementById('participant-error-message');
+        const successView = document.getElementById('participant-success-view');
+        const confirmedIdEl = document.getElementById('p-confirmed-id');
+        const copyBtn = document.getElementById('p-copy-id-btn');
+        const copyText = document.getElementById('p-copy-btn-text');
+        const registerAnotherBtn = document.getElementById('p-register-another-btn');
+
+        if (!form) return;
+
+        function showError(msg) {
+            if (errorMsg) errorMsg.textContent = msg;
+            if (errorBanner) {
+                errorBanner.classList.remove('hidden');
+                errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function hideError() {
+            if (errorBanner) errorBanner.classList.add('hidden');
+        }
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            content.classList.add('hidden');
-            success.classList.remove('hidden');
-            success.classList.add('modal-animate-in');
+            hideError();
+
+            const fullName = document.getElementById('p-fullName')?.value.trim();
+            const phone = document.getElementById('p-phone')?.value.trim();
+            const email = document.getElementById('p-email')?.value.trim();
+            const faculty = document.getElementById('p-faculty')?.value;
+            const academicYear = document.getElementById('p-academicYear')?.value;
+            const codeforcesHandle = document.getElementById('p-codeforces')?.value.trim();
+            const level = document.getElementById('p-level')?.value;
+            const universityConfirmed = document.getElementById('p-university')?.checked;
+
+            // Client Validation
+            if (!fullName || fullName.length < 3) {
+                return showError('Please enter your full name (minimum 3 characters).');
+            }
+            if (!phone) {
+                return showError('Please enter your phone number.');
+            }
+            const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, '');
+            if (!/^(\+?20|0020)?0?1[0125]\d{8}$/.test(cleanPhone) && !/^\+?[1-9]\d{7,14}$/.test(cleanPhone)) {
+                return showError('Please enter a valid phone number (e.g. 010xxxxxxxx or international format).');
+            }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                return showError('Please enter a valid email address.');
+            }
+            if (!faculty) {
+                return showError('Please select your faculty.');
+            }
+            if (!academicYear) {
+                return showError('Please select your level / academic year.');
+            }
+            if (!level) {
+                return showError('Please select your target training level.');
+            }
+            if (!universityConfirmed) {
+                return showError('Registration is strictly restricted to students of National University of Sadat City. Please confirm your enrollment.');
+            }
+
+            // Set loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            if (btnText) btnText.textContent = 'SUBMITTING REGISTRATION...';
+
+            try {
+                const response = await fetch('/api/participants', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fullName,
+                        phone,
+                        email,
+                        faculty,
+                        academicYear,
+                        codeforcesHandle: codeforcesHandle || null,
+                        level,
+                        universityConfirmed: true
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (response.status === 409) {
+                        const existingId = data.existingRegistrationId || 'Already Registered';
+                        throw new Error(`You have already registered with this email (${email}). Your Registration ID is: ${existingId}`);
+                    }
+                    throw new Error(data.error || 'Failed to submit registration. Please try again.');
+                }
+
+                // Success
+                const regId = data.registrationId || (data.participant && data.participant.registration_id);
+                if (confirmedIdEl) confirmedIdEl.textContent = regId;
+
+                const sumName = document.getElementById('p-sum-name');
+                const sumFaculty = document.getElementById('p-sum-faculty');
+                const sumLevel = document.getElementById('p-sum-level');
+                if (sumName) sumName.textContent = fullName;
+                if (sumFaculty) sumFaculty.textContent = faculty;
+                if (sumLevel) sumLevel.textContent = level;
+
+                form.classList.add('hidden');
+                if (successView) {
+                    successView.classList.remove('hidden');
+                    successView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+            } catch (err) {
+                showError(err.message || 'Network error or server unavailable. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                if (btnText) btnText.textContent = 'SUBMIT PARTICIPANT REGISTRATION';
+            }
         });
+
+        // Copy ID Button
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const idToCopy = confirmedIdEl?.textContent.trim();
+                if (!idToCopy) return;
+                navigator.clipboard.writeText(idToCopy).then(() => {
+                    if (copyText) copyText.textContent = 'Copied to Clipboard!';
+                    copyBtn.classList.add('bg-green-500', 'text-white');
+                    setTimeout(() => {
+                        if (copyText) copyText.textContent = 'Copy Registration ID';
+                        copyBtn.classList.remove('bg-green-500', 'text-white');
+                    }, 2500);
+                }).catch(() => {
+                    alert('Registration ID: ' + idToCopy);
+                });
+            });
+        }
+
+        // Register Another
+        if (registerAnotherBtn) {
+            registerAnotherBtn.addEventListener('click', () => {
+                form.reset();
+                hideError();
+                if (successView) successView.classList.add('hidden');
+                form.classList.remove('hidden');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
     }
 
     // INIT
@@ -1106,6 +1535,7 @@
         initJourneyNodes();
         initFAQ();
         initModal();
+        initParticipantRegistration();
     }
 
     if (document.readyState === 'loading') {

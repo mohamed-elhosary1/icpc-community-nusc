@@ -43,6 +43,7 @@ const server = http.createServer(async (req, res) => {
         else if (apiPath.startsWith('applications')) handlerFile = './api/applications.js';
         else if (apiPath.startsWith('events')) handlerFile = './api/events.js';
         else if (apiPath.startsWith('registrations')) handlerFile = './api/registrations.js';
+        else if (apiPath.startsWith('participants')) handlerFile = './api/participants.js';
         else if (apiPath.startsWith('questions')) handlerFile = './api/questions.js';
         else if (apiPath === 'stats') handlerFile = './api/stats.js';
 

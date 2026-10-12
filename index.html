@@ -804,27 +804,27 @@
             
             <h2 class="font-display font-black text-lg sm:text-2xl md:text-3xl text-navy mb-0.5 sm:mb-1.5">JOIN ICPC NUSC</h2>
             <p class="font-body text-ink-light text-[11px] sm:text-sm mb-3 sm:mb-6 max-w-lg mx-auto leading-tight">
-                Registrations and recruitment are currently <strong class="text-red-600">CLOSED</strong>. Stay tuned for future announcements and upcoming training seasons!
+                Recruitment is currently <strong class="text-gold-dark">OPEN for Participants</strong>! Organizing team applications are closed.
             </p>
             
             <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-5 relative z-10">
-                <!-- Option 1: Participant (CLOSED) -->
-                <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
+                <!-- Option 1: Participant (OPEN) -->
+                <a href="/participant#register" class="group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
                     <div class="w-full flex justify-center mb-1">
-                        <span class="bg-red-950/80 text-red-300 border border-red-500/50 font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 uppercase tracking-wider">CLOSED FOR NOW</span>
+                        <span class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
                     </div>
-                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full opacity-60">
-                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0 grayscale"></span>
+                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full">
+                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0"></span>
                     </div>
                     <div class="flex-grow flex flex-col items-center">
-                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-ink-lighter mb-0.5 uppercase tracking-wider">Participant</h3>
-                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-ink-lighter mb-1 leading-tight">LEARN + COMPETE</h4>
-                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-lighter mb-2 sm:mb-4 leading-tight">Training registrations are not available at this moment. Stay tuned!</p>
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-gold-dark mb-0.5 uppercase tracking-wider font-bold">Participant</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">LEARN + COMPETE</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join weekly training, solve problems, and compete in contests.</p>
                     </div>
-                    <div class="w-full bg-slate-700/60 text-slate-300 font-display font-bold text-[10px] sm:text-xs md:text-sm py-1 sm:py-2 pixel-btn flex justify-center items-center gap-1 cursor-not-allowed">
-                        NOT AVAILABLE NOW
+                    <div class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
+                        REGISTER NOW &rarr;
                     </div>
-                </div>
+                </a>
                 
                 <!-- Option 2: Organizing Team (CLOSED) -->
                 <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
@@ -906,6 +906,16 @@
             github: { url: '#', label: 'GitHub' }
         },
         events: [
+            {
+                title: 'Participant Training Recruitment 2026',
+                category: 'Recruitment',
+                date: 'NOW OPEN',
+                time: 'All Levels',
+                description: 'Official recruitment for all student training levels (Beginner, Intermediate, Advanced). Register now to secure your spot!',
+                status: 'REGISTRATION OPEN',
+                icon: 'assets/Objects/Bedroom/Trophy.png',
+                url: '/participant#register'
+            },
             {
                 title: 'Dynamic Programming Workshop',
                 category: 'ICPC Training',
