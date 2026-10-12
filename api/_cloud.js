@@ -166,15 +166,17 @@ const CloudDB = {
         const cleanLevel = String(pData.level).trim();
         const cleanCf = pData.codeforcesHandle ? String(pData.codeforcesHandle).trim() : null;
 
-        // 1. Check for duplicate participant registration by email
-        const checkUrl = `${SUPABASE_URL}/rest/v1/nusc_participants?email=ilike.${encodeURIComponent(cleanEmail)}&select=registration_id,full_name,created_at`;
+        // 1. Check for duplicate participant registration by email OR phone
+        const checkUrl = `${SUPABASE_URL}/rest/v1/nusc_participants?or=(email.ilike.${encodeURIComponent(cleanEmail)},phone.eq.${encodeURIComponent(cleanPhone)})&select=registration_id,full_name,email,phone,created_at`;
         const checkRes = await fetch(checkUrl, { headers: getHeaders(false) });
         if (checkRes.ok) {
             const existing = await checkRes.json();
             if (Array.isArray(existing) && existing.length > 0) {
-                const err = new Error('You have already registered for the participant training program.');
+                const match = existing[0];
+                const matchedField = (match.email && match.email.toLowerCase() === cleanEmail.toLowerCase()) ? 'email address' : 'phone number';
+                const err = new Error(`You have already registered with this ${matchedField}. Your official Registration ID is: ${match.registration_id}`);
                 err.code = 'DUPLICATE_REGISTRATION';
-                err.existingRegistrationId = existing[0].registration_id;
+                err.existingRegistrationId = match.registration_id;
                 throw err;
             }
         }
@@ -198,6 +200,9 @@ const CloudDB = {
                 status: 'confirmed',
                 metadata: {
                     source: 'participant_recruitment',
+                    registrationId: regId,
+                    email: cleanEmail,
+                    phone: cleanPhone,
                     registeredAt: new Date().toISOString()
                 }
             };
@@ -240,6 +245,9 @@ const CloudDB = {
                 status: 'confirmed',
                 metadata: {
                     type: 'participant',
+                    registrationId: savedRecord.registration_id,
+                    email: cleanEmail,
+                    phone: cleanPhone,
                     codeforcesHandle: cleanCf,
                     level: cleanLevel
                 }

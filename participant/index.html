@@ -782,8 +782,19 @@
                     Your registration has been successfully saved to our database. Save your unique registration ID below for check-in and attendance.
                 </p>
 
+                <!-- Caution Alert Banner for Screenshot -->
+                <div class="p-4 bg-amber-950/80 border-2 border-gold text-gold-light text-xs sm:text-sm rounded max-w-md mx-auto mb-6 flex items-start gap-3 text-left pixel-shadow-gold">
+                    <span class="material-symbols-outlined text-gold text-2xl flex-shrink-0 animate-pulse">warning</span>
+                    <div>
+                        <strong class="font-display font-black text-white text-sm block mb-1 uppercase tracking-wide">CAUTION: PLEASE TAKE A SCREENSHOT NOW</strong>
+                        <p class="leading-relaxed text-cream-dark/90">
+                            Please <strong>take a screenshot</strong> of this confirmation screen. Your unique Registration ID is officially linked to your registered <strong>Email</strong> and <strong>Phone Number</strong>. You will need it for attendance, contest access, and verification.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- ID Card Box -->
-                <div class="bg-navy-dark p-6 pixel-border-gold max-w-md mx-auto mb-8 relative">
+                <div class="bg-navy-dark p-6 pixel-border-gold max-w-md mx-auto mb-6 relative">
                     <span class="text-[10px] font-minecraft text-cream-dark/50 uppercase tracking-widest block mb-1">Your Registration ID</span>
                     <div id="p-confirmed-id" class="font-minecraft text-xl sm:text-2xl text-gold tracking-wider font-bold mb-4 select-all">
                         NUSC-PAR26-XXXXX
@@ -798,47 +809,36 @@
                     </button>
                 </div>
 
-                <!-- Registration Summary Details -->
-                <div id="p-summary-box" class="bg-navy-dark/60 p-4 pixel-border border-white/10 max-w-md mx-auto mb-8 text-left text-xs sm:text-sm space-y-1.5">
-                    <div class="flex justify-between border-b border-white/10 pb-1">
+                <!-- Registration Summary Details (Linked with ID, Email & Phone) -->
+                <div id="p-summary-box" class="bg-navy-dark/70 p-5 pixel-border border-white/10 max-w-md mx-auto mb-8 text-left text-xs sm:text-sm space-y-2">
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
+                        <span class="text-cream-dark/60 font-semibold">Registration ID:</span>
+                        <span id="p-sum-regid" class="font-mono font-bold text-gold"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
                         <span class="text-cream-dark/60">Applicant:</span>
                         <span id="p-sum-name" class="font-bold text-white"></span>
                     </div>
-                    <div class="flex justify-between border-b border-white/10 pb-1">
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
+                        <span class="text-cream-dark/60">Registered Email:</span>
+                        <span id="p-sum-email" class="font-mono text-cream-dark/90 font-semibold"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
+                        <span class="text-cream-dark/60">Registered Phone:</span>
+                        <span id="p-sum-phone" class="font-mono text-cream-dark/90 font-semibold"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
                         <span class="text-cream-dark/60">Faculty:</span>
                         <span id="p-sum-faculty" class="text-gold"></span>
                     </div>
-                    <div class="flex justify-between border-b border-white/10 pb-1">
+                    <div class="flex justify-between border-b border-white/10 pb-1.5">
                         <span class="text-cream-dark/60">Training Level:</span>
                         <span id="p-sum-level" class="text-green-400 font-bold"></span>
                     </div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between pt-0.5">
                         <span class="text-cream-dark/60">University:</span>
                         <span class="text-white">National University of Sadat City</span>
                     </div>
-                </div>
-
-                <!-- Orientation & Community Info -->
-                <div class="p-5 bg-navy-dark border-2 border-gold/30 rounded max-w-md mx-auto mb-6 text-left">
-                    <div class="flex items-center gap-2 text-gold font-display font-bold text-sm mb-2">
-                        <span class="material-symbols-outlined text-base">video_camera_front</span>
-                        <span>Orientation & Setup Meeting</span>
-                    </div>
-                    <p class="font-body text-xs text-cream-dark/80 mb-2">
-                        <strong>Date & Time:</strong> Saturday, Oct 10 &bull; 21:00 &ndash; 22:00
-                    </p>
-                    <p class="font-body text-xs text-cream-dark/80 mb-3">
-                        Join us online to meet mentors, configure your development environment, and receive problem sets.
-                    </p>
-                    <a 
-                        href="https://meet.google.com/fea-kbqm-pkz" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        class="inline-flex items-center gap-1.5 text-xs text-gold font-bold underline hover:text-white"
-                    >
-                        <span>Video call link: https://meet.google.com/fea-kbqm-pkz</span>
-                        <span class="material-symbols-outlined text-sm">open_in_new</span>
-                    </a>
                 </div>
 
                 <!-- Actions -->
@@ -1417,7 +1417,7 @@
                 if (!response.ok) {
                     if (response.status === 409) {
                         const existingId = data.existingRegistrationId || 'Already Registered';
-                        throw new Error(`You have already registered with this email (${email}). Your Registration ID is: ${existingId}`);
+                        throw new Error(data.error || `You have already registered. Your Registration ID is: ${existingId}`);
                     }
                     throw new Error(data.error || 'Failed to submit registration. Please try again.');
                 }
@@ -1426,10 +1426,17 @@
                 const regId = data.registrationId || (data.participant && data.participant.registration_id);
                 if (confirmedIdEl) confirmedIdEl.textContent = regId;
 
+                const sumRegId = document.getElementById('p-sum-regid');
                 const sumName = document.getElementById('p-sum-name');
+                const sumEmail = document.getElementById('p-sum-email');
+                const sumPhone = document.getElementById('p-sum-phone');
                 const sumFaculty = document.getElementById('p-sum-faculty');
                 const sumLevel = document.getElementById('p-sum-level');
+
+                if (sumRegId) sumRegId.textContent = regId;
                 if (sumName) sumName.textContent = fullName;
+                if (sumEmail) sumEmail.textContent = email;
+                if (sumPhone) sumPhone.textContent = phone;
                 if (sumFaculty) sumFaculty.textContent = faculty;
                 if (sumLevel) sumLevel.textContent = level;
 
