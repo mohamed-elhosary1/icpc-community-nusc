@@ -811,7 +811,7 @@
                 <!-- Option 1: Participant (OPEN) -->
                 <a href="/participant#register" class="group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
                     <div class="w-full flex justify-center mb-1">
-                        <span class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
+                        <span id="modal-part-badge" class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
                     </div>
                     <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full">
                         <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0"></span>
@@ -821,7 +821,7 @@
                         <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">LEARN + COMPETE</h4>
                         <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join weekly training, solve problems, and compete in contests.</p>
                     </div>
-                    <div class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
+                    <div id="modal-part-btn" class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
                         REGISTER NOW &rarr;
                     </div>
                 </a>
@@ -1269,13 +1269,33 @@
         const content = document.getElementById('modal-content');
         const success = document.getElementById('modal-success');
 
+        // Check if user already registered on this browser
+        const storedJson = localStorage.getItem('nusc_participant_registration');
+        if (storedJson) {
+            try {
+                const stored = JSON.parse(storedJson);
+                if (stored && stored.registrationId) {
+                    const badge = document.getElementById('modal-part-badge');
+                    const btn = document.getElementById('modal-part-btn');
+                    if (badge) {
+                        badge.textContent = 'ALREADY REGISTERED';
+                        badge.classList.remove('animate-pulse');
+                        badge.classList.add('bg-green-600', 'text-white');
+                    }
+                    if (btn) {
+                        btn.innerHTML = `VIEW REGISTRATION (${stored.registrationId}) &rarr;`;
+                    }
+                }
+            } catch (e) {}
+        }
+
         const openModal = (e) => {
             if(e) e.preventDefault();
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             content.classList.remove('hidden');
             success.classList.add('hidden');
-            form.reset();
+            if (form) form.reset();
         };
 
         const closeModal = () => {
@@ -1290,12 +1310,14 @@
             if (e.target === modal) closeModal();
         });
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
-            success.classList.remove('hidden');
-            success.classList.add('modal-animate-in');
-        });
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                content.classList.add('hidden');
+                success.classList.remove('hidden');
+                success.classList.add('modal-animate-in');
+            });
+        }
     }
 
     // INIT

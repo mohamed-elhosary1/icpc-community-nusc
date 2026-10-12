@@ -600,10 +600,10 @@
                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                 <span class="font-minecraft text-xs text-gold uppercase tracking-widest">Season 2026 Recruitment</span>
             </div>
-            <h2 class="font-display font-black text-3xl md:text-5xl text-white mb-3">
+            <h2 id="p-header-title" class="font-display font-black text-3xl md:text-5xl text-white mb-3">
                 JOIN AS A <span class="text-gold">PARTICIPANT</span>
             </h2>
-            <p class="font-body text-cream-dark/80 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            <p id="p-header-desc" class="font-body text-cream-dark/80 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
                 Fill out the application below to join ICPC Community NUSC training sessions, contests, and mentorship programs.
             </p>
         </div>
@@ -616,6 +616,18 @@
             <div class="hidden sm:block absolute -top-1 -right-1 w-3 h-3 bg-gold"></div>
             <div class="hidden sm:block absolute -bottom-1 -left-1 w-3 h-3 bg-gold"></div>
             <div class="hidden sm:block absolute -bottom-1 -right-1 w-3 h-3 bg-gold"></div>
+
+            <!-- Existing Registration Banner (Shown if user chose to view blank form or wants to toggle status) -->
+            <div id="participant-existing-banner" class="hidden mb-6 p-4 bg-navy-dark border border-gold/50 rounded flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2 text-cream-dark/90">
+                    <span class="material-symbols-outlined text-gold text-lg">verified</span>
+                    <span>You have an active registration: <strong id="p-banner-id" class="text-gold font-mono"></strong></span>
+                </div>
+                <button type="button" id="p-view-my-status-btn" class="text-gold hover:text-white underline font-bold flex items-center gap-1 cursor-pointer">
+                    <span>View Registration Status</span>
+                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                </button>
+            </div>
 
             <!-- Error Banner -->
             <div id="participant-error-banner" class="hidden mb-6 p-4 bg-red-950/80 border-2 border-red-500 text-red-200 text-sm rounded flex items-start gap-3">
@@ -774,11 +786,11 @@
                     <span class="material-symbols-outlined text-3xl font-black">check</span>
                 </div>
                 
-                <span class="font-minecraft text-xs text-gold uppercase tracking-widest block mb-1">Registration Confirmed</span>
-                <h3 class="font-display font-black text-2xl sm:text-3xl text-white mb-2">
+                <span id="p-status-pill" class="font-minecraft text-xs text-gold uppercase tracking-widest block mb-1">Registration Confirmed</span>
+                <h3 id="p-status-title" class="font-display font-black text-2xl sm:text-3xl text-white mb-2">
                     WELCOME TO ICPC NUSC!
                 </h3>
-                <p class="font-body text-cream-dark/80 text-sm max-w-md mx-auto mb-6">
+                <p id="p-status-desc" class="font-body text-cream-dark/80 text-sm max-w-md mx-auto mb-6">
                     Your registration has been successfully saved to our database. Save your unique registration ID below for check-in and attendance.
                 </p>
 
@@ -802,7 +814,7 @@
                     <button 
                         type="button" 
                         id="p-copy-id-btn" 
-                        class="bg-gold text-ink font-display font-bold text-xs sm:text-sm px-4 py-2 pixel-btn flex items-center justify-center gap-1.5 mx-auto hover:bg-white transition-colors"
+                        class="bg-gold text-ink font-display font-bold text-xs sm:text-sm px-4 py-2 pixel-btn flex items-center justify-center gap-1.5 mx-auto hover:bg-white transition-colors cursor-pointer"
                     >
                         <span class="material-symbols-outlined text-base">content_copy</span>
                         <span id="p-copy-btn-text">Copy Registration ID</span>
@@ -842,11 +854,20 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="flex justify-center gap-3">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button 
+                        type="button" 
+                        id="p-refresh-status-btn" 
+                        class="bg-navy border border-gold/60 text-gold hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn flex items-center gap-1.5 cursor-pointer"
+                        title="Sync latest status from database"
+                    >
+                        <span class="material-symbols-outlined text-sm">refresh</span>
+                        <span id="p-refresh-btn-text">Refresh Status</span>
+                    </button>
                     <button 
                         type="button" 
                         id="p-register-another-btn" 
-                        class="bg-navy border border-gold/60 text-gold hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn"
+                        class="bg-navy-dark border border-white/20 text-cream-dark/80 hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn cursor-pointer"
                     >
                         Register Another Participant
                     </button>
@@ -1339,6 +1360,8 @@
 
         if (!form) return;
 
+        const STORAGE_KEY = 'nusc_participant_registration';
+
         function showError(msg) {
             if (errorMsg) errorMsg.textContent = msg;
             if (errorBanner) {
@@ -1349,6 +1372,77 @@
 
         function hideError() {
             if (errorBanner) errorBanner.classList.add('hidden');
+        }
+
+        function showConfirmedStatus(data, isWelcomeBack = false) {
+            if (!data || !data.registrationId) return;
+
+            const sumRegId = document.getElementById('p-sum-regid');
+            const sumName = document.getElementById('p-sum-name');
+            const sumEmail = document.getElementById('p-sum-email');
+            const sumPhone = document.getElementById('p-sum-phone');
+            const sumFaculty = document.getElementById('p-sum-faculty');
+            const sumLevel = document.getElementById('p-sum-level');
+            const statusPill = document.getElementById('p-status-pill');
+            const statusTitle = document.getElementById('p-status-title');
+            const statusDesc = document.getElementById('p-status-desc');
+            const headerTitle = document.getElementById('p-header-title');
+            const headerDesc = document.getElementById('p-header-desc');
+
+            if (confirmedIdEl) confirmedIdEl.textContent = data.registrationId;
+            if (sumRegId) sumRegId.textContent = data.registrationId;
+            if (sumName) sumName.textContent = data.fullName || '';
+            if (sumEmail) sumEmail.textContent = data.email || '';
+            if (sumPhone) sumPhone.textContent = data.phone || '';
+            if (sumFaculty) sumFaculty.textContent = data.faculty || '';
+            if (sumLevel) sumLevel.textContent = data.level || '';
+
+            if (isWelcomeBack) {
+                if (statusPill) statusPill.textContent = 'Active Enrollment • Confirmed';
+                if (statusTitle) statusTitle.textContent = 'YOUR REGISTRATION STATUS';
+                if (statusDesc) statusDesc.textContent = 'Welcome back! You are officially registered in the ICPC NUSC training program. Below is your latest confirmed registration status and ID.';
+                if (headerTitle) headerTitle.innerHTML = 'REGISTRATION <span class="text-gold">STATUS</span>';
+                if (headerDesc) headerDesc.textContent = 'Welcome back! Your participant registration is confirmed in our database.';
+            }
+
+            form.classList.add('hidden');
+            if (successView) successView.classList.remove('hidden');
+            const existingBanner = document.getElementById('participant-existing-banner');
+            if (existingBanner) existingBanner.classList.add('hidden');
+        }
+
+        // Check if user already registered on this browser
+        const storedJson = localStorage.getItem(STORAGE_KEY);
+        if (storedJson) {
+            try {
+                const stored = JSON.parse(storedJson);
+                if (stored && stored.registrationId) {
+                    showConfirmedStatus(stored, true);
+
+                    // Sync latest status from production PostgreSQL database in background
+                    fetch(`/api/participants?id=${encodeURIComponent(stored.registrationId)}`)
+                        .then(res => res.json())
+                        .then(remote => {
+                            if (remote && remote.participant) {
+                                const p = remote.participant;
+                                const updated = {
+                                    registrationId: p.registration_id,
+                                    fullName: p.full_name,
+                                    email: p.email,
+                                    phone: p.phone,
+                                    faculty: p.faculty,
+                                    academicYear: p.academic_year,
+                                    level: p.level,
+                                    status: p.status,
+                                    registeredAt: p.created_at
+                                };
+                                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+                                showConfirmedStatus(updated, true);
+                            }
+                        })
+                        .catch(() => {});
+                }
+            } catch (e) {}
         }
 
         form.addEventListener('submit', async (e) => {
@@ -1416,7 +1510,32 @@
 
                 if (!response.ok) {
                     if (response.status === 409) {
-                        const existingId = data.existingRegistrationId || 'Already Registered';
+                        const existingId = data.existingRegistrationId;
+                        if (existingId) {
+                            try {
+                                const lookupRes = await fetch(`/api/participants?id=${encodeURIComponent(existingId)}`);
+                                if (lookupRes.ok) {
+                                    const lookupData = await lookupRes.json();
+                                    if (lookupData && lookupData.participant) {
+                                        const p = lookupData.participant;
+                                        const existingRecord = {
+                                            registrationId: p.registration_id,
+                                            fullName: p.full_name,
+                                            email: p.email,
+                                            phone: p.phone,
+                                            faculty: p.faculty,
+                                            academicYear: p.academic_year,
+                                            level: p.level,
+                                            status: p.status,
+                                            registeredAt: p.created_at
+                                        };
+                                        localStorage.setItem(STORAGE_KEY, JSON.stringify(existingRecord));
+                                        showConfirmedStatus(existingRecord, true);
+                                        return;
+                                    }
+                                }
+                            } catch (errSync) {}
+                        }
                         throw new Error(data.error || `You have already registered. Your Registration ID is: ${existingId}`);
                     }
                     throw new Error(data.error || 'Failed to submit registration. Please try again.');
@@ -1424,25 +1543,22 @@
 
                 // Success
                 const regId = data.registrationId || (data.participant && data.participant.registration_id);
-                if (confirmedIdEl) confirmedIdEl.textContent = regId;
+                const participantRecord = {
+                    registrationId: regId,
+                    fullName,
+                    email,
+                    phone,
+                    faculty,
+                    academicYear,
+                    level,
+                    university: 'National University of Sadat City',
+                    status: 'Confirmed',
+                    registeredAt: new Date().toISOString()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(participantRecord));
+                showConfirmedStatus(participantRecord, false);
 
-                const sumRegId = document.getElementById('p-sum-regid');
-                const sumName = document.getElementById('p-sum-name');
-                const sumEmail = document.getElementById('p-sum-email');
-                const sumPhone = document.getElementById('p-sum-phone');
-                const sumFaculty = document.getElementById('p-sum-faculty');
-                const sumLevel = document.getElementById('p-sum-level');
-
-                if (sumRegId) sumRegId.textContent = regId;
-                if (sumName) sumName.textContent = fullName;
-                if (sumEmail) sumEmail.textContent = email;
-                if (sumPhone) sumPhone.textContent = phone;
-                if (sumFaculty) sumFaculty.textContent = faculty;
-                if (sumLevel) sumLevel.textContent = level;
-
-                form.classList.add('hidden');
                 if (successView) {
-                    successView.classList.remove('hidden');
                     successView.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
 
@@ -1473,6 +1589,59 @@
             });
         }
 
+        // Refresh Status Button
+        const refreshBtn = document.getElementById('p-refresh-status-btn');
+        const refreshText = document.getElementById('p-refresh-btn-text');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', async () => {
+                const sJson = localStorage.getItem(STORAGE_KEY);
+                if (!sJson) return;
+                try {
+                    const sData = JSON.parse(sJson);
+                    if (!sData.registrationId) return;
+                    if (refreshText) refreshText.textContent = 'Syncing...';
+                    const res = await fetch(`/api/participants?id=${encodeURIComponent(sData.registrationId)}`);
+                    if (res.ok) {
+                        const d = await res.json();
+                        if (d && d.participant) {
+                            const p = d.participant;
+                            const updated = {
+                                registrationId: p.registration_id,
+                                fullName: p.full_name,
+                                email: p.email,
+                                phone: p.phone,
+                                faculty: p.faculty,
+                                academicYear: p.academic_year,
+                                level: p.level,
+                                status: p.status,
+                                registeredAt: p.created_at
+                            };
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+                            showConfirmedStatus(updated, true);
+                            if (refreshText) refreshText.textContent = 'Verified!';
+                            setTimeout(() => { if (refreshText) refreshText.textContent = 'Refresh Status'; }, 2000);
+                        }
+                    }
+                } catch (e) {
+                    if (refreshText) refreshText.textContent = 'Refresh Status';
+                }
+            });
+        }
+
+        // View My Status Button (on banner above form)
+        const viewMyStatusBtn = document.getElementById('p-view-my-status-btn');
+        if (viewMyStatusBtn) {
+            viewMyStatusBtn.addEventListener('click', () => {
+                const sJson = localStorage.getItem(STORAGE_KEY);
+                if (sJson) {
+                    try {
+                        const sData = JSON.parse(sJson);
+                        showConfirmedStatus(sData, true);
+                    } catch (e) {}
+                }
+            });
+        }
+
         // Register Another
         if (registerAnotherBtn) {
             registerAnotherBtn.addEventListener('click', () => {
@@ -1480,6 +1649,26 @@
                 hideError();
                 if (successView) successView.classList.add('hidden');
                 form.classList.remove('hidden');
+
+                const headerTitle = document.getElementById('p-header-title');
+                const headerDesc = document.getElementById('p-header-desc');
+                if (headerTitle) headerTitle.innerHTML = 'JOIN AS A <span class="text-gold">PARTICIPANT</span>';
+                if (headerDesc) headerDesc.textContent = 'Fill out the application below to join ICPC Community NUSC training sessions, contests, and mentorship programs.';
+
+                // Show existing banner above form so user can easily toggle back
+                const sJson = localStorage.getItem(STORAGE_KEY);
+                if (sJson) {
+                    try {
+                        const sData = JSON.parse(sJson);
+                        const existingBanner = document.getElementById('participant-existing-banner');
+                        const bannerId = document.getElementById('p-banner-id');
+                        if (existingBanner && bannerId && sData.registrationId) {
+                            bannerId.textContent = sData.registrationId;
+                            existingBanner.classList.remove('hidden');
+                        }
+                    } catch (e) {}
+                }
+
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }

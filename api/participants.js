@@ -59,8 +59,34 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // GET /api/participants -> Admin View
+    // GET /api/participants
     if (req.method === 'GET') {
+        const urlObj = new URL(req.url, 'http://localhost');
+        const lookup = urlObj.searchParams.get('id') || urlObj.searchParams.get('lookup') || urlObj.searchParams.get('email') || urlObj.searchParams.get('phone');
+
+        // Public Participant Lookup / Status Check
+        if (lookup) {
+            try {
+                const part = await CloudDB.getParticipantByQuery(lookup);
+                if (!part) {
+                    res.writeHead ? res.writeHead(404, { 'Content-Type': 'application/json' }) : res.status(404);
+                    const out = JSON.stringify({ error: 'No participant registration found matching this query.' });
+                    res.end ? res.end(out) : res.send(out);
+                    return;
+                }
+                res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
+                const out = JSON.stringify({ success: true, participant: part });
+                res.end ? res.end(out) : res.send(out);
+                return;
+            } catch (err) {
+                console.error('[API participant lookup error]:', err.message);
+                res.writeHead ? res.writeHead(500, { 'Content-Type': 'application/json' }) : res.status(500);
+                res.end ? res.end(JSON.stringify({ error: 'Lookup failed: ' + err.message })) : res.send({ error: err.message });
+                return;
+            }
+        }
+
+        // Admin Listing (Auth required)
         const session = DB.requireAuth(req, res);
         if (!session) return;
 

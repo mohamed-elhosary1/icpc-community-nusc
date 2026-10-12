@@ -278,6 +278,19 @@ const CloudDB = {
     },
 
     /**
+     * Find single participant by registration_id, email, or phone
+     */
+    getParticipantByQuery: async function(queryStr) {
+        if (!queryStr) return null;
+        const clean = String(queryStr).trim();
+        const queryUrl = `${SUPABASE_URL}/rest/v1/nusc_participants?or=(registration_id.eq.${encodeURIComponent(clean)},email.ilike.${encodeURIComponent(clean)},phone.eq.${encodeURIComponent(clean)})&select=registration_id,full_name,email,phone,faculty,academic_year,level,status,created_at&limit=1`;
+        const res = await fetch(queryUrl, { headers: getHeaders(false) });
+        if (!res.ok) return null;
+        const list = await res.json();
+        return (Array.isArray(list) && list.length > 0) ? list[0] : null;
+    },
+
+    /**
      * Find single registration by registration_id
      */
     getRegistrationByCode: async function(code) {
