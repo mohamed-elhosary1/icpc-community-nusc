@@ -86,115 +86,17 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // POST /api/registrations -> Public Signup for Event
+    // POST /api/registrations -> All Event Registrations are completely CLOSED
     if (req.method === 'POST') {
-        const body = await parseBody(req);
-        const {
-            fullName,
-            phone,
-            email,
-            academicYear,
-            faculty,
-            isNuscStudent,
-            eventId
-        } = body;
-
-        const targetEventId = (eventId || body.event_id || 'orientation-session-2026').trim();
-
-        // Check if event registration has concluded
-        if (targetEventId === 'orientation-session-2026') {
-            res.writeHead ? res.writeHead(403, { 'Content-Type': 'application/json' }) : res.status(403);
-            const err = JSON.stringify({
-                error: 'Registration for the Orientation Session has ended. The event duration has concluded.'
-            });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 1. Validate Full Name
-        if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 3) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter your full name (minimum 3 characters).' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 2. Validate Phone
-        if (!validatePhone(phone)) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter a valid phone number (e.g. 010xxxxxxxx or international format).' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 3. Validate Email
-        if (!validateEmail(email)) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter a valid email address.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 4. Validate Academic Year
-        if (!academicYear || typeof academicYear !== 'string' || !academicYear.trim()) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please select your academic level / year.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 5. Validate Faculty (Strictly matching required faculties)
-        if (!faculty || !ALLOWED_FACULTIES.includes(faculty.trim())) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({
-                error: `Please select a valid faculty from the allowed list: ${ALLOWED_FACULTIES.join(', ')}`
-            });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 6. Strict University Restriction (National University of Sadat City)
-        if (isNuscStudent !== true && body.is_nusc_student !== true) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({
-                error: 'Registration is restricted exclusively to students of the National University of Sadat City (NUSC).'
-            });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-
-        try {
-            const savedRecord = await CloudDB.saveEventRegistration({
-                fullName: fullName.trim(),
-                phone: phone.trim(),
-                email: email.trim().toLowerCase(),
-                academicYear: academicYear.trim(),
-                faculty: faculty.trim(),
-                isNuscStudent: true,
-                eventId: targetEventId
-            });
-
-            res.writeHead ? res.writeHead(201, { 'Content-Type': 'application/json' }) : res.status(201);
-            const out = JSON.stringify({
-                success: true,
-                registrationId: savedRecord.registration_id,
-                registration: savedRecord
-            });
-            res.end ? res.end(out) : res.send(out);
-        } catch (err) {
-            console.error('[API registrations POST Error]:', err.message);
-            const statusCode = (err.code === 'DUPLICATE_REGISTRATION') ? 409 : 500;
-            res.writeHead ? res.writeHead(statusCode, { 'Content-Type': 'application/json' }) : res.status(statusCode);
-            const errResponse = JSON.stringify({
-                error: err.message,
-                code: err.code || 'DB_ERROR',
-                existingRegistrationId: err.existingRegistrationId || null
-            });
-            res.end ? res.end(errResponse) : res.send(errResponse);
-        }
+        res.writeHead ? res.writeHead(403, { 'Content-Type': 'application/json' }) : res.status(403);
+        const err = JSON.stringify({
+            error: 'Event registrations are closed. There are currently no active events open for registration.',
+            code: 'REGISTRATIONS_CLOSED'
+        });
+        res.end ? res.end(err) : res.send(err);
         return;
     }
+
 
     res.writeHead ? res.writeHead(405, { 'Content-Type': 'application/json' }) : res.status(405);
     res.end ? res.end(JSON.stringify({ error: 'Method not allowed' })) : res.send({ error: 'Method not allowed' });

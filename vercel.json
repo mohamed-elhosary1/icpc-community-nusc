@@ -1,4 +1,8 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/events/(.*)", "destination": "/", "permanent": false },
+    { "source": "/events", "destination": "/", "permanent": false }
+  ]
 }

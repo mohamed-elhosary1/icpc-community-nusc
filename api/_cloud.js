@@ -62,13 +62,7 @@ const CloudDB = {
      * Save an event registration with strict validation and unique ID generation.
      */
     saveEventRegistration: async function(regData) {
-        if (!regData.fullName || !regData.email || !regData.phone || !regData.faculty || !regData.academicYear) {
-            throw new Error('Missing required registration fields.');
-        }
-
-        if (regData.isNuscStudent !== true && regData.is_nusc_student !== true) {
-            throw new Error('Registration is strictly restricted to students of National University of Sadat City.');
-        }
+        throw new Error('Event registrations are permanently closed.');
 
         const eventId = regData.eventId || regData.event_id || 'orientation-session-2026';
         const cleanEmail = String(regData.email).trim().toLowerCase();

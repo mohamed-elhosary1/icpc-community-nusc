@@ -1059,9 +1059,9 @@
                     </div>
                     <p class="font-body text-sm text-ink-light mb-5 leading-relaxed">${event.description}</p>
                     <div class="flex items-center justify-between">
-                        <span class="font-minecraft text-[9px] px-2.5 py-1 bg-gold/20 text-gold-dark border border-gold/40">${event.status}</span>
+                        <span class="font-minecraft text-[9px] px-2.5 py-1 ${event.status === 'REGISTRATION OPEN' ? 'bg-gold/20 text-gold-dark border border-gold/40' : 'bg-slate-700/40 text-slate-500 border border-slate-600/40'}">${event.status}</span>
                         <a href="${event.url}" class="font-display font-bold text-sm text-navy hover:text-gold-dark transition-colors flex items-center gap-1">
-                            Details & Registration &rarr;
+                            ${event.url.includes('participant') ? 'APPLY FOR TRAINING &rarr;' : 'VIEW ROADMAP &rarr;'}
                         </a>
                     </div>
                 </div>

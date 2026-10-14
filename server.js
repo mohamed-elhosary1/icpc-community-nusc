@@ -62,7 +62,13 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-    // 2. Route Static Files
+    // 2. Redirect /events to home
+    if (pathname === '/events' || pathname.startsWith('/events/')) {
+        res.writeHead(302, { 'Location': '/' });
+        return res.end();
+    }
+
+    // 3. Route Static Files
     let filePath = path.join(BASE_DIR, pathname);
 
     // Clean URL / trailing slash handling
