@@ -37,14 +37,15 @@ module.exports = async (req, res) => {
 
     try {
         const body = await parseBody(req);
-        const { code } = body;
+        const { code, identifier, email } = body;
+        const lookup = (code || identifier || email || '').trim();
 
-        if (!code) {
+        if (!lookup) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            return res.end ? res.end(JSON.stringify({ error: 'Please enter your event registration code.' })) : res.send({ error: 'Please enter your event registration code.' });
+            return res.end ? res.end(JSON.stringify({ error: 'Please enter your event registration code or registered email.' })) : res.send({ error: 'Please enter your event registration code or registered email.' });
         }
 
-        const result = await StudentService.validateCode(code);
+        const result = await StudentService.validateCode(lookup);
 
         if (!result.valid) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
@@ -57,6 +58,7 @@ module.exports = async (req, res) => {
             valid: true,
             code: result.code,
             fullName: result.fullName,
+            registeredEmail: result.registeredEmail,
             maskedEmail: result.maskedEmail,
             faculty: result.faculty,
             academicYear: result.academicYear,

@@ -265,6 +265,13 @@ async function runTests() {
             await validateCodeHandler(validReq.req, validReq.res);
             const valRes = validReq.getResult();
             assert(valRes.status === 200 && valRes.data.valid === true, `POST /api/auth/validate-code validates real access code (${unredeemed.registration_id})`, `Name: ${valRes.data.fullName}, Wave: ${valRes.data.wave}`);
+
+            if (unredeemed.email) {
+                const validEmailReq = createMockReqRes('POST', '/api/auth/validate-code', { email: unredeemed.email });
+                await validateCodeHandler(validEmailReq.req, validEmailReq.res);
+                const valEmailRes = validEmailReq.getResult();
+                assert(valEmailRes.status === 200 && valEmailRes.data.valid === true, `POST /api/auth/validate-code validates registration by email (${unredeemed.email})`, `Code: ${valEmailRes.data.code}`);
+            }
         } else {
             console.log('   (Skipping unredeemed code test: all codes currently redeemed)');
         }

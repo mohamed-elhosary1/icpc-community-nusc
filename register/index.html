@@ -132,26 +132,26 @@
                 <span id="error-msg"></span>
             </div>
 
-            <!-- STEP 1: Enter Registration Code -->
+            <!-- STEP 1: Enter Registration Code or Email -->
             <div id="step-1" class="space-y-4">
                 <div>
-                    <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Your Event Registration Code</label>
+                    <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Your Event Registration Code or Registered Email</label>
                     <input 
                         type="text" 
                         id="reg-code" 
-                        class="pixel-input uppercase tracking-wider font-mono text-center font-bold text-base" 
-                        placeholder="e.g. NUSC-OS26-XXXXX" 
+                        class="pixel-input tracking-wider font-mono text-center font-bold text-sm sm:text-base" 
+                        placeholder="e.g. NUSC-OS26-XXXXX or student@univ.edu" 
                         required 
                         autofocus 
                     />
                     <p class="text-[11px] text-cream-dark/60 mt-1 font-body">
-                        Found in your Orientation confirmation or Participant Registration confirmation screenshot.
+                        Enter your Access Code (e.g. NUSC-PAR26-... / NUSC-OS26-...) OR the email address used during event registration.
                     </p>
                 </div>
 
                 <button type="button" id="verify-code-btn" class="w-full py-3.5 bg-gold text-ink font-display font-black text-sm tracking-wider uppercase pixel-btn-gold hover:bg-gold-light transition-colors flex items-center justify-center gap-2 mt-4 cursor-pointer">
                     <span class="material-symbols-outlined text-base">verified</span>
-                    <span id="verify-btn-text">VERIFY CODE & CONTINUE</span>
+                    <span id="verify-btn-text">VERIFY & CONTINUE</span>
                 </button>
             </div>
 
@@ -294,25 +294,33 @@
                 errorBanner.classList.add('hidden');
             }
 
-            // Verify Code Action
+            // Enter key trigger on input
+            regCodeInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    verifyBtn.click();
+                }
+            });
+
+            // Verify Code or Email Action
             verifyBtn.addEventListener('click', async () => {
                 hideError();
-                const code = regCodeInput.value.trim().toUpperCase();
-                if (!code) return showError('Please enter your event registration code.');
+                const identifier = regCodeInput.value.trim();
+                if (!identifier) return showError('Please enter your event registration code or registered email.');
 
                 verifyBtn.disabled = true;
-                verifyText.textContent = 'VALIDATING CODE...';
+                verifyText.textContent = 'VALIDATING...';
 
                 try {
                     const res = await fetch('/api/auth/validate-code', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code })
+                        body: JSON.stringify({ code: identifier, identifier: identifier })
                     });
 
                     const data = await res.json();
                     if (!res.ok || !data.valid) {
-                        throw new Error(data.error || 'Invalid or expired registration code.');
+                        throw new Error(data.error || 'Invalid or expired registration code or email.');
                     }
 
                     validatedCodeData = data;
@@ -323,17 +331,25 @@
                     cardWave.textContent = data.wave || 'Wave 1';
                     cardMasked.textContent = data.maskedEmail;
 
+                    // If user entered email directly, pre-fill confirmation email
+                    if (identifier.includes('@') || data.registeredEmail) {
+                        emailInput.value = data.registeredEmail || identifier;
+                    }
+
                     // Transition to Step 2
                     step1.classList.add('hidden');
                     step2.classList.remove('hidden');
                     dot2.classList.replace('bg-navy-darkest', 'bg-gold');
                     dot2.classList.replace('text-cream-dark/50', 'text-ink');
 
+                    // Focus password input for effortless next step
+                    setTimeout(() => pwdInput.focus(), 100);
+
                 } catch (err) {
-                    showError(err.message || 'Error validating code.');
+                    showError(err.message || 'Error validating registration.');
                 } finally {
                     verifyBtn.disabled = false;
-                    verifyText.textContent = 'VERIFY CODE & CONTINUE';
+                    verifyText.textContent = 'VERIFY & CONTINUE';
                 }
             });
 

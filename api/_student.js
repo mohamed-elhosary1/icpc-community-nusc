@@ -117,39 +117,40 @@ const StudentService = {
     maskEmail,
 
     /**
-     * Validate an orientation or participant code before registration
+     * Validate an orientation or participant code or email before registration
      */
-    validateCode: async function (rawCode) {
-        if (!rawCode || typeof rawCode !== 'string') {
-            return { valid: false, error: 'Registration code is required.' };
+    validateCode: async function (rawInput) {
+        if (!rawInput || typeof rawInput !== 'string') {
+            return { valid: false, error: 'Registration code or email is required.' };
         }
-        const code = rawCode.trim().toUpperCase();
+        const cleanInput = rawInput.trim();
+        const cleanEnc = encodeURIComponent(cleanInput);
 
-        // Check if code exists in event registrations
-        const regUrl = `${SUPABASE_URL}/rest/v1/nusc_event_registrations?registration_id=eq.${encodeURIComponent(code)}&select=*&limit=1`;
+        // Check if code or email exists in event registrations
+        const regUrl = `${SUPABASE_URL}/rest/v1/nusc_event_registrations?or=(registration_id.ilike.${cleanEnc},email.ilike.${cleanEnc})&order=created_at.desc&limit=1`;
         const regRes = await fetch(regUrl, { headers: getHeaders(false) });
         if (!regRes.ok) {
             return { valid: false, error: 'Database connection error during code verification.' };
         }
         const records = await regRes.json();
         if (!Array.isArray(records) || records.length === 0) {
-            return { valid: false, error: 'Invalid access code. Please verify the code issued during orientation or participant registration.' };
+            return { valid: false, error: 'Invalid access code or email. Please verify the code or email from your event registration.' };
         }
 
         const reg = records[0];
 
         // Check if already marked redeemed
         if (reg.is_redeemed) {
-            return { valid: false, error: 'This registration code has already been redeemed to create an account.' };
+            return { valid: false, error: 'This registration has already been redeemed to create an account. Please sign in instead.' };
         }
 
-        // Check if a user account already exists with this code
-        const userUrl = `${SUPABASE_URL}/rest/v1/nusc_users?registration_code=eq.${encodeURIComponent(code)}&select=id&limit=1`;
+        // Check if a user account already exists with this code or email
+        const userUrl = `${SUPABASE_URL}/rest/v1/nusc_users?or=(registration_code.eq.${encodeURIComponent(reg.registration_id)},email.ilike.${encodeURIComponent(reg.email)})&select=id&limit=1`;
         const userRes = await fetch(userUrl, { headers: getHeaders(false) });
         if (userRes.ok) {
             const users = await userRes.json();
             if (Array.isArray(users) && users.length > 0) {
-                return { valid: false, error: 'An account is already active for this registration code.' };
+                return { valid: false, error: 'An account is already active for this registration. Please sign in instead.' };
             }
         }
 
@@ -175,24 +176,25 @@ const StudentService = {
     },
 
     /**
-     * Register a new student using their event code
+     * Register a new student using their event code or email
      */
     registerStudent: async function ({ code, email, password, fullName, phone, faculty, academicYear }) {
-        if (!code || !email || !password) {
-            throw new Error('Code, email, and password are required.');
+        const lookup = (code || email || '').trim();
+        if (!lookup || !password) {
+            throw new Error('Registration code or email, and password are required.');
         }
 
         if (password.length < 8) {
             throw new Error('Password must be at least 8 characters long.');
         }
 
-        // 1. Validate Code
-        const check = await this.validateCode(code);
+        // 1. Validate Code or Email
+        const check = await this.validateCode(lookup);
         if (!check.valid) {
             throw new Error(check.error);
         }
 
-        const cleanEmail = email.trim().toLowerCase();
+        const cleanEmail = (email || check.registeredEmail).trim().toLowerCase();
         const originalEmail = (check.registeredEmail || '').trim().toLowerCase();
 
         // 2. Strict Email Verification against registration record

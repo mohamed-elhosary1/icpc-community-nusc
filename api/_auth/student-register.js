@@ -37,16 +37,17 @@ module.exports = async (req, res) => {
 
     try {
         const body = await parseBody(req);
-        const { code, email, password, fullName, phone, faculty, academicYear } = body;
+        const { code, identifier, email, password, fullName, phone, faculty, academicYear } = body;
+        const lookup = (code || identifier || email || '').trim();
 
-        if (!code || !email || !password) {
+        if (!lookup || !password) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            return res.end ? res.end(JSON.stringify({ error: 'Registration code, email, and password are required.' })) : res.send({ error: 'Registration code, email, and password are required.' });
+            return res.end ? res.end(JSON.stringify({ error: 'Registration code or email, and password are required.' })) : res.send({ error: 'Registration code or email, and password are required.' });
         }
 
         const result = await StudentService.registerStudent({
-            code,
-            email,
+            code: lookup,
+            email: email || lookup,
             password,
             fullName,
             phone,
