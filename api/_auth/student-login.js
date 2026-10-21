@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
 
         if (!loginId || !password) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            return res.end ? res.end(JSON.stringify({ error: 'Please enter your email or username and password.' })) : res.send({ error: 'Please enter your email or username and password.' });
+            return res.end ? res.end(JSON.stringify({ error: 'Please enter your Email, Registration ID, or Codeforces Handle and password.' })) : res.send({ error: 'Please enter your Email, Registration ID, or Codeforces Handle and password.' });
         }
 
         const result = await StudentService.login({ identifier: loginId, password });

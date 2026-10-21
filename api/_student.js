@@ -311,8 +311,9 @@ const StudentService = {
             };
         }
 
-        // 2. Query student user from PostgreSQL
-        const queryUrl = `${SUPABASE_URL}/rest/v1/nusc_users?email=ilike.${encodeURIComponent(cleanId.toLowerCase())}&select=*&limit=1`;
+        // 2. Query student user from PostgreSQL (by Email, Registration Code, or Codeforces Handle)
+        const cleanEnc = encodeURIComponent(cleanId);
+        const queryUrl = `${SUPABASE_URL}/rest/v1/nusc_users?or=(email.ilike.${cleanEnc},registration_code.ilike.${cleanEnc},codeforces_handle.ilike.${cleanEnc})&select=*&limit=1`;
         const res = await fetch(queryUrl, { headers: getHeaders(false) });
         if (!res.ok) {
             throw new Error('Database authentication service unavailable.');
@@ -320,7 +321,7 @@ const StudentService = {
 
         const users = await res.json();
         if (!Array.isArray(users) || users.length === 0) {
-            throw new Error('Invalid email or password.');
+            throw new Error('Invalid login credentials (Email, Registration ID, or Codeforces Handle / Password).');
         }
 
         const user = users[0];
