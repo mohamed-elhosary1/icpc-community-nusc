@@ -1,10 +1,16 @@
 /**
  * ICPC NUSC — Codeforces Official API Integration Layer
  * Robust fetching, verification, caching, and problem-solving analytics.
+ * Fully supports official Codeforces API Key and Secret SHA-512 authentication.
  */
+
+const crypto = require('crypto');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gpzwlxbmgpmydgywxtdo.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || 'sb_publishable_zbshKRcot5UDfjvtMJx4gQ_c9a9-of9';
+
+const CF_API_KEY = (process.env.CODEFORCES_API_KEY || '').trim();
+const CF_API_SECRET = (process.env.CODEFORCES_API_SECRET || '').trim();
 
 function getHeaders() {
     return {
@@ -14,11 +20,76 @@ function getHeaders() {
     };
 }
 
+/**
+ * Builds an authorized Codeforces API URL according to the official spec:
+ * https://codeforces.com/apiHelp
+ * If CODEFORCES_API_KEY and CODEFORCES_API_SECRET are present, signs with SHA-512 apiSig.
+ */
+function buildCodeforcesUrl(methodName, params = {}) {
+    const allParams = { ...params };
+    const apiKey = (process.env.CODEFORCES_API_KEY || CF_API_KEY || '').trim();
+    const apiSecret = (process.env.CODEFORCES_API_SECRET || CF_API_SECRET || '').trim();
+
+    if (apiKey && apiSecret) {
+        allParams.apiKey = apiKey;
+        allParams.time = Math.floor(Date.now() / 1000);
+
+        // Sort keys lexicographically
+        const sortedKeys = Object.keys(allParams).sort();
+        const paramPairs = [];
+        for (const k of sortedKeys) {
+            paramPairs.push(`${k}=${allParams[k]}`);
+        }
+        const sortedParamStr = paramPairs.join('&');
+
+        // 6-digit random alphanumeric prefix
+        const rand = crypto.randomBytes(3).toString('hex').toLowerCase();
+        const textToHash = `${rand}/${methodName}?${sortedParamStr}#${apiSecret}`;
+        const hash = crypto.createHash('sha512').update(textToHash).digest('hex');
+        allParams.apiSig = `${rand}${hash}`;
+    }
+
+    const query = new URLSearchParams();
+    for (const [k, v] of Object.entries(allParams)) {
+        query.append(k, v);
+    }
+    return `https://codeforces.com/api/${methodName}?${query.toString()}`;
+}
+
 // In-memory rate-limiter & request lock
 const activeFetches = new Map();
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes cache
 
 const CodeforcesService = {
+    buildCodeforcesUrl,
+
+    hasApiCredentials: function () {
+        const apiKey = (process.env.CODEFORCES_API_KEY || CF_API_KEY || '').trim();
+        const apiSecret = (process.env.CODEFORCES_API_SECRET || CF_API_SECRET || '').trim();
+        return !!(apiKey && apiSecret);
+    },
+
+    /**
+     * Test and verify Codeforces API credentials
+     */
+    testApiCredentials: async function () {
+        if (!this.hasApiCredentials()) {
+            return { configured: false, valid: false, message: 'CODEFORCES_API_KEY or CODEFORCES_API_SECRET is not configured.' };
+        }
+        try {
+            const testUrl = buildCodeforcesUrl('user.info', { handles: 'tourist' });
+            const res = await fetch(testUrl, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
+            const data = await res.json();
+            if (data.status === 'OK') {
+                return { configured: true, valid: true, message: 'Codeforces API credentials verified successfully.' };
+            } else {
+                return { configured: true, valid: false, message: data.comment || 'Codeforces API rejected signature or key.' };
+            }
+        } catch (e) {
+            return { configured: true, valid: false, message: e.message };
+        }
+    },
+
     /**
      * Fetch user profile from Codeforces API with fallback to cache
      */
@@ -46,7 +117,7 @@ const CodeforcesService = {
 
         // 2. Fetch fresh data from Codeforces API
         try {
-            const cfUrl = `https://codeforces.com/api/user.info?handles=${encodeURIComponent(handle)}`;
+            const cfUrl = buildCodeforcesUrl('user.info', { handles: handle });
             const res = await fetch(cfUrl, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
             
             if (!res.ok) {
@@ -72,7 +143,7 @@ const CodeforcesService = {
             let recentSubmissions = [];
 
             try {
-                const subUrl = `https://codeforces.com/api/user.status?handle=${encodeURIComponent(handle)}&from=1&count=200`;
+                const subUrl = buildCodeforcesUrl('user.status', { handle: handle, from: 1, count: 200 });
                 const subRes = await fetch(subUrl, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
                 if (subRes.ok) {
                     const subData = await subRes.json();
@@ -153,7 +224,7 @@ const CodeforcesService = {
         }
 
         try {
-            const cfUrl = `https://codeforces.com/api/user.info?handles=${encodeURIComponent(handle.trim())}`;
+            const cfUrl = buildCodeforcesUrl('user.info', { handles: handle.trim() });
             const res = await fetch(cfUrl, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
             if (!res.ok) {
                 return { verified: false, reason: 'Could not contact Codeforces API to verify handle.' };

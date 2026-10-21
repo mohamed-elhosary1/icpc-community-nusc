@@ -391,6 +391,26 @@ async function runTests() {
         assert(false, 'Admin extended endpoints test failed', e.message);
     }
 
+    // 11. Testing Codeforces Integration & API Key Signature Builder
+    console.log('\n--- 11. Testing Codeforces Integration & API Key Signature Builder ---');
+    try {
+        const CodeforcesService = require('./api/_codeforces');
+        const unsignedUrl = CodeforcesService.buildCodeforcesUrl('user.info', { handles: 'tourist' });
+        assert(unsignedUrl.includes('https://codeforces.com/api/user.info?handles=tourist'), 'CodeforcesService builds standard public API URL');
+
+        // Test with mock credentials to verify SHA-512 signature generation
+        process.env.CODEFORCES_API_KEY = 'test_key';
+        process.env.CODEFORCES_API_SECRET = 'test_secret';
+        const signedUrl = CodeforcesService.buildCodeforcesUrl('user.info', { handles: 'tourist' });
+        assert(signedUrl.includes('apiKey=test_key') && signedUrl.includes('apiSig='), 'CodeforcesService signs URL with apiKey and SHA-512 apiSig');
+
+        // Cleanup test env
+        delete process.env.CODEFORCES_API_KEY;
+        delete process.env.CODEFORCES_API_SECRET;
+    } catch (e) {
+        assert(false, 'Codeforces API builder test failed', e.message);
+    }
+
     console.log('\n====================================================');
     console.log(`TEST SUMMARY: ${passed} PASSED, ${failed} FAILED`);
     console.log('====================================================');

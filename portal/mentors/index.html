@@ -139,30 +139,11 @@
                             <span class="text-[10px] font-minecraft text-gold uppercase">Coach Pick</span>
                         </div>
 
-                        <div class="space-y-2 text-xs font-body">
-                            <a href="https://codeforces.com/problemset/problem/4/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
-                                <div>
-                                    <strong class="text-white block font-display">CF 4A - Watermelon</strong>
-                                    <span class="text-[11px] text-cream-dark/60 font-body">Basic logic and parity check</span>
-                                </div>
-                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
-                            </a>
-
-                            <a href="https://codeforces.com/problemset/problem/71/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
-                                <div>
-                                    <strong class="text-white block font-display">CF 71A - Way Too Long Words</strong>
-                                    <span class="text-[11px] text-cream-dark/60 font-body">String manipulation & abbreviations</span>
-                                </div>
-                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
-                            </a>
-
-                            <a href="https://codeforces.com/problemset/problem/231/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
-                                <div>
-                                    <strong class="text-white block font-display">CF 231A - Team</strong>
-                                    <span class="text-[11px] text-cream-dark/60 font-body">Count condition threshold</span>
-                                </div>
-                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
-                            </a>
+                        <div id="recommended-problems-container" class="space-y-2 text-xs font-body">
+                            <div class="p-6 bg-navy-darkest border border-white/10 text-center space-y-2">
+                                <span class="material-symbols-outlined text-3xl text-cream-dark/30">assignment</span>
+                                <p class="text-xs text-cream-dark/60">No recommended problems assigned yet. Check back after upcoming training sessions!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,6 +163,7 @@
 
             const announcementsContainer = document.getElementById('announcements-container');
             const feedbackContainer = document.getElementById('feedback-container');
+            const problemsContainer = document.getElementById('recommended-problems-container');
 
             try {
                 const res = await PortalAuth.fetchWithAuth('/api/portal/mentors');
@@ -190,6 +172,7 @@
                 const data = await res.json();
                 const announcements = data.announcements || [];
                 const personal = data.personalFeedback || [];
+                const recommendedProblems = data.recommendedProblems || [];
 
                 // Render announcements
                 if (announcements.length === 0) {
@@ -226,6 +209,31 @@
                             <p class="font-body text-xs text-cream-dark/80 leading-relaxed">${f.content}</p>
                         </div>
                     `).join('');
+                }
+
+                // Render real recommended problems from mentors
+                if (problemsContainer) {
+                    if (recommendedProblems.length === 0) {
+                        problemsContainer.innerHTML = `
+                            <div class="p-6 bg-navy-darkest border border-white/10 text-center space-y-2">
+                                <span class="material-symbols-outlined text-3xl text-cream-dark/30">assignment</span>
+                                <p class="text-xs text-cream-dark/60">No recommended problems assigned yet. Check back after upcoming training sessions!</p>
+                            </div>
+                        `;
+                    } else {
+                        problemsContainer.innerHTML = recommendedProblems.map(p => {
+                            const link = p.url || (p.contestId && p.index ? `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}` : '#');
+                            return `
+                                <a href="${link}" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
+                                    <div>
+                                        <strong class="text-white block font-display">${p.name || p.title || 'Practice Problem'}</strong>
+                                        <span class="text-[11px] text-cream-dark/60 font-body">${p.topic || p.description || 'Assigned by coach'}</span>
+                                    </div>
+                                    <span class="text-gold font-mono font-bold">${p.rating ? p.rating + ' &rarr;' : '&rarr;'}</span>
+                                </a>
+                            `;
+                        }).join('');
+                    }
                 }
 
             } catch (err) {

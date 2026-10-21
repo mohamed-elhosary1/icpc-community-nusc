@@ -98,13 +98,31 @@ module.exports = async (req, res) => {
             });
         }
 
-        recommendations.push({
-            type: 'practice',
-            title: 'Solve Weekly Recommended Problem',
-            description: 'Tackle the weekly community challenge problem to climb the Weekly Leaders ranking.',
-            link: '/portal/progress',
-            icon: 'code'
-        });
+        let assignedProblem = null;
+        for (const f of feedbackList) {
+            if (Array.isArray(f.recommended_problems) && f.recommended_problems.length > 0) {
+                assignedProblem = f.recommended_problems[0];
+                break;
+            }
+        }
+
+        if (assignedProblem) {
+            recommendations.push({
+                type: 'practice',
+                title: `Assigned: ${assignedProblem.name || assignedProblem.title || 'Practice Problem'}`,
+                description: assignedProblem.topic || assignedProblem.description || 'Recommended by your coach/mentor.',
+                link: assignedProblem.url || '/portal/mentors',
+                icon: 'assignment'
+            });
+        } else if (student.codeforces_handle) {
+            recommendations.push({
+                type: 'practice',
+                title: 'Practice on Codeforces',
+                description: 'Solve problems at your target rating to boost your problem count and climb the leaderboard.',
+                link: 'https://codeforces.com/problemset',
+                icon: 'code'
+            });
+        }
 
         res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
         res.end ? res.end(JSON.stringify({

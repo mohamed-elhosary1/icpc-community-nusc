@@ -108,8 +108,8 @@
                         <span class="material-symbols-outlined text-3xl text-gold" style="font-variation-settings:'FILL' 1">schedule</span>
                         <div>
                             <span class="text-[10px] text-cream-dark/60 font-minecraft uppercase tracking-wider block">NEXT LIVE SESSION</span>
-                            <strong id="next-session-title" class="text-white text-xs sm:text-sm font-display block">Dynamic Programming I</strong>
-                            <span id="next-session-time" class="text-[11px] text-gold font-mono">Saturday @ 9:00 PM</span>
+                            <strong id="next-session-title" class="text-white text-xs sm:text-sm font-display block">No Upcoming Sessions</strong>
+                            <span id="next-session-time" class="text-[11px] text-cream-dark/60 font-mono">Schedule to be announced</span>
                         </div>
                     </div>
                 </div>
@@ -193,9 +193,9 @@
 
                         <div id="announcement-box" class="space-y-2">
                             <div class="p-3 bg-navy-darkest border border-white/10 text-xs space-y-1">
-                                <strong id="announcement-title" class="text-gold block font-display">Welcome to ICPC Training Season</strong>
-                                <p id="announcement-content" class="text-cream-dark/80 font-body text-[11px] leading-relaxed">
-                                    Make sure your Codeforces handle is connected to appear on our weekly leaderboard. Check the sessions timeline for upcoming workshop links.
+                                <strong id="announcement-title" class="text-gold block font-display">No Announcements Yet</strong>
+                                <p id="announcement-content" class="text-cream-dark/60 font-body text-[11px] leading-relaxed">
+                                    Mentor announcements and updates will be posted here.
                                 </p>
                             </div>
                         </div>
@@ -263,13 +263,23 @@
                     if (data.nextSession) {
                         document.getElementById('next-session-title').textContent = data.nextSession.title;
                         const sDate = new Date(data.nextSession.session_date);
-                        document.getElementById('next-session-time').textContent = sDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        const timeEl = document.getElementById('next-session-time');
+                        timeEl.textContent = sDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        timeEl.className = 'text-[11px] text-gold font-mono';
+                    } else {
+                        document.getElementById('next-session-title').textContent = 'No Upcoming Sessions';
+                        const timeEl = document.getElementById('next-session-time');
+                        timeEl.textContent = 'Schedule to be announced';
+                        timeEl.className = 'text-[11px] text-cream-dark/50 font-mono';
                     }
 
                     // Announcement
                     if (data.announcement) {
                         document.getElementById('announcement-title').textContent = data.announcement.title || 'Mentor Announcement';
                         document.getElementById('announcement-content').textContent = data.announcement.content;
+                    } else {
+                        document.getElementById('announcement-title').textContent = 'No Announcements Yet';
+                        document.getElementById('announcement-content').textContent = 'Mentor announcements and updates will be posted here.';
                     }
 
                     // Quick CF handle
