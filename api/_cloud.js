@@ -148,9 +148,7 @@ const CloudDB = {
      * Save a participant training registration with strict validation and unique ID generation.
      */
     saveParticipant: async function(pData) {
-        if (!pData.fullName || !pData.email || !pData.phone || !pData.faculty || !pData.academicYear || !pData.level) {
-            throw new Error('Missing required participant fields.');
-        }
+        throw new Error('Participant recruitment is permanently closed.');
 
         const cleanEmail = String(pData.email).trim().toLowerCase();
         const cleanPhone = String(pData.phone).trim();

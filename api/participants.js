@@ -107,123 +107,14 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // POST /api/participants -> Public Registration for Participants
+    // POST /api/participants -> Recruitment is officially CLOSED
     if (req.method === 'POST') {
-        const body = await parseBody(req);
-        const {
-            fullName,
-            phone,
-            email,
-            faculty,
-            academicYear,
-            codeforcesHandle,
-            level,
-            universityConfirmed
-        } = body;
-
-        // University Restriction Validation (Server-side enforced)
-        if (universityConfirmed !== true && universityConfirmed !== 'true') {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Registration is restricted to students of National University of Sadat City. You must confirm your enrollment to proceed.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 1. Validate Full Name
-        if (!fullName || typeof fullName !== 'string' || fullName.trim().length < 3) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter your full name (minimum 3 characters).' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 2. Validate Phone
-        if (!validatePhone(phone)) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter a valid phone number (e.g. 010xxxxxxxx or international format).' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 3. Validate Email
-        if (!validateEmail(email)) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please enter a valid email address.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 4. Validate Faculty
-        if (!faculty || !ALLOWED_FACULTIES.includes(faculty.trim())) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({
-                error: `Please select a valid faculty from the allowed list: ${ALLOWED_FACULTIES.join(', ')}`
-            });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 5. Validate Academic Year
-        if (!academicYear || typeof academicYear !== 'string' || !academicYear.trim()) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please select your academic year / level.' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        // 6. Validate Level
-        if (!level || typeof level !== 'string' || !level.trim()) {
-            res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
-            const err = JSON.stringify({ error: 'Please select your target training level (Level 1, Level 2, or Level 3).' });
-            res.end ? res.end(err) : res.send(err);
-            return;
-        }
-
-        const cleanCf = codeforcesHandle && typeof codeforcesHandle === 'string' ? codeforcesHandle.trim() : null;
-
-        try {
-            const savedRecord = await CloudDB.saveParticipant({
-                fullName: fullName.trim(),
-                phone: phone.trim(),
-                email: email.trim().toLowerCase(),
-                faculty: faculty.trim(),
-                academicYear: academicYear.trim(),
-                codeforcesHandle: cleanCf,
-                level: level.trim()
-            });
-
-            // Local fallback persistence
-            try {
-                DB.saveRegistration('participant-recruitment-2026', {
-                    registrationId: savedRecord.registration_id,
-                    fullName: savedRecord.full_name,
-                    phone: savedRecord.phone,
-                    email: savedRecord.email,
-                    faculty: savedRecord.faculty,
-                    academicYear: savedRecord.academic_year,
-                    codeforcesHandle: savedRecord.codeforces_handle,
-                    level: savedRecord.level
-                });
-            } catch (e) {}
-
-            res.writeHead ? res.writeHead(201, { 'Content-Type': 'application/json' }) : res.status(201);
-            const out = JSON.stringify({
-                success: true,
-                registrationId: savedRecord.registration_id,
-                participant: savedRecord
-            });
-            res.end ? res.end(out) : res.send(out);
-        } catch (err) {
-            console.error('[API participants POST Error]:', err.message);
-            const statusCode = (err.code === 'DUPLICATE_REGISTRATION') ? 409 : 500;
-            res.writeHead ? res.writeHead(statusCode, { 'Content-Type': 'application/json' }) : res.status(statusCode);
-            const errResponse = JSON.stringify({
-                error: err.message,
-                code: err.code || 'DB_ERROR',
-                existingRegistrationId: err.existingRegistrationId || null
-            });
-            res.end ? res.end(errResponse) : res.send(errResponse);
-        }
+        res.writeHead ? res.writeHead(403, { 'Content-Type': 'application/json' }) : res.status(403);
+        const err = JSON.stringify({
+            error: 'Participant recruitment is now officially closed. Thank you for your interest!',
+            code: 'RECRUITMENT_CLOSED'
+        });
+        res.end ? res.end(err) : res.send(err);
         return;
     }
 

@@ -444,18 +444,18 @@
     <div class="max-w-site mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-8 relative z-10">
         <div class="md:w-2/3">
             <!-- Registration Status Badge -->
-            <div class="mb-4 inline-flex items-center gap-2 bg-navy border border-gold/40 px-3 py-1.5 pixel-border text-xs text-gold">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span>Participant Training Recruitment is <strong>OFFICIALLY OPEN!</strong></span>
-                <a href="#register" class="underline font-bold text-white hover:text-gold ml-1">Register Now &rarr;</a>
+            <div class="mb-4 inline-flex items-center gap-2 bg-navy border border-red-500/50 px-3 py-1.5 pixel-border text-xs text-red-300">
+                <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                <span>Participant Training Recruitment is <strong>OFFICIALLY CLOSED</strong></span>
+                <a href="#register" class="underline font-bold text-white hover:text-gold ml-1">Check Status &rarr;</a>
             </div>
 
             <h1 class="font-display font-black text-4xl md:text-6xl text-white mb-4">START YOUR <span class="text-gold">ICPC JOURNEY</span>.</h1>
             <p class="font-body text-lg text-cream-dark/80 max-w-2xl mb-8">Competitive programming is the ultimate sport for the mind. Learn the fundamentals of algorithms, solve complex problems, and compete with the brightest minds across the globe.</p>
             <div class="flex flex-wrap gap-4">
-                <a href="#register" class="pixel-btn-gold bg-gold text-ink font-display font-black px-6 py-3 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-base">how_to_reg</span>
-                    <span>REGISTER AS PARTICIPANT &rarr;</span>
+                <a href="#register" class="pixel-btn bg-navy text-gold border-2 border-gold font-display font-black px-6 py-3 flex items-center gap-2 hover:bg-gold hover:text-ink transition-colors">
+                    <span class="material-symbols-outlined text-base">manage_search</span>
+                    <span>CHECK REGISTRATION STATUS &rarr;</span>
                 </a>
                 <a href="#tracks" class="pixel-btn bg-navy text-white border-gold font-display font-bold px-6 py-3 flex items-center gap-2 hover:bg-gold hover:text-ink transition-colors">
                     EXPLORE TRACKS &rarr;
@@ -596,15 +596,15 @@
         
         <!-- Section Header -->
         <div class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 bg-navy border border-gold/40 px-3 py-1 pixel-border mb-3">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span class="font-minecraft text-xs text-gold uppercase tracking-widest">Season 2026 Recruitment</span>
+            <div class="inline-flex items-center gap-2 bg-navy border border-red-500/50 px-3 py-1 pixel-border mb-3">
+                <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                <span class="font-minecraft text-xs text-red-300 uppercase tracking-widest">Recruitment Closed</span>
             </div>
             <h2 id="p-header-title" class="font-display font-black text-3xl md:text-5xl text-white mb-3">
-                JOIN AS A <span class="text-gold">PARTICIPANT</span>
+                PARTICIPANT RECRUITMENT <span class="text-red-400">CLOSED</span>
             </h2>
             <p id="p-header-desc" class="font-body text-cream-dark/80 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-                Fill out the application below to join ICPC Community NUSC training sessions, contests, and mentorship programs.
+                Participant registration for Season 2026 has officially concluded. Thank you to everyone who registered! If you have already registered, you can verify and view your status below.
             </p>
         </div>
 
@@ -635,153 +635,56 @@
                 <div id="participant-error-message" class="font-body text-xs sm:text-sm"></div>
             </div>
 
-            <!-- Form View -->
-            <form id="participant-reg-form" class="space-y-6" novalidate>
-                
-                <!-- 1. Full Name -->
-                <div>
-                    <label for="p-fullName" class="block font-display font-bold text-sm text-white mb-2">
-                        1. Full Name <span class="text-gold">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        id="p-fullName" 
-                        name="fullName" 
-                        required 
-                        placeholder="e.g. Ahmed Mohamed Ali" 
-                        class="pixel-input w-full"
-                        autocomplete="name"
-                    />
-                    <p class="text-[11px] text-cream-dark/50 mt-1">Please enter your real full name.</p>
-                </div>
-
-                <!-- 2. Phone Number -->
-                <div>
-                    <label for="p-phone" class="block font-display font-bold text-sm text-white mb-2">
-                        2. Phone Number <span class="text-gold">*</span>
-                    </label>
-                    <input 
-                        type="tel" 
-                        id="p-phone" 
-                        name="phone" 
-                        required 
-                        placeholder="e.g. 01012345678" 
-                        class="pixel-input w-full"
-                        autocomplete="tel"
-                    />
-                    <p class="text-[11px] text-cream-dark/50 mt-1">Egyptian mobile number (010, 011, 012, 015) or international format.</p>
-                </div>
-
-                <!-- 3. Email Address -->
-                <div>
-                    <label for="p-email" class="block font-display font-bold text-sm text-white mb-2">
-                        3. Email Address <span class="text-gold">*</span>
-                    </label>
-                    <input 
-                        type="email" 
-                        id="p-email" 
-                        name="email" 
-                        required 
-                        placeholder="e.g. yourname@gmail.com" 
-                        class="pixel-input w-full"
-                        autocomplete="email"
-                    />
-                    <p class="text-[11px] text-cream-dark/50 mt-1">Used for training updates, contest invites, and confirmation.</p>
-                </div>
-
-                <!-- 4. Faculty -->
-                <div>
-                    <label for="p-faculty" class="block font-display font-bold text-sm text-white mb-2">
-                        4. Faculty <span class="text-gold">*</span>
-                    </label>
-                    <select id="p-faculty" name="faculty" required class="pixel-input w-full">
-                        <option value="" disabled selected>-- Select your faculty --</option>
-                        <option value="Computers and AI">Computers and AI</option>
-                        <option value="Science">Science</option>
-                        <option value="Vet">Vet</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Business">Business</option>
-                        <option value="Tourism">Tourism</option>
-                        <option value="Sports">Sports</option>
-                    </select>
-                </div>
-
-                <!-- 5. Academic Year / Grade -->
-                <div>
-                    <label for="p-academicYear" class="block font-display font-bold text-sm text-white mb-2">
-                        5. Level / Academic Year <span class="text-gold">*</span>
-                    </label>
-                    <select id="p-academicYear" name="academicYear" required class="pixel-input w-full">
-                        <option value="" disabled selected>-- Select your academic year --</option>
-                        <option value="Level 1 (First Year)">Level 1 (First Year)</option>
-                        <option value="Level 2 (Second Year)">Level 2 (Second Year)</option>
-                        <option value="Level 3 (Third Year)">Level 3 (Third Year)</option>
-                        <option value="Level 4 (Fourth Year)">Level 4 (Fourth Year)</option>
-                        <option value="Graduate">Graduate</option>
-                    </select>
-                </div>
-
-                <!-- 6. Codeforces Handle (Optional) -->
-                <div>
-                    <label for="p-codeforces" class="block font-display font-bold text-sm text-white mb-2">
-                        6. Codeforces Handle <span class="text-cream-dark/50 font-normal text-xs">(Optional)</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        id="p-codeforces" 
-                        name="codeforcesHandle" 
-                        placeholder="e.g. tourist" 
-                        class="pixel-input w-full"
-                        autocomplete="off"
-                    />
-                    <p class="text-[11px] text-cream-dark/50 mt-1">Leave empty if you do not have an active Codeforces account yet.</p>
-                </div>
-
-                <!-- 7. Target Training Level -->
-                <div>
-                    <label for="p-level" class="block font-display font-bold text-sm text-white mb-2">
-                        7. Target Training Level <span class="text-gold">*</span>
-                    </label>
-                    <select id="p-level" name="level" required class="pixel-input w-full">
-                        <option value="" disabled selected>-- Select target training level --</option>
-                        <option value="Level 1: Beginner">Level 1: Beginner (C++ Basics, STL, Big O, Basic Problem Solving)</option>
-                        <option value="Level 2: Intermediate">Level 2: Intermediate (Number Theory, Greedy, Graph DFS/BFS, Binary Search)</option>
-                        <option value="Level 3: Advanced">Level 3: Advanced (Dynamic Programming, Segment Trees, Advanced Graphs)</option>
-                    </select>
-                </div>
-
-                <!-- University Restriction Declaration -->
-                <div class="p-4 bg-navy-dark/90 border-2 border-gold/40 rounded">
-                    <label class="flex items-start gap-3 cursor-pointer">
-                        <input 
-                            type="checkbox" 
-                            id="p-university" 
-                            name="universityConfirmed" 
-                            required 
-                            class="mt-1 w-4 h-4 rounded text-gold focus:ring-gold bg-navy border-gold"
-                        />
-                        <span class="font-body text-xs sm:text-sm text-white">
-                            I am a student at <strong class="text-gold">National University of Sadat City</strong>. <span class="text-gold">*</span>
-                        </span>
-                    </label>
-                    <p class="text-[11px] text-cream-dark/50 mt-2 pl-7">
-                        Participation is strictly reserved for students of National University of Sadat City.
+            <!-- Closed State & Registration Status Lookup -->
+            <div id="participant-closed-view" class="space-y-6">
+                <!-- Closed Alert Box -->
+                <div class="p-6 bg-navy-dark border-2 border-red-500/60 pixel-border text-center space-y-3">
+                    <div class="w-12 h-12 rounded-full bg-red-950 border border-red-500/80 flex items-center justify-center mx-auto text-red-400">
+                        <span class="material-symbols-outlined text-2xl">lock</span>
+                    </div>
+                    <div>
+                        <span class="font-minecraft text-[10px] text-red-300 uppercase tracking-widest block mb-1">Season 2026</span>
+                        <h3 class="font-display font-black text-xl sm:text-2xl text-white">RECRUITMENT IS OFFICIALLY CLOSED</h3>
+                    </div>
+                    <p class="font-body text-xs sm:text-sm text-cream-dark/80 max-w-lg mx-auto leading-relaxed">
+                        Registration for the participant training program is now closed. Thank you to all who registered! Accepted students will receive their training schedules and Discord/WhatsApp invites via email and phone.
                     </p>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="pt-4">
-                    <button 
-                        type="submit" 
-                        id="p-submit-btn" 
-                        class="w-full bg-gold text-ink font-display font-black text-base sm:text-lg py-4 pixel-btn-gold flex items-center justify-center gap-2 hover:bg-gold-light transition-all cursor-pointer"
-                    >
-                        <span class="material-symbols-outlined text-xl">how_to_reg</span>
-                        <span id="p-btn-text">SUBMIT PARTICIPANT REGISTRATION</span>
-                    </button>
-                </div>
+                <!-- Registration Lookup Box -->
+                <div class="p-6 bg-navy-darkest border border-gold/40 pixel-border space-y-4">
+                    <div class="text-center sm:text-left">
+                        <h4 class="font-display font-black text-base text-gold uppercase flex items-center gap-2 justify-center sm:justify-start">
+                            <span class="material-symbols-outlined text-lg">manage_search</span>
+                            <span>Already Registered? Check Your Status</span>
+                        </h4>
+                        <p class="text-xs text-cream-dark/60 mt-1 font-body">
+                            Enter your registered Email, Phone Number, or Registration ID to look up your details.
+                        </p>
+                    </div>
 
-            </form>
+                    <form id="p-lookup-form" class="space-y-3">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="p-lookup-input" 
+                                placeholder="Enter Email, Phone (010...), or ID (NUSC-PAR26-...)" 
+                                required
+                                class="pixel-input text-xs sm:text-sm w-full py-3 px-4 bg-navy text-white border-2 border-navy-light focus:border-gold outline-none"
+                            />
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="p-lookup-btn" 
+                            class="w-full bg-gold text-ink font-display font-black text-xs sm:text-sm py-3.5 pixel-btn-gold flex items-center justify-center gap-2 hover:bg-gold-light transition-colors uppercase tracking-wider cursor-pointer"
+                        >
+                            <span class="material-symbols-outlined text-base">search</span>
+                            <span id="p-lookup-btn-text">CHECK REGISTRATION STATUS</span>
+                        </button>
+                    </form>
+                    <p id="p-lookup-error" class="text-xs text-red-400 font-body text-center hidden"></p>
+                </div>
+            </div>
 
             <!-- Success View (Hidden by Default) -->
             <div id="participant-success-view" class="hidden text-center py-6">
@@ -872,7 +775,7 @@
                         id="p-register-another-btn" 
                         class="bg-navy-dark border border-white/20 text-cream-dark/80 hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 pixel-btn cursor-pointer"
                     >
-                        Register Another Participant
+                        Check Another Registration &rarr;
                     </button>
                     <a 
                         href="/#" 
@@ -908,23 +811,23 @@
             </p>
             
             <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-5 relative z-10">
-                <!-- Option 1: Participant (OPEN) -->
-                <a href="#register" class="close-modal group relative bg-white p-2.5 sm:p-4 md:p-5 pixel-border border-gold ring-2 ring-gold/40 flex flex-col items-center justify-between hover:-translate-y-1 hover:pixel-shadow-gold transition-all duration-300">
+                <!-- Option 1: Participant (CLOSED) -->
+                <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between select-none border-dashed border-ink/40">
                     <div class="w-full flex justify-center mb-1">
-                        <span class="bg-gold text-ink font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 font-bold uppercase tracking-wider shadow-sm animate-pulse">RECRUITMENT OPEN</span>
+                        <span class="bg-red-950/80 text-red-300 border border-red-500/50 font-minecraft text-[7px] sm:text-[9px] px-1.5 py-0.5 uppercase tracking-wider">CLOSED</span>
                     </div>
-                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full">
-                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0"></span>
+                    <div class="h-10 sm:h-16 md:h-20 flex items-end justify-center mb-1.5 sm:mb-2 relative w-full opacity-60">
+                        <span class="sprite-npc-male scale-90 sm:scale-125 md:scale-150 transform-origin-bottom absolute bottom-0 grayscale"></span>
                     </div>
                     <div class="flex-grow flex flex-col items-center">
-                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-gold-dark mb-0.5 uppercase tracking-wider font-bold">Participant</h3>
-                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-navy mb-1 leading-tight group-hover:text-gold-dark transition-colors">LEARN + COMPETE</h4>
-                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-light mb-2 sm:mb-4 leading-tight">Join weekly training, solve problems, and compete in contests.</p>
+                        <h3 class="font-minecraft text-[8px] sm:text-[10px] md:text-xs text-ink-lighter mb-0.5 uppercase tracking-wider font-bold">Participant</h3>
+                        <h4 class="font-display font-black text-xs sm:text-lg md:text-xl text-ink-lighter mb-1 leading-tight">RECRUITMENT CLOSED</h4>
+                        <p class="font-body text-[10px] sm:text-xs md:text-sm text-ink-lighter mb-2 sm:mb-4 leading-tight">Participant registration for Season 2026 has concluded. Thank you!</p>
                     </div>
-                    <div class="w-full bg-gold text-ink font-display font-black text-[11px] sm:text-sm md:text-base py-1 sm:py-2 pixel-btn-gold flex justify-center items-center gap-1 group-hover:bg-navy group-hover:text-white transition-colors">
-                        REGISTER NOW &rarr;
-                    </div>
-                </a>
+                    <a href="#register" class="close-modal w-full bg-navy text-gold font-display font-bold text-[10px] sm:text-xs md:text-sm py-1 sm:py-2 pixel-btn flex justify-center items-center gap-1 hover:bg-gold hover:text-ink transition-colors">
+                        CHECK STATUS &rarr;
+                    </a>
+                </div>
                 
                 <!-- Option 2: Organizing Team (CLOSED) -->
                 <div class="relative bg-white/70 p-2.5 sm:p-4 md:p-5 pixel-border flex flex-col items-center justify-between opacity-80 select-none border-dashed border-ink/40">
@@ -1350,31 +1253,39 @@
     }
 
     function initParticipantRegistration() {
-        const form = document.getElementById('participant-reg-form');
-        const submitBtn = document.getElementById('p-submit-btn');
-        const btnText = document.getElementById('p-btn-text');
-        const errorBanner = document.getElementById('participant-error-banner');
-        const errorMsg = document.getElementById('participant-error-message');
+        const closedView = document.getElementById('participant-closed-view');
+        const lookupForm = document.getElementById('p-lookup-form');
+        const lookupInput = document.getElementById('p-lookup-input');
+        const lookupBtn = document.getElementById('p-lookup-btn');
+        const lookupBtnText = document.getElementById('p-lookup-btn-text');
+        const lookupError = document.getElementById('p-lookup-error');
         const successView = document.getElementById('participant-success-view');
         const confirmedIdEl = document.getElementById('p-confirmed-id');
         const copyBtn = document.getElementById('p-copy-id-btn');
         const copyText = document.getElementById('p-copy-btn-text');
         const registerAnotherBtn = document.getElementById('p-register-another-btn');
+        const refreshBtn = document.getElementById('p-refresh-status-btn');
+        const refreshText = document.getElementById('p-refresh-btn-text');
+        const viewMyStatusBtn = document.getElementById('p-view-my-status-btn');
+        const existingBanner = document.getElementById('participant-existing-banner');
+        const bannerId = document.getElementById('p-banner-id');
 
-        if (!form) return;
+        if (!closedView && !lookupForm) return;
 
         const STORAGE_KEY = 'nusc_participant_registration';
 
-        function showError(msg) {
-            if (errorMsg) errorMsg.textContent = msg;
-            if (errorBanner) {
-                errorBanner.classList.remove('hidden');
-                errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        function showLookupError(msg) {
+            if (lookupError) {
+                lookupError.textContent = msg;
+                lookupError.classList.remove('hidden');
             }
         }
 
-        function hideError() {
-            if (errorBanner) errorBanner.classList.add('hidden');
+        function hideLookupError() {
+            if (lookupError) {
+                lookupError.classList.add('hidden');
+                lookupError.textContent = '';
+            }
         }
 
         function showConfirmedStatus(data, isWelcomeBack = false) {
@@ -1405,16 +1316,15 @@
                 if (statusTitle) statusTitle.textContent = 'YOUR REGISTRATION STATUS';
                 if (statusDesc) statusDesc.textContent = 'Welcome back! You are officially registered in the ICPC NUSC training program. Below is your latest confirmed registration status and ID.';
                 if (headerTitle) headerTitle.innerHTML = 'REGISTRATION <span class="text-gold">STATUS</span>';
-                if (headerDesc) headerDesc.textContent = 'Welcome back! Your participant registration is confirmed in our database.';
+                if (headerDesc) headerDesc.textContent = 'Your participant registration is confirmed in our database.';
             }
 
-            form.classList.add('hidden');
+            if (closedView) closedView.classList.add('hidden');
             if (successView) successView.classList.remove('hidden');
-            const existingBanner = document.getElementById('participant-existing-banner');
             if (existingBanner) existingBanner.classList.add('hidden');
         }
 
-        // Check if user already registered on this browser
+        // Check if user already registered or looked up on this browser
         const storedJson = localStorage.getItem(STORAGE_KEY);
         if (storedJson) {
             try {
@@ -1448,131 +1358,63 @@
             } catch (e) {}
         }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError();
+        // Lookup Form Submission
+        if (lookupForm) {
+            lookupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideLookupError();
 
-            const fullName = document.getElementById('p-fullName')?.value.trim();
-            const phone = document.getElementById('p-phone')?.value.trim();
-            const email = document.getElementById('p-email')?.value.trim();
-            const faculty = document.getElementById('p-faculty')?.value;
-            const academicYear = document.getElementById('p-academicYear')?.value;
-            const codeforcesHandle = document.getElementById('p-codeforces')?.value.trim();
-            const level = document.getElementById('p-level')?.value;
-            const universityConfirmed = document.getElementById('p-university')?.checked;
+                const query = lookupInput?.value.trim();
+                if (!query) {
+                    showLookupError('Please enter your Email, Phone Number, or Registration ID.');
+                    return;
+                }
 
-            // Client Validation
-            if (!fullName || fullName.length < 3) {
-                return showError('Please enter your full name (minimum 3 characters).');
-            }
-            if (!phone) {
-                return showError('Please enter your phone number.');
-            }
-            const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, '');
-            if (!/^(\+?20|0020)?0?1[0125]\d{8}$/.test(cleanPhone) && !/^\+?[1-9]\d{7,14}$/.test(cleanPhone)) {
-                return showError('Please enter a valid phone number (e.g. 010xxxxxxxx or international format).');
-            }
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                return showError('Please enter a valid email address.');
-            }
-            if (!faculty) {
-                return showError('Please select your faculty.');
-            }
-            if (!academicYear) {
-                return showError('Please select your level / academic year.');
-            }
-            if (!level) {
-                return showError('Please select your target training level.');
-            }
-            if (!universityConfirmed) {
-                return showError('Registration is strictly restricted to students of National University of Sadat City. Please confirm your enrollment.');
-            }
+                if (lookupBtn) {
+                    lookupBtn.disabled = true;
+                    lookupBtn.classList.add('opacity-75', 'cursor-not-allowed');
+                }
+                if (lookupBtnText) lookupBtnText.textContent = 'SEARCHING...';
 
-            // Set loading state
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
-            if (btnText) btnText.textContent = 'SUBMITTING REGISTRATION...';
+                try {
+                    const res = await fetch(`/api/participants?lookup=${encodeURIComponent(query)}`);
+                    const data = await res.json();
 
-            try {
-                const response = await fetch('/api/participants', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        fullName,
-                        phone,
-                        email,
-                        faculty,
-                        academicYear,
-                        codeforcesHandle: codeforcesHandle || null,
-                        level,
-                        universityConfirmed: true
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (response.status === 409) {
-                        const existingId = data.existingRegistrationId;
-                        if (existingId) {
-                            try {
-                                const lookupRes = await fetch(`/api/participants?id=${encodeURIComponent(existingId)}`);
-                                if (lookupRes.ok) {
-                                    const lookupData = await lookupRes.json();
-                                    if (lookupData && lookupData.participant) {
-                                        const p = lookupData.participant;
-                                        const existingRecord = {
-                                            registrationId: p.registration_id,
-                                            fullName: p.full_name,
-                                            email: p.email,
-                                            phone: p.phone,
-                                            faculty: p.faculty,
-                                            academicYear: p.academic_year,
-                                            level: p.level,
-                                            status: p.status,
-                                            registeredAt: p.created_at
-                                        };
-                                        localStorage.setItem(STORAGE_KEY, JSON.stringify(existingRecord));
-                                        showConfirmedStatus(existingRecord, true);
-                                        return;
-                                    }
-                                }
-                            } catch (errSync) {}
-                        }
-                        throw new Error(data.error || `You have already registered. Your Registration ID is: ${existingId}`);
+                    if (!res.ok || !data.participant) {
+                        showLookupError(data.error || 'No participant registration found matching this query. Please check your Email, Phone, or Registration ID.');
+                        return;
                     }
-                    throw new Error(data.error || 'Failed to submit registration. Please try again.');
+
+                    const p = data.participant;
+                    const record = {
+                        registrationId: p.registration_id,
+                        fullName: p.full_name,
+                        email: p.email,
+                        phone: p.phone,
+                        faculty: p.faculty,
+                        academicYear: p.academic_year,
+                        level: p.level,
+                        status: p.status,
+                        registeredAt: p.created_at
+                    };
+
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+                    showConfirmedStatus(record, true);
+
+                    if (successView) {
+                        successView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                } catch (err) {
+                    showLookupError('Network error or server unavailable. Please try again.');
+                } finally {
+                    if (lookupBtn) {
+                        lookupBtn.disabled = false;
+                        lookupBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    }
+                    if (lookupBtnText) lookupBtnText.textContent = 'CHECK REGISTRATION STATUS';
                 }
-
-                // Success
-                const regId = data.registrationId || (data.participant && data.participant.registration_id);
-                const participantRecord = {
-                    registrationId: regId,
-                    fullName,
-                    email,
-                    phone,
-                    faculty,
-                    academicYear,
-                    level,
-                    university: 'National University of Sadat City',
-                    status: 'Confirmed',
-                    registeredAt: new Date().toISOString()
-                };
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(participantRecord));
-                showConfirmedStatus(participantRecord, false);
-
-                if (successView) {
-                    successView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-
-            } catch (err) {
-                showError(err.message || 'Network error or server unavailable. Please try again.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-                if (btnText) btnText.textContent = 'SUBMIT PARTICIPANT REGISTRATION';
-            }
-        });
+            });
+        }
 
         // Copy ID Button
         if (copyBtn) {
@@ -1645,18 +1487,18 @@
             });
         }
 
-        // Register Another
+        // Register Another / Check Another
         if (registerAnotherBtn) {
             registerAnotherBtn.addEventListener('click', () => {
-                form.reset();
-                hideError();
+                hideLookupError();
+                if (lookupInput) lookupInput.value = '';
                 if (successView) successView.classList.add('hidden');
-                form.classList.remove('hidden');
+                if (closedView) closedView.classList.remove('hidden');
 
                 const headerTitle = document.getElementById('p-header-title');
                 const headerDesc = document.getElementById('p-header-desc');
-                if (headerTitle) headerTitle.innerHTML = 'JOIN AS A <span class="text-gold">PARTICIPANT</span>';
-                if (headerDesc) headerDesc.textContent = 'Fill out the application below to join ICPC Community NUSC training sessions, contests, and mentorship programs.';
+                if (headerTitle) headerTitle.innerHTML = 'PARTICIPANT RECRUITMENT <span class="text-red-400">CLOSED</span>';
+                if (headerDesc) headerDesc.textContent = 'Participant registration for Season 2026 has officially concluded. Thank you to everyone who registered! If you have already registered, you can verify and view your status below.';
 
                 // Show existing banner above form so user can easily toggle back
                 const sJson = localStorage.getItem(STORAGE_KEY);
@@ -1672,7 +1514,7 @@
                     } catch (e) {}
                 }
 
-                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (closedView) closedView.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }
     }
