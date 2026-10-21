@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Chat | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            padding: 10px 14px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .pixel-input:focus {
+            border-color: #fea520 !important;
+            background-color: #00183b !important;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- CHAT MAIN WRAPPER -->
+        <main class="p-4 sm:p-6 flex-grow flex flex-col max-w-7xl mx-auto w-full">
+
+            <div class="bg-navy pixel-border border-gold/40 flex-grow flex flex-col md:flex-row overflow-hidden min-h-[600px] h-[calc(100vh-130px)]">
+                
+                <!-- Channels Sidebar (md:w-64) -->
+                <div class="w-full md:w-64 bg-navy-darkest border-b-2 md:border-b-0 md:border-r-2 border-white/10 flex flex-col flex-shrink-0">
+                    <div class="p-4 border-b border-white/10 flex items-center justify-between">
+                        <span class="font-minecraft text-xs text-gold uppercase tracking-wider">CHANNELS</span>
+                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    </div>
+
+                    <div class="p-2 space-y-1 flex-grow overflow-y-auto" id="channel-list">
+                        <button type="button" data-channel="general" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 bg-gold text-ink">
+                            <span>#</span> <span>general</span>
+                        </button>
+                        <button type="button" data-channel="announcements" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>announcements</span>
+                        </button>
+                        <button type="button" data-channel="problem-solving" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>problem-solving</span>
+                        </button>
+                        <button type="button" data-channel="wave-1" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>wave-1</span>
+                        </button>
+                        <button type="button" data-channel="wave-2" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>wave-2</span>
+                        </button>
+                        <button type="button" data-channel="wave-3" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>wave-3</span>
+                        </button>
+                        <button type="button" data-channel="contest-prep" class="channel-btn w-full text-left px-3 py-2 text-xs font-display font-bold uppercase transition-all flex items-center gap-2 text-cream-dark/70 hover:text-white">
+                            <span>#</span> <span>contest-prep</span>
+                        </button>
+                    </div>
+
+                    <div class="p-3 border-t border-white/10 text-[10px] text-cream-dark/40 font-minecraft text-center uppercase">
+                        ICPC NUSC &bull; Live Community
+                    </div>
+                </div>
+
+                <!-- Chat Messages & Input Area -->
+                <div class="flex-grow flex flex-col min-w-0 bg-navy">
+                    
+                    <!-- Channel Header -->
+                    <div class="h-12 border-b border-white/10 px-5 flex items-center justify-between bg-navy-dark">
+                        <div class="flex items-center gap-2">
+                            <span class="text-gold font-bold">#</span>
+                            <span id="active-channel-name" class="font-display font-black text-sm text-white uppercase tracking-wider">general</span>
+                        </div>
+                        <span id="channel-desc" class="text-[11px] text-cream-dark/60 font-body hidden sm:inline">Open discussions for all community members</span>
+                    </div>
+
+                    <!-- Messages Log -->
+                    <div id="messages-log" class="flex-grow p-4 sm:p-6 overflow-y-auto space-y-4">
+                        <div class="text-center py-8 text-cream-dark/40 text-xs">Loading messages...</div>
+                    </div>
+
+                    <!-- Input Box -->
+                    <div class="p-3 bg-navy-darkest border-t border-white/10">
+                        <form id="chat-form" class="flex items-center gap-2">
+                            <input 
+                                type="text" 
+                                id="chat-input" 
+                                class="pixel-input text-xs" 
+                                placeholder="Message #general... (Enter to send)" 
+                                maxlength="1000"
+                                required 
+                                autocomplete="off"
+                            />
+                            <button 
+                                type="submit" 
+                                id="send-btn" 
+                                class="bg-gold text-ink font-display font-bold text-xs px-5 py-2.5 pixel-btn-gold hover:bg-gold-light transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
+                            >
+                                <span class="material-symbols-outlined text-sm">send</span>
+                                <span class="hidden sm:inline">SEND</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('community');
+
+            let activeChannel = 'general';
+            const logEl = document.getElementById('messages-log');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const activeTitle = document.getElementById('active-channel-name');
+            const activeDesc = document.getElementById('channel-desc');
+            const channelBtns = document.querySelectorAll('.channel-btn');
+
+            const channelDescriptions = {
+                'general': 'Open discussions for all community members',
+                'announcements': 'Official announcements from mentors and coaches (Read Only)',
+                'problem-solving': 'Code debugging, algorithmic hints, and contest questions',
+                'wave-1': 'Training discussions for Level 1 / Wave 1 students',
+                'wave-2': 'Training discussions for Level 2 / Wave 2 students',
+                'wave-3': 'Training discussions for Level 3 / Wave 3 students',
+                'contest-prep': 'Team formation, mock rounds, and ICPC strategy'
+            };
+
+            channelBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    channelBtns.forEach(b => {
+                        b.classList.remove('bg-gold', 'text-ink');
+                        b.classList.add('text-cream-dark/70');
+                    });
+                    btn.classList.add('bg-gold', 'text-ink');
+                    btn.classList.remove('text-cream-dark/70');
+                    activeChannel = btn.getAttribute('data-channel');
+                    activeTitle.textContent = activeChannel;
+                    activeDesc.textContent = channelDescriptions[activeChannel] || 'Community Channel';
+                    chatInput.placeholder = `Message #${activeChannel}...`;
+
+                    // Disable sending if student in announcements
+                    if (activeChannel === 'announcements' && user.role !== 'admin' && user.role !== 'mentor') {
+                        chatInput.disabled = true;
+                        chatInput.placeholder = 'Only coaches and administrators can post in #announcements.';
+                        sendBtn.disabled = true;
+                        sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        chatInput.disabled = false;
+                        sendBtn.disabled = false;
+                        sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+
+                    loadMessages();
+                });
+            });
+
+            async function loadMessages() {
+                try {
+                    const res = await PortalAuth.fetchWithAuth(`/api/portal/chat?channel=${encodeURIComponent(activeChannel)}`);
+                    if (!res.ok) throw new Error('Could not fetch messages.');
+
+                    const data = await res.json();
+                    const messages = data.messages || [];
+
+                    if (messages.length === 0) {
+                        logEl.innerHTML = `
+                            <div class="text-center py-16 space-y-1">
+                                <span class="material-symbols-outlined text-4xl text-cream-dark/20">chat_bubble_outline</span>
+                                <p class="text-xs text-cream-dark/60 font-display">No messages yet in #${activeChannel}.</p>
+                                <p class="text-[11px] text-cream-dark/40 font-body">Be the first to start the conversation!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    logEl.innerHTML = messages.map(m => {
+                        const isMe = m.isMe;
+                        let roleBadge = '';
+                        if (m.senderRole === 'admin') roleBadge = `<span class="bg-red-500/20 text-red-400 border border-red-500 text-[9px] font-minecraft px-1.5 py-0.2 rounded uppercase">ADMIN</span>`;
+                        else if (m.senderRole === 'mentor') roleBadge = `<span class="bg-gold/20 text-gold border border-gold text-[9px] font-minecraft px-1.5 py-0.2 rounded uppercase">MENTOR</span>`;
+
+                        const time = new Date(m.createdAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+                        return `
+                            <div class="flex items-start gap-3 ${isMe ? 'flex-row-reverse' : ''}">
+                                <div class="w-8 h-8 rounded-full ${isMe ? 'bg-gold text-ink' : 'bg-navy-darkest text-gold border border-gold/40'} flex items-center justify-center font-bold text-xs font-minecraft flex-shrink-0">
+                                    ${(m.senderName || 'S')[0].toUpperCase()}
+                                </div>
+                                <div class="max-w-lg space-y-1 ${isMe ? 'text-right' : ''}">
+                                    <div class="flex items-center gap-2 ${isMe ? 'justify-end' : ''}">
+                                        <span class="font-display font-bold text-xs text-white">${m.senderName}</span>
+                                        ${roleBadge}
+                                        <span class="text-[10px] text-cream-dark/40 font-mono">${time}</span>
+                                    </div>
+                                    <div class="p-3 rounded text-xs font-body leading-relaxed inline-block text-left ${
+                                        isMe 
+                                        ? 'bg-gold/20 border border-gold/40 text-cream' 
+                                        : 'bg-navy-darkest border border-white/10 text-cream-dark'
+                                    }">
+                                        ${m.message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    logEl.scrollTop = logEl.scrollHeight;
+
+                } catch (e) {
+                    logEl.innerHTML = `<div class="text-center py-8 text-red-400 text-xs">${e.message}</div>`;
+                }
+            }
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                sendBtn.disabled = true;
+
+                try {
+                    const res = await PortalAuth.fetchWithAuth('/api/portal/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ channel: activeChannel, message: text })
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.error || 'Failed to post message.');
+                    }
+
+                    chatInput.value = '';
+                    loadMessages();
+
+                } catch (err) {
+                    alert(err.message);
+                } finally {
+                    sendBtn.disabled = false;
+                }
+            });
+
+            loadMessages();
+            // Poll for new messages every 5 seconds
+            setInterval(loadMessages, 5000);
+        });
+    </script>
+</body>
+</html>

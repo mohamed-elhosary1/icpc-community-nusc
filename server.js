@@ -34,21 +34,38 @@ const server = http.createServer(async (req, res) => {
 
     // 1. Route API Requests
     if (pathname.startsWith('/api/')) {
-        const apiPath = pathname.replace('/api/', '');
+        const cleanApiPath = pathname.replace('/api/', '').replace(/\/$/, '');
         
         let handlerFile = null;
-        if (apiPath === 'auth/login') handlerFile = './api/auth/login.js';
-        else if (apiPath === 'auth/verify') handlerFile = './api/auth/verify.js';
-        else if (apiPath === 'auth/logout') handlerFile = './api/auth/logout.js';
-        else if (apiPath.startsWith('applications')) handlerFile = './api/applications.js';
-        else if (apiPath.startsWith('events')) handlerFile = './api/events.js';
-        else if (apiPath.startsWith('registrations')) handlerFile = './api/registrations.js';
-        else if (apiPath.startsWith('participants')) handlerFile = './api/participants.js';
-        else if (apiPath.startsWith('questions')) handlerFile = './api/questions.js';
-        else if (apiPath === 'stats') handlerFile = './api/stats.js';
+        const candidateFiles = [
+            path.join(BASE_DIR, 'api', cleanApiPath + '.js'),
+            path.join(BASE_DIR, 'api', cleanApiPath, 'index.js'),
+            path.join(BASE_DIR, 'api', cleanApiPath)
+        ];
+
+        for (const cand of candidateFiles) {
+            try {
+                if (fs.existsSync(cand) && fs.statSync(cand).isFile()) {
+                    handlerFile = cand;
+                    break;
+                }
+            } catch (e) {}
+        }
+
+        // Legacy alias fallbacks
+        if (!handlerFile) {
+            if (cleanApiPath.startsWith('applications')) handlerFile = path.join(BASE_DIR, 'api', 'applications.js');
+            else if (cleanApiPath.startsWith('events')) handlerFile = path.join(BASE_DIR, 'api', 'events.js');
+            else if (cleanApiPath.startsWith('registrations')) handlerFile = path.join(BASE_DIR, 'api', 'registrations.js');
+            else if (cleanApiPath.startsWith('participants')) handlerFile = path.join(BASE_DIR, 'api', 'participants.js');
+            else if (cleanApiPath.startsWith('questions')) handlerFile = path.join(BASE_DIR, 'api', 'questions.js');
+            else if (cleanApiPath === 'stats') handlerFile = path.join(BASE_DIR, 'api', 'stats.js');
+        }
 
         if (handlerFile) {
             try {
+                // Clear require cache in development for instant hot-reload
+                delete require.cache[require.resolve(handlerFile)];
                 const handler = require(handlerFile);
                 return await handler(req, res);
             } catch (err) {

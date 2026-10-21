@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px 0px #00122e;
+        }
+
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            padding: 10px 14px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .pixel-input:focus {
+            border-color: #fea520 !important;
+            background-color: #00183b !important;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-4xl mx-auto w-full">
+
+            <!-- Profile Overview Header Card -->
+            <div class="bg-navy pixel-border-gold p-6 flex flex-col sm:flex-row items-center gap-6">
+                <div class="w-20 h-20 bg-navy-darkest border-2 border-gold rounded-full flex items-center justify-center flex-shrink-0 pixel-shadow-gold text-2xl font-black font-minecraft text-gold" id="profile-avatar">
+                    S
+                </div>
+                <div class="space-y-1 text-center sm:text-left flex-grow">
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <span id="prof-wave" class="bg-gold/20 text-gold border border-gold/40 text-[10px] font-minecraft px-2.5 py-0.5 rounded uppercase">Wave 1</span>
+                        <span id="prof-role" class="bg-navy-darkest text-cream-dark/60 border border-white/10 text-[10px] font-minecraft px-2 py-0.5 rounded uppercase">STUDENT</span>
+                    </div>
+                    <h1 id="prof-name" class="font-display font-black text-2xl text-white">Student Name</h1>
+                    <p id="prof-email" class="text-xs text-cream-dark/70 font-mono">student@university.edu</p>
+                </div>
+                <div class="flex-shrink-0 text-center sm:text-right">
+                    <span class="text-[10px] text-cream-dark/50 font-minecraft uppercase tracking-wider block mb-1">Registration Code</span>
+                    <strong id="prof-code" class="text-gold font-mono text-xs select-all">NUSC-XXXX-XXXXX</strong>
+                </div>
+            </div>
+
+            <!-- Toast / Message Banner -->
+            <div id="status-banner" class="hidden p-4 rounded text-xs font-body flex items-start gap-2">
+                <span class="material-symbols-outlined text-base flex-shrink-0" id="status-icon">info</span>
+                <span id="status-text"></span>
+            </div>
+
+            <!-- Two Cards: Editable Details & Security -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Card 1: Profile Settings -->
+                <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                    <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2 border-b border-white/10 pb-3">
+                        <span class="material-symbols-outlined text-gold">badge</span>
+                        <span>Personal Details</span>
+                    </h3>
+
+                    <form id="profile-form" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-label text-[11px] text-gold uppercase tracking-wider font-bold mb-1">Phone Number</label>
+                            <input type="tel" id="prof-phone" class="pixel-input" />
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-[11px] text-gold uppercase tracking-wider font-bold mb-1">Faculty</label>
+                            <input type="text" id="prof-faculty" class="pixel-input" />
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-[11px] text-gold uppercase tracking-wider font-bold mb-1">Academic Year</label>
+                            <input type="text" id="prof-year" class="pixel-input" />
+                        </div>
+
+                        <div>
+                            <label class="block font-label text-[11px] text-gold uppercase tracking-wider font-bold mb-1">About Me / Bio</label>
+                            <textarea id="prof-bio" class="pixel-input h-20 resize-none" placeholder="Share your competitive programming interests or goals..."></textarea>
+                        </div>
+
+                        <button type="submit" id="save-prof-btn" class="w-full py-3 bg-gold text-ink font-display font-black text-xs uppercase pixel-btn-gold hover:bg-gold-light transition-colors cursor-pointer">
+                            SAVE PROFILE CHANGES
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Card 2: Codeforces Connection & Security -->
+                <div class="space-y-6">
+                    <!-- CF Card -->
+                    <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                        <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2 border-b border-white/10 pb-3">
+                            <span class="material-symbols-outlined text-gold">sports_esports</span>
+                            <span>Codeforces Account</span>
+                        </h3>
+
+                        <div class="p-3 bg-navy-darkest border border-white/10 text-xs space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-cream-dark/60">Connected Handle:</span>
+                                <span id="prof-cf-handle" class="font-mono font-bold text-white">None</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-cream-dark/60">Verification Status:</span>
+                                <span id="prof-cf-status" class="text-amber-400 font-minecraft text-[10px]">UNVERIFIED</span>
+                            </div>
+                        </div>
+
+                        <a href="/onboarding/codeforces" class="w-full py-2.5 border border-gold/40 text-gold hover:bg-gold hover:text-ink font-display font-bold text-xs uppercase flex items-center justify-center gap-2 transition-colors block text-center">
+                            <span>Update / Verify Handle &rarr;</span>
+                        </a>
+                    </div>
+
+                    <!-- Change Password Card -->
+                    <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                        <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2 border-b border-white/10 pb-3">
+                            <span class="material-symbols-outlined text-gold">lock</span>
+                            <span>Change Password</span>
+                        </h3>
+
+                        <form id="pwd-form" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-label text-[11px] text-cream-dark/80 uppercase font-bold mb-1">Current Password</label>
+                                <input type="password" id="cur-pwd" class="pixel-input" required />
+                            </div>
+                            <div>
+                                <label class="block font-label text-[11px] text-cream-dark/80 uppercase font-bold mb-1">New Password (min 8 chars)</label>
+                                <input type="password" id="new-pwd" class="pixel-input" required minlength="8" />
+                            </div>
+                            <button type="submit" id="change-pwd-btn" class="w-full py-2.5 bg-navy-darkest border border-white/20 hover:border-gold text-white font-display font-bold text-xs uppercase transition-colors cursor-pointer">
+                                UPDATE PASSWORD
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('profile');
+
+            const statusBanner = document.getElementById('status-banner');
+            const statusText = document.getElementById('status-text');
+            const statusIcon = document.getElementById('status-icon');
+
+            function showToast(msg, isSuccess = true) {
+                statusText.textContent = msg;
+                statusBanner.className = isSuccess 
+                    ? 'p-4 rounded text-xs font-body flex items-start gap-2 bg-green-950/80 border border-green-500 text-green-200'
+                    : 'p-4 rounded text-xs font-body flex items-start gap-2 bg-red-950/80 border border-red-500 text-red-200';
+                statusIcon.textContent = isSuccess ? 'check_circle' : 'error';
+                statusBanner.classList.remove('hidden');
+                setTimeout(() => statusBanner.classList.add('hidden'), 4000);
+            }
+
+            // Populate profile
+            document.getElementById('prof-name').textContent = user.fullName || 'Student';
+            document.getElementById('prof-email').textContent = user.email || '';
+            document.getElementById('prof-wave').textContent = user.wave || 'Wave 1';
+            document.getElementById('prof-role').textContent = (user.role || 'student').toUpperCase();
+            document.getElementById('prof-code').textContent = user.registrationCode || 'N/A';
+            document.getElementById('profile-avatar').textContent = (user.fullName || 'S')[0].toUpperCase();
+
+            document.getElementById('prof-phone').value = user.phone || '';
+            document.getElementById('prof-faculty').value = user.faculty || '';
+            document.getElementById('prof-year').value = user.academicYear || '';
+            document.getElementById('prof-bio').value = user.bio || '';
+
+            const handleEl = document.getElementById('prof-cf-handle');
+            const cfStatusEl = document.getElementById('prof-cf-status');
+            if (user.codeforcesHandle) {
+                handleEl.textContent = `@${user.codeforcesHandle}`;
+                if (user.cfVerified) {
+                    cfStatusEl.textContent = 'VERIFIED ✓';
+                    cfStatusEl.className = 'text-green-400 font-minecraft text-[10px]';
+                } else {
+                    cfStatusEl.textContent = 'UNVERIFIED';
+                    cfStatusEl.className = 'text-amber-400 font-minecraft text-[10px]';
+                }
+            }
+
+            // Save details
+            document.getElementById('profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const phone = document.getElementById('prof-phone').value.trim();
+                const faculty = document.getElementById('prof-faculty').value.trim();
+                const academicYear = document.getElementById('prof-year').value.trim();
+                const bio = document.getElementById('prof-bio').value.trim();
+
+                try {
+                    const res = await PortalAuth.fetchWithAuth('/api/portal/profile', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, faculty, academicYear, bio })
+                    });
+
+                    if (!res.ok) throw new Error('Failed to update profile.');
+                    const data = await res.json();
+                    showToast('Profile details updated successfully!');
+                    
+                    // Update session
+                    Object.assign(user, { phone, faculty, academicYear, bio });
+                    PortalAuth.setSession(PortalAuth.getToken(), user);
+
+                } catch (err) {
+                    showToast(err.message || 'Error updating profile', false);
+                }
+            });
+
+            // Change password
+            document.getElementById('pwd-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const cur = document.getElementById('cur-pwd').value;
+                const next = document.getElementById('new-pwd').value;
+
+                try {
+                    const res = await PortalAuth.fetchWithAuth('/api/portal/profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ currentPassword: cur, newPassword: next })
+                    });
+
+                    const data = await res.json();
+                    if (!res.ok || !data.success) throw new Error(data.error || 'Password update failed.');
+
+                    showToast('Password changed successfully!');
+                    document.getElementById('cur-pwd').value = '';
+                    document.getElementById('new-pwd').value = '';
+
+                } catch (err) {
+                    showToast(err.message || 'Error changing password', false);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

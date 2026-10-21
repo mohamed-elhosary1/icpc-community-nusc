@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+            <!-- Header & Filter Bar -->
+            <div class="bg-navy pixel-border-gold p-6 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block mb-1">HALL OF FAME</span>
+                        <h1 class="font-display font-black text-2xl sm:text-3xl text-white">COMMUNITY LEADERBOARD</h1>
+                        <p class="text-xs text-cream-dark/70 font-body mt-0.5">Real rankings based on verified Codeforces problem-solving and activity.</p>
+                    </div>
+
+                    <!-- Wave Filter -->
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs text-cream-dark/70 uppercase font-display font-bold">Wave Filter:</label>
+                        <select id="wave-filter" class="bg-navy-darkest text-gold text-xs border border-gold/40 px-3 py-2 outline-none font-minecraft">
+                            <option value="All">All Waves</option>
+                            <option value="Wave 1">Wave 1</option>
+                            <option value="Wave 2">Wave 2</option>
+                            <option value="Wave 3">Wave 3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-2 pt-2 border-t border-white/10" id="category-tabs">
+                    <button type="button" data-cat="weekly" class="tab-btn px-4 py-2 text-xs font-display font-bold uppercase transition-all bg-gold text-ink">
+                        Weekly Leaders
+                    </button>
+                    <button type="button" data-cat="monthly" class="tab-btn px-4 py-2 text-xs font-display font-bold uppercase transition-all bg-navy-darkest text-cream-dark/70 hover:text-white">
+                        Monthly Leaders
+                    </button>
+                    <button type="button" data-cat="all_time" class="tab-btn px-4 py-2 text-xs font-display font-bold uppercase transition-all bg-navy-darkest text-cream-dark/70 hover:text-white">
+                        All-Time Leaders
+                    </button>
+                    <button type="button" data-cat="wave" class="tab-btn px-4 py-2 text-xs font-display font-bold uppercase transition-all bg-navy-darkest text-cream-dark/70 hover:text-white">
+                        Wave Rankings
+                    </button>
+                    <button type="button" data-cat="most_improved" class="tab-btn px-4 py-2 text-xs font-display font-bold uppercase transition-all bg-navy-darkest text-cream-dark/70 hover:text-white">
+                        Most Improved
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scoring Methodology Card -->
+            <div class="p-4 bg-navy-darkest border border-white/10 text-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                <div class="flex items-center gap-2 text-cream-dark/80">
+                    <span class="material-symbols-outlined text-gold text-base">info</span>
+                    <span><strong class="text-white">Scoring Rubric:</strong> Score = (Unique Problems Solved &times; 10) + (Weekly Solved &times; 25) + (CF Rating &times; 0.2)</span>
+                </div>
+                <span id="ranking-period-pill" class="text-[10px] text-gold font-minecraft uppercase tracking-wider bg-gold/10 px-2.5 py-1 border border-gold/30">
+                    Last 7 Days
+                </span>
+            </div>
+
+            <!-- Leaderboard Table Card -->
+            <div class="bg-navy pixel-border border-white/20 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-navy-darkest text-cream-dark/60 font-minecraft text-[10px] uppercase tracking-wider border-b-2 border-white/10">
+                            <tr>
+                                <th class="py-3 px-4 w-16 text-center">Rank</th>
+                                <th class="py-3 px-4">Student</th>
+                                <th class="py-3 px-4">Codeforces Handle</th>
+                                <th class="py-3 px-4">Wave</th>
+                                <th class="py-3 px-4 text-center">Solved Total</th>
+                                <th class="py-3 px-4 text-center">This Week</th>
+                                <th class="py-3 px-4 text-center">Rating</th>
+                                <th class="py-3 px-4 text-right">ICC Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body" class="divide-y divide-white/10 font-body">
+                            <tr>
+                                <td colspan="8" class="text-center py-8 text-cream-dark/50">Loading leaderboard rankings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('leaderboard');
+
+            let currentCategory = 'weekly';
+            let currentWave = 'All';
+
+            const tbody = document.getElementById('leaderboard-body');
+            const waveSelect = document.getElementById('wave-filter');
+            const periodPill = document.getElementById('ranking-period-pill');
+            const tabs = document.querySelectorAll('.tab-btn');
+
+            tabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabs.forEach(b => {
+                        b.classList.remove('bg-gold', 'text-ink');
+                        b.classList.add('bg-navy-darkest', 'text-cream-dark/70');
+                    });
+                    btn.classList.remove('bg-navy-darkest', 'text-cream-dark/70');
+                    btn.classList.add('bg-gold', 'text-ink');
+                    currentCategory = btn.getAttribute('data-cat');
+                    loadLeaderboard();
+                });
+            });
+
+            waveSelect.addEventListener('change', () => {
+                currentWave = waveSelect.value;
+                loadLeaderboard();
+            });
+
+            async function loadLeaderboard() {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-cream-dark/50">Calculating standings...</td></tr>`;
+
+                try {
+                    const res = await PortalAuth.fetchWithAuth(`/api/portal/leaderboard?category=${encodeURIComponent(currentCategory)}&wave=${encodeURIComponent(currentWave)}`);
+                    if (!res.ok) throw new Error('Failed to load leaderboard data.');
+
+                    const data = await res.json();
+                    if (data.methodology) {
+                        periodPill.textContent = data.methodology.timeframe;
+                    }
+
+                    const list = data.rankings || [];
+
+                    if (list.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-cream-dark/50">No students found matching this criteria.</td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = list.map(item => {
+                        let rankBadge = `<span class="font-minecraft text-xs">${item.rankPosition}</span>`;
+                        if (item.rankPosition === 1) rankBadge = `<span class="inline-flex w-6 h-6 rounded-full bg-gold text-ink items-center justify-center font-bold font-minecraft text-xs shadow-sm">1</span>`;
+                        else if (item.rankPosition === 2) rankBadge = `<span class="inline-flex w-6 h-6 rounded-full bg-slate-300 text-ink items-center justify-center font-bold font-minecraft text-xs">2</span>`;
+                        else if (item.rankPosition === 3) rankBadge = `<span class="inline-flex w-6 h-6 rounded-full bg-amber-700 text-white items-center justify-center font-bold font-minecraft text-xs">3</span>`;
+
+                        const rowClass = item.isCurrentStudent 
+                            ? 'bg-gold/15 border-l-4 border-gold font-semibold' 
+                            : 'hover:bg-white/5';
+
+                        return `
+                            <tr class="${rowClass} transition-colors">
+                                <td class="py-3 px-4 text-center">${rankBadge}</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-navy-darkest border border-white/20 flex items-center justify-center text-xs text-gold font-bold">
+                                            ${(item.fullName || 'S')[0].toUpperCase()}
+                                        </div>
+                                        <span class="text-white">${item.fullName || 'Student'}</span>
+                                        ${item.isCurrentStudent ? `<span class="text-[9px] font-minecraft bg-gold text-ink px-1 rounded">YOU</span>` : ''}
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 font-mono">
+                                    ${item.handle ? `
+                                        <a href="https://codeforces.com/profile/${encodeURIComponent(item.handle)}" target="_blank" rel="noopener noreferrer" class="text-gold hover:underline inline-flex items-center gap-1">
+                                            <span>${item.handle}</span>
+                                            ${item.cfVerified ? `<span class="material-symbols-outlined text-green-400 text-xs" title="Verified">verified</span>` : ''}
+                                        </a>
+                                    ` : `<span class="text-cream-dark/40 italic">Not Connected</span>`}
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="bg-navy-darkest text-gold text-[10px] font-minecraft px-2 py-0.5 border border-gold/30">
+                                        ${item.wave}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-center font-mono font-bold text-white">${item.solved}</td>
+                                <td class="py-3 px-4 text-center font-mono text-green-400 font-bold">+${item.weeklySolved}</td>
+                                <td class="py-3 px-4 text-center font-mono">
+                                    <span class="${item.rating >= 1400 ? 'text-cyan-400' : item.rating >= 1200 ? 'text-green-400' : 'text-cream-dark/80'} font-bold">
+                                        ${item.rating || 0}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-right font-display font-black text-sm text-gold">${item.iccScore}</td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-red-400 font-body">${e.message || 'Error loading rankings.'}</td></tr>`;
+                }
+            }
+
+            loadLeaderboard();
+        });
+    </script>
+</body>
+</html>

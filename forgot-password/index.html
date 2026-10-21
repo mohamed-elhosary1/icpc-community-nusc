@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px 0px #00122e;
+        }
+
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .pixel-input:focus {
+            border-color: #fea520 !important;
+            background-color: #00183b !important;
+            box-shadow: 2px 2px 0px 0px #fea520 !important;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-dark bg-pixel-grid min-h-screen flex items-center justify-center p-4 selection:bg-gold selection:text-navy">
+
+    <!-- Top Links -->
+    <a href="/login" class="fixed top-6 left-6 text-cream-dark/60 hover:text-gold transition-colors flex items-center gap-2 font-label text-xs uppercase font-bold tracking-wider z-20">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Return to Sign In
+    </a>
+
+    <div class="max-w-md w-full relative z-10 py-10">
+        <!-- Floating Lock Badge -->
+        <div class="flex justify-center -mb-8 relative z-20">
+            <div class="w-16 h-16 bg-navy pixel-border-gold rounded-full flex items-center justify-center pixel-shadow-gold">
+                <span class="material-symbols-outlined text-3xl text-gold" style="font-variation-settings:'FILL' 1">lock_reset</span>
+            </div>
+        </div>
+
+        <div class="bg-navy p-8 md:p-10 pixel-border border-gold/40 relative pt-12">
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <span class="font-minecraft text-[10px] text-navy bg-gold font-bold px-2.5 py-1 inline-block uppercase tracking-widest mb-2">SECURITY ASSISTANCE</span>
+                <h1 class="font-display font-black text-2xl sm:text-3xl text-white tracking-tight">PASSWORD RECOVERY</h1>
+                <p class="font-body text-xs text-cream-dark/70 mt-1">Recover your ICPC NUSC student account access.</p>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="error-banner" class="hidden mb-6 bg-red-accent/20 border-2 border-red-accent text-red-light p-3 text-xs font-body flex items-start gap-2">
+                <span class="material-symbols-outlined text-base flex-shrink-0 text-red-accent">error</span>
+                <span id="error-msg"></span>
+            </div>
+
+            <!-- Success Banner -->
+            <div id="success-banner" class="hidden mb-6 bg-green-500/20 border-2 border-green-500 text-green-200 p-3 text-xs font-body flex items-start gap-2">
+                <span class="material-symbols-outlined text-base flex-shrink-0 text-green-400">check_circle</span>
+                <span id="success-msg"></span>
+            </div>
+
+            <!-- Stage 1: Request Reset Token -->
+            <form id="request-token-form" class="space-y-4">
+                <div>
+                    <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Registered Email Address</label>
+                    <input type="email" id="req-email" class="pixel-input" placeholder="student@university.edu" required autocomplete="email" />
+                </div>
+
+                <button type="submit" id="request-btn" class="w-full py-3.5 bg-gold text-ink font-display font-black text-sm tracking-wider uppercase pixel-btn-gold hover:bg-gold-light transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">send</span>
+                    <span id="req-btn-text">REQUEST RESET CODE</span>
+                </button>
+            </form>
+
+            <!-- Stage 2: Enter Token and New Password (Hidden by default, shown after request or toggle) -->
+            <div id="reset-stage" class="hidden mt-6 pt-6 border-t border-white/10 space-y-4">
+                <h3 class="font-display font-bold text-sm text-gold uppercase tracking-wider">Set New Password</h3>
+                <form id="reset-pwd-form" class="space-y-4">
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Reset Security Token</label>
+                        <input type="text" id="reset-token" class="pixel-input font-mono text-center" placeholder="Paste reset token here" required />
+                    </div>
+
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">New Password (min 8 chars)</label>
+                        <input type="password" id="new-password" class="pixel-input" placeholder="••••••••" required minlength="8" />
+                    </div>
+
+                    <button type="submit" id="reset-submit-btn" class="w-full py-3.5 bg-gold text-ink font-display font-black text-sm tracking-wider uppercase pixel-btn-gold hover:bg-gold-light transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        <span class="material-symbols-outlined text-base">check</span>
+                        <span>UPDATE PASSWORD</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="/login" class="text-xs text-gold hover:underline font-display tracking-wide uppercase">
+                    &larr; Back to Sign In
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reqForm = document.getElementById('request-token-form');
+            const emailInput = document.getElementById('req-email');
+            const reqBtn = document.getElementById('request-btn');
+            const reqBtnText = document.getElementById('req-btn-text');
+
+            const resetStage = document.getElementById('reset-stage');
+            const resetForm = document.getElementById('reset-pwd-form');
+            const tokenInput = document.getElementById('reset-token');
+            const newPwdInput = document.getElementById('new-password');
+
+            const errorBanner = document.getElementById('error-banner');
+            const errorMsg = document.getElementById('error-msg');
+            const successBanner = document.getElementById('success-banner');
+            const successMsg = document.getElementById('success-msg');
+
+            function showError(msg) {
+                errorMsg.textContent = msg;
+                errorBanner.classList.remove('hidden');
+                successBanner.classList.add('hidden');
+            }
+
+            function showSuccess(msg) {
+                successMsg.textContent = msg;
+                successBanner.classList.remove('hidden');
+                errorBanner.classList.add('hidden');
+            }
+
+            reqForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.classList.add('hidden');
+                reqBtn.disabled = true;
+                reqBtnText.textContent = 'GENERATING TOKEN...';
+
+                try {
+                    const res = await fetch('/api/auth/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: emailInput.value.trim() })
+                    });
+
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to process request.');
+
+                    showSuccess(data.message || 'Reset token generated.');
+                    resetStage.classList.remove('hidden');
+                    if (data.resetToken) {
+                        tokenInput.value = data.resetToken;
+                    }
+
+                } catch (err) {
+                    showError(err.message || 'Error requesting password reset.');
+                } finally {
+                    reqBtn.disabled = false;
+                    reqBtnText.textContent = 'REQUEST RESET CODE';
+                }
+            });
+
+            resetForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.classList.add('hidden');
+
+                const token = tokenInput.value.trim();
+                const newPassword = newPwdInput.value;
+
+                try {
+                    const res = await fetch('/api/auth/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token, newPassword })
+                    });
+
+                    const data = await res.json();
+                    if (!res.ok || !data.success) throw new Error(data.error || 'Failed to update password.');
+
+                    showSuccess('Your password has been updated successfully! Redirecting to sign in...');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+
+                } catch (err) {
+                    showError(err.message || 'Failed to update password.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codeforces Onboarding | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .pixel-btn-gold {
+            border: 2px solid #1b1c1a;
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.15s ease;
+        }
+        .pixel-btn-gold:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px 0px #00122e;
+        }
+
+        .pixel-input {
+            width: 100%;
+            background-color: #00122e !important;
+            color: #ffffff !important;
+            border: 2px solid #004494 !important;
+            caret-color: #fea520 !important;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .pixel-input:focus {
+            border-color: #fea520 !important;
+            background-color: #00183b !important;
+            box-shadow: 2px 2px 0px 0px #fea520 !important;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-dark bg-pixel-grid min-h-screen text-cream font-body selection:bg-gold selection:text-navy">
+
+    <!-- Navbar -->
+    <header class="h-16 border-b-2 border-navy-light/40 bg-navy px-6 flex items-center justify-between">
+        <a href="/portal" class="flex items-center gap-2">
+            <span class="font-display font-black text-xl text-white">ICPC <span class="text-gold">NUSC</span></span>
+            <span class="text-xs bg-gold/20 text-gold px-2 py-0.5 rounded font-minecraft">ONBOARDING</span>
+        </a>
+        <a href="/portal" class="text-xs text-cream-dark/60 hover:text-gold uppercase tracking-wider font-display font-bold">
+            Skip for now &rarr;
+        </a>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-10 space-y-8">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="bg-navy pixel-border-gold p-6 sm:p-8 text-center space-y-3 relative overflow-hidden">
+            <div class="inline-flex items-center gap-2 bg-navy-darkest px-3 py-1 border border-gold/40 text-gold text-xs font-minecraft uppercase">
+                <span class="material-symbols-outlined text-sm">sports_esports</span>
+                <span>STEP 2 OF 2: COMPETITIVE PROGRAMMING PROFILE</span>
+            </div>
+            <h1 class="font-display font-black text-2xl sm:text-4xl text-white">CONNECT YOUR CODEFORCES ACCOUNT</h1>
+            <p class="font-body text-xs sm:text-sm text-cream-dark/80 max-w-2xl mx-auto leading-relaxed">
+                Codeforces is the primary platform where our training contests, practice problems, and community rankings are tracked. Connect your handle to track your problems solved, rating updates, and climb the ICPC NUSC leaderboard.
+            </p>
+        </div>
+
+        <!-- 5 Simple Beginner Steps -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+            <div class="bg-navy-darkest p-4 border border-white/10 text-center space-y-2">
+                <div class="w-8 h-8 rounded-full bg-gold text-ink font-black text-xs mx-auto flex items-center justify-center font-minecraft">1</div>
+                <h4 class="font-display font-bold text-xs text-white uppercase">Register Account</h4>
+                <p class="text-[11px] text-cream-dark/60 font-body">Create free account on Codeforces</p>
+            </div>
+            <div class="bg-navy-darkest p-4 border border-white/10 text-center space-y-2">
+                <div class="w-8 h-8 rounded-full bg-navy text-gold border border-gold font-black text-xs mx-auto flex items-center justify-center font-minecraft">2</div>
+                <h4 class="font-display font-bold text-xs text-white uppercase">Find Handle</h4>
+                <p class="text-[11px] text-cream-dark/60 font-body">Your unique username on profile</p>
+            </div>
+            <div class="bg-navy-darkest p-4 border border-white/10 text-center space-y-2">
+                <div class="w-8 h-8 rounded-full bg-navy text-gold border border-gold font-black text-xs mx-auto flex items-center justify-center font-minecraft">3</div>
+                <h4 class="font-display font-bold text-xs text-white uppercase">Enter Handle</h4>
+                <p class="text-[11px] text-cream-dark/60 font-body">Input your handle in our portal</p>
+            </div>
+            <div class="bg-navy-darkest p-4 border border-white/10 text-center space-y-2">
+                <div class="w-8 h-8 rounded-full bg-navy text-gold border border-gold font-black text-xs mx-auto flex items-center justify-center font-minecraft">4</div>
+                <h4 class="font-display font-bold text-xs text-white uppercase">Verify Token</h4>
+                <p class="text-[11px] text-cream-dark/60 font-body">Put challenge code in CF bio</p>
+            </div>
+            <div class="bg-navy-darkest p-4 border border-white/10 text-center space-y-2">
+                <div class="w-8 h-8 rounded-full bg-navy text-gold border border-gold font-black text-xs mx-auto flex items-center justify-center font-minecraft">5</div>
+                <h4 class="font-display font-bold text-xs text-white uppercase">Climb Ranks</h4>
+                <p class="text-[11px] text-cream-dark/60 font-body">Track rating & solved count</p>
+            </div>
+        </div>
+
+        <!-- Two Column Card: Handle Link & Video Guides -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Column: Handle Input & Challenge (7 cols) -->
+            <div class="lg:col-span-7 bg-navy pixel-border border-gold/40 p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="font-display font-black text-xl text-white uppercase flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">link</span>
+                        <span>Link Your Handle</span>
+                    </h2>
+                    <p class="text-xs text-cream-dark/70 font-body mt-1">Enter your exact Codeforces username.</p>
+                </div>
+
+                <!-- Error & Success Banners -->
+                <div id="error-banner" class="hidden p-3 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded flex items-start gap-2">
+                    <span class="material-symbols-outlined text-base flex-shrink-0 text-red-400">error</span>
+                    <span id="error-msg"></span>
+                </div>
+
+                <div id="success-banner" class="hidden p-4 bg-green-950/80 border border-green-500 text-green-200 text-xs rounded space-y-2">
+                    <div class="flex items-center gap-2 font-bold text-sm text-green-300">
+                        <span class="material-symbols-outlined text-green-400">verified</span>
+                        <span>Handle Linked & Verified Successfully!</span>
+                    </div>
+                    <p id="success-msg" class="leading-relaxed"></p>
+                </div>
+
+                <!-- Form -->
+                <form id="cf-form" class="space-y-4">
+                    <div>
+                        <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Codeforces Handle</label>
+                        <input type="text" id="cf-handle" class="pixel-input font-mono" placeholder="e.g. Tourist, Mohamed,..." required />
+                    </div>
+
+                    <!-- Ownership Challenge Box -->
+                    <div class="p-4 bg-navy-darkest border-2 border-gold/40 text-xs space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider">YOUR VERIFICATION CHALLENGE</span>
+                            <span class="text-[10px] text-cream-dark/60">Optional (Earns Verified Badge)</span>
+                        </div>
+                        <p class="font-body text-cream-dark/80 text-[11px] leading-relaxed">
+                            To verify that this handle belongs to you, temporarily paste this challenge code into your <strong>First Name</strong>, <strong>City</strong>, or <strong>Organization</strong> on <a href="https://codeforces.com/settings/social" target="_blank" rel="noopener noreferrer" class="text-gold underline font-bold">Codeforces Social Settings &rarr;</a>
+                        </p>
+                        <div class="p-2.5 bg-navy border border-white/20 flex items-center justify-between font-mono font-bold text-sm text-gold">
+                            <span id="challenge-token" class="select-all">NUSC-CF-XXXX</span>
+                            <button type="button" id="copy-token-btn" class="text-xs bg-gold text-ink px-2.5 py-1 pixel-btn font-display font-bold">
+                                COPY CODE
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="link-btn" class="w-full py-3.5 bg-gold text-ink font-display font-black text-sm tracking-wider uppercase pixel-btn-gold hover:bg-gold-light transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        <span class="material-symbols-outlined text-base">verified_user</span>
+                        <span id="link-btn-text">VERIFY & LINK CODEFORCES</span>
+                    </button>
+                </form>
+
+                <div class="pt-2 flex justify-between items-center text-xs text-cream-dark/60 font-body">
+                    <span>Don't have an account yet?</span>
+                    <a href="https://codeforces.com/register" target="_blank" rel="noopener noreferrer" class="text-gold font-bold hover:underline">
+                        Create on Codeforces.com &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Tutorials & Helpful Links (5 cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                <!-- Video Guides Card -->
+                <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                    <h3 class="font-display font-bold text-sm text-white uppercase flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">play_circle</span>
+                        <span>Video Guides & Tutorials</span>
+                    </h3>
+
+                    <div class="space-y-3 text-xs">
+                        <!-- Tutorial 1 -->
+                        <div class="p-3 bg-navy-darkest border border-white/10 space-y-1.5">
+                            <strong class="text-white block font-display">1. How to Create a Codeforces Account</strong>
+                            <p class="text-[11px] text-cream-dark/70 font-body">
+                                Step-by-step walkthrough of registering, email confirmation, and navigating the site.
+                            </p>
+                            <a href="https://www.youtube.com/results?search_query=how+to+create+codeforces+account+beginner" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-gold font-bold text-[11px] hover:underline">
+                                <span class="material-symbols-outlined text-xs">open_in_new</span>
+                                Watch Tutorial on YouTube &rarr;
+                            </a>
+                        </div>
+
+                        <!-- Tutorial 2 -->
+                        <div class="p-3 bg-navy-darkest border border-white/10 space-y-1.5">
+                            <strong class="text-white block font-display">2. Finding Your Handle & Profile Settings</strong>
+                            <p class="text-[11px] text-cream-dark/70 font-body">
+                                How to inspect your handle and update your social details for verification.
+                            </p>
+                            <a href="https://www.youtube.com/results?search_query=how+to+find+codeforces+handle+and+profile" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-gold font-bold text-[11px] hover:underline">
+                                <span class="material-symbols-outlined text-xs">open_in_new</span>
+                                Watch Tutorial &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Direct Useful Links -->
+                <div class="p-5 bg-navy-darkest border border-gold/30 text-xs space-y-3">
+                    <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block">OFFICIAL RESOURCES</span>
+                    <ul class="space-y-2 font-body">
+                        <li>
+                            <a href="https://codeforces.com/register" target="_blank" rel="noopener noreferrer" class="text-cream-dark/80 hover:text-white flex items-center justify-between">
+                                <span>Codeforces Registration Page</span>
+                                <span class="material-symbols-outlined text-xs text-gold">arrow_forward</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://codeforces.com/settings/social" target="_blank" rel="noopener noreferrer" class="text-cream-dark/80 hover:text-white flex items-center justify-between">
+                                <span>Codeforces Social Profile Settings</span>
+                                <span class="material-symbols-outlined text-xs text-gold">arrow_forward</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://codeforces.com/problemset" target="_blank" rel="noopener noreferrer" class="text-cream-dark/80 hover:text-white flex items-center justify-between">
+                                <span>Codeforces Practice Problemset</span>
+                                <span class="material-symbols-outlined text-xs text-gold">arrow_forward</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="text-center pt-2">
+                    <a href="/portal" class="inline-block py-2.5 px-6 border border-white/20 text-cream-dark/70 hover:text-white font-display text-xs uppercase tracking-wider">
+                        Continue to Student Portal &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="/js/portal-auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            const challengeEl = document.getElementById('challenge-token');
+            const handleInput = document.getElementById('cf-handle');
+            const form = document.getElementById('cf-form');
+            const linkBtn = document.getElementById('link-btn');
+            const linkText = document.getElementById('link-btn-text');
+            const errorBanner = document.getElementById('error-banner');
+            const errorMsg = document.getElementById('error-msg');
+            const successBanner = document.getElementById('success-banner');
+            const successMsg = document.getElementById('success-msg');
+            const copyTokenBtn = document.getElementById('copy-token-btn');
+
+            if (user.cfVerificationToken) {
+                challengeEl.textContent = user.cfVerificationToken;
+            }
+            if (user.codeforcesHandle) {
+                handleInput.value = user.codeforcesHandle;
+            }
+
+            copyTokenBtn.addEventListener('click', () => {
+                const token = challengeEl.textContent.trim();
+                navigator.clipboard.writeText(token).then(() => {
+                    copyTokenBtn.textContent = 'COPIED!';
+                    setTimeout(() => { copyTokenBtn.textContent = 'COPY CODE'; }, 2000);
+                });
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.classList.add('hidden');
+                successBanner.classList.add('hidden');
+
+                const handle = handleInput.value.trim();
+                if (!handle) return;
+
+                linkBtn.disabled = true;
+                linkText.textContent = 'VERIFYING WITH CODEFORCES...';
+
+                try {
+                    const res = await fetch('/api/codeforces/link', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + PortalAuth.getToken()
+                        },
+                        body: JSON.stringify({ handle })
+                    });
+
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to link handle.');
+
+                    if (data.verified) {
+                        successMsg.textContent = `Your handle "${data.handle}" is verified and active! Solved problems: ${data.solvedCount || 0}. Current rating: ${data.rating || 0}.`;
+                    } else {
+                        successMsg.textContent = `Handle "${data.handle}" linked! Verification status: Unverified (Challenge code not detected in profile). You can update your bio and click verify again anytime, or a coach will review it.`;
+                    }
+                    successBanner.classList.remove('hidden');
+
+                    // Refresh user profile in local session
+                    user.codeforcesHandle = data.handle;
+                    user.cfVerified = data.verified;
+                    PortalAuth.setSession(PortalAuth.getToken(), user);
+
+                    setTimeout(() => {
+                        window.location.href = '/portal';
+                    }, 2500);
+
+                } catch (err) {
+                    errorMsg.textContent = err.message || 'Error communicating with Codeforces API.';
+                    errorBanner.classList.remove('hidden');
+                } finally {
+                    linkBtn.disabled = false;
+                    linkText.textContent = 'VERIFY & LINK CODEFORCES';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

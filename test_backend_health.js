@@ -247,6 +247,143 @@ async function runTests() {
         assert(false, 'Stats endpoint test failed', e.message);
     }
 
+    // 7. Test Student Portal Auth & Registration Code Validation
+    console.log('\n--- 7. Testing Student Portal Code Validation (/api/auth/validate-code) ---');
+    try {
+        const validateCodeHandler = require('./api/auth/validate-code');
+
+        // Test invalid/fake code
+        const fakeReq = createMockReqRes('POST', '/api/auth/validate-code', { code: 'NUSC-INVALID-99999' });
+        await validateCodeHandler(fakeReq.req, fakeReq.res);
+        assert(fakeReq.getResult().status === 400 || fakeReq.getResult().status === 404, 'POST /api/auth/validate-code rejects invalid code with 400/404');
+
+        // Test with real participant or orientation code from live database
+        const allRegs = await CloudDB.getEventRegistrations();
+        const unredeemed = allRegs.find(r => !r.is_redeemed);
+        if (unredeemed) {
+            const validReq = createMockReqRes('POST', '/api/auth/validate-code', { code: unredeemed.registration_id });
+            await validateCodeHandler(validReq.req, validReq.res);
+            const valRes = validReq.getResult();
+            assert(valRes.status === 200 && valRes.data.valid === true, `POST /api/auth/validate-code validates real access code (${unredeemed.registration_id})`, `Name: ${valRes.data.fullName}, Wave: ${valRes.data.wave}`);
+        } else {
+            console.log('   (Skipping unredeemed code test: all codes currently redeemed)');
+        }
+    } catch (e) {
+        assert(false, 'Validate code test failed', e.message);
+    }
+
+    // 8. Test Student Login & Authentication (/api/auth/student-login)
+    console.log('\n--- 8. Testing Student Login API (/api/auth/student-login) ---');
+    let studentAuthToken = '';
+    try {
+        const studentLoginHandler = require('./api/auth/student-login');
+
+        // Bad student login
+        const badStudentLogin = createMockReqRes('POST', '/api/auth/student-login', { email: 'nonexistent@student.com', password: 'wrong' });
+        await studentLoginHandler(badStudentLogin.req, badStudentLogin.res);
+        assert(badStudentLogin.getResult().status === 401, 'POST /api/auth/student-login rejects non-existent student with 401');
+
+        // Admin login via unified student-login endpoint
+        const adminViaStudent = createMockReqRes('POST', '/api/auth/student-login', { email: 'cassidy', password: '1046579435' });
+        await studentLoginHandler(adminViaStudent.req, adminViaStudent.res);
+        const adminLoginRes = adminViaStudent.getResult();
+        assert(adminLoginRes.status === 200 && adminLoginRes.data.user.role === 'admin', 'POST /api/auth/student-login allows admin login with role admin');
+        studentAuthToken = adminLoginRes.data.token;
+
+        // Test /api/auth/me
+        const meHandler = require('./api/auth/me');
+        const meReq = createMockReqRes('GET', '/api/auth/me', null, { 'authorization': `Bearer ${studentAuthToken}` });
+        await meHandler(meReq.req, meReq.res);
+        const meRes = meReq.getResult();
+        assert(meRes.status === 200 && meRes.data.user && meRes.data.user.role === 'admin', 'GET /api/auth/me validates session and returns user info');
+    } catch (e) {
+        assert(false, 'Student login test failed', e.message);
+    }
+
+    // 9. Test Portal Core Endpoints
+    console.log('\n--- 9. Testing Portal APIs (Dashboard, Leaderboard, Sessions, Mentors) ---');
+    try {
+        // Dashboard
+        const dashHandler = require('./api/portal/dashboard');
+        const dashReq = createMockReqRes('GET', '/api/portal/dashboard', null, { 'authorization': `Bearer ${studentAuthToken}` });
+        await dashHandler(dashReq.req, dashReq.res);
+        const dashRes = dashReq.getResult();
+        assert(dashRes.status === 200 && dashRes.data.success, 'GET /api/portal/dashboard returns student overview with 200');
+
+        // Leaderboard
+        const lbHandler = require('./api/portal/leaderboard');
+        const lbReq = createMockReqRes('GET', '/api/portal/leaderboard?type=all_time&wave=All');
+        await lbHandler(lbReq.req, lbReq.res);
+        const lbRes = lbReq.getResult();
+        assert(lbRes.status === 200 && Array.isArray(lbRes.data.rankings), 'GET /api/portal/leaderboard returns calculated rankings array with 200', `Total ranked: ${lbRes.data.rankings ? lbRes.data.rankings.length : 0}`);
+
+        // Sessions
+        const sessionsHandler = require('./api/portal/sessions');
+        const sessReq = createMockReqRes('GET', '/api/portal/sessions', null, { 'authorization': `Bearer ${studentAuthToken}` });
+        await sessionsHandler(sessReq.req, sessReq.res);
+        const sessRes = sessReq.getResult();
+        assert(sessRes.status === 200 && Array.isArray(sessRes.data.sessions), 'GET /api/portal/sessions returns timeline with 200');
+
+        // Mentors
+        const mentorsHandler = require('./api/portal/mentors');
+        const mentorsReq = createMockReqRes('GET', '/api/portal/mentors', null, { 'authorization': `Bearer ${studentAuthToken}` });
+        await mentorsHandler(mentorsReq.req, mentorsReq.res);
+        const mentorsRes = mentorsReq.getResult();
+        assert(mentorsRes.status === 200 && Array.isArray(mentorsRes.data.announcements), 'GET /api/portal/mentors returns mentor announcements and feedback with 200');
+
+        // Chat
+        const chatHandler = require('./api/portal/chat');
+        const chatReq = createMockReqRes('GET', '/api/portal/chat?channel=general', null, { 'authorization': `Bearer ${studentAuthToken}` });
+        await chatHandler(chatReq.req, chatReq.res);
+        const chatRes = chatReq.getResult();
+        assert(chatRes.status === 200 && Array.isArray(chatRes.data.messages), 'GET /api/portal/chat returns channel messages with 200');
+    } catch (e) {
+        assert(false, 'Portal endpoints test failed', e.message);
+    }
+
+    // 10. Test Admin Extended Endpoints
+    console.log('\n--- 10. Testing Admin Portal Endpoints (Students, Codes, Sessions CRUD) ---');
+    try {
+        // Admin Students List
+        const adminStudentsHandler = require('./api/admin/students');
+        const stuReq = createMockReqRes('GET', '/api/admin/students', null, { 'authorization': `Bearer ${adminToken}` });
+        await adminStudentsHandler(stuReq.req, stuReq.res);
+        const stuRes = stuReq.getResult();
+        assert(stuRes.status === 200 && Array.isArray(stuRes.data.students), 'GET /api/admin/students returns student roster with 200');
+
+        // Admin Codes List
+        const adminCodesHandler = require('./api/admin/codes');
+        const codesReq = createMockReqRes('GET', '/api/admin/codes?eventId=All', null, { 'authorization': `Bearer ${adminToken}` });
+        await adminCodesHandler(codesReq.req, codesReq.res);
+        const codesRes = codesReq.getResult();
+        assert(codesRes.status === 200 && typeof codesRes.data.total === 'number', 'GET /api/admin/codes returns issued access codes with 200', `Total codes: ${codesRes.data.total}`);
+
+        // Admin Session Creation & Deletion
+        const adminSessionsHandler = require('./api/admin/sessions');
+        const createSessReq = createMockReqRes('POST', '/api/admin/sessions', {
+            title: 'Automated Test Workshop',
+            sessionDate: new Date(Date.now() + 86400000).toISOString(),
+            durationMinutes: 90,
+            wave: 'Wave 1',
+            location: 'Online',
+            meetingLink: 'https://meet.google.com/test-nusc'
+        }, { 'authorization': `Bearer ${adminToken}` });
+        await adminSessionsHandler(createSessReq.req, createSessReq.res);
+        const createRes = createSessReq.getResult();
+        assert(createRes.status === 201 && createRes.data.session && createRes.data.session.id, 'POST /api/admin/sessions creates training session with 201');
+
+        if (createRes.data.session && createRes.data.session.id) {
+            const createdId = createRes.data.session.id;
+
+            // Delete session
+            const delSessReq = createMockReqRes('DELETE', `/api/admin/sessions?id=${createdId}`, null, { 'authorization': `Bearer ${adminToken}` });
+            await adminSessionsHandler(delSessReq.req, delSessReq.res);
+            assert(delSessReq.getResult().status === 200, 'DELETE /api/admin/sessions cleans up created session with 200');
+        }
+    } catch (e) {
+        assert(false, 'Admin extended endpoints test failed', e.message);
+    }
+
     console.log('\n====================================================');
     console.log(`TEST SUMMARY: ${passed} PASSED, ${failed} FAILED`);
     console.log('====================================================');

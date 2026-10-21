@@ -282,6 +282,29 @@
                     <span class="material-symbols-outlined text-lg">settings</span>
                     Settings
                 </a>
+
+                <!-- STUDENT COMMUNITY PORTAL SUITE -->
+                <div class="px-5 pt-3 pb-1 text-[9px] font-minecraft text-gold/80 tracking-widest uppercase border-t border-navy-light/30 mt-2">STUDENT PORTAL</div>
+                <a href="#students" class="nav-item" data-view="students">
+                    <span class="material-symbols-outlined text-lg">school</span>
+                    Students
+                </a>
+                <a href="#codes" class="nav-item" data-view="codes">
+                    <span class="material-symbols-outlined text-lg">qr_code_2</span>
+                    Access Codes & CSV
+                </a>
+                <a href="#sessions-admin" class="nav-item" data-view="sessions-admin">
+                    <span class="material-symbols-outlined text-lg">calendar_month</span>
+                    Sessions
+                </a>
+                <a href="#attendance-admin" class="nav-item" data-view="attendance-admin">
+                    <span class="material-symbols-outlined text-lg">fact_check</span>
+                    Attendance
+                </a>
+                <a href="#mentors-admin" class="nav-item" data-view="mentors-admin">
+                    <span class="material-symbols-outlined text-lg">supervisor_account</span>
+                    Mentors & Feedback
+                </a>
             </nav>
         </div>
 
@@ -1118,6 +1141,290 @@
                 </div>
             </section>
 
+            <!-- VIEW: STUDENTS PORTAL -->
+            <section id="view-students" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">STUDENT PORTAL DIRECTORY</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Manage registered students, track Codeforces verification, and regulate account access.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.AdminPortal.loadStudents()" class="pixel-btn-gold text-xs px-3 py-1.5 flex items-center gap-1 font-label">
+                            <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-navy p-4 pixel-border border-gold/30">
+                        <div class="text-[10px] font-mono text-gold uppercase">Total Registered Students</div>
+                        <div id="stat-portal-students-total" class="font-display font-black text-2xl text-white mt-1">0</div>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-green-500/30">
+                        <div class="text-[10px] font-mono text-green-300 uppercase">Codeforces Verified</div>
+                        <div id="stat-portal-cf-verified" class="font-display font-black text-2xl text-green-300 mt-1">0</div>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-blue-500/30">
+                        <div class="text-[10px] font-mono text-blue-300 uppercase">Active Accounts</div>
+                        <div id="stat-portal-active" class="font-display font-black text-2xl text-blue-300 mt-1">0</div>
+                    </div>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 flex flex-col md:flex-row gap-3 justify-between items-center">
+                    <div class="w-full md:w-72">
+                        <input type="text" id="students-search" oninput="window.AdminPortal.loadStudents()" placeholder="Search student name, email, handle..." class="pixel-input text-xs" />
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <select id="students-wave-filter" onchange="window.AdminPortal.loadStudents()" class="pixel-input text-xs w-36">
+                            <option value="All">All Waves</option>
+                            <option value="Wave 1">Wave 1</option>
+                            <option value="Wave 2">Wave 2</option>
+                            <option value="Wave 3">Wave 3</option>
+                        </select>
+                        <select id="students-status-filter" onchange="window.AdminPortal.loadStudents()" class="pixel-input text-xs w-36">
+                            <option value="All">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b-2 border-navy-light/40 text-[10px] font-mono text-gold uppercase bg-navy-darkest/50">
+                                <th class="p-3">Student Name & Email</th>
+                                <th class="p-3">Wave</th>
+                                <th class="p-3">Access Code</th>
+                                <th class="p-3">Codeforces Handle</th>
+                                <th class="p-3">Account Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body">
+                            <!-- Injected by window.AdminPortal.loadStudents() -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: ACCESS CODES & CSV IMPORT -->
+            <section id="view-codes" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">ACCESS CODES & EVENT IMPORT</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Registration access codes issued to students. Import wave participants via CSV with conflict detection.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.AdminPortal.exportCodesCsv()" class="pixel-btn-navy text-xs px-3 py-1.5 flex items-center gap-1 font-label">
+                            <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                        </button>
+                        <button onclick="window.AdminPortal.openCsvModal()" class="pixel-btn-gold bg-gold text-ink text-xs px-3 py-1.5 flex items-center gap-1 font-label font-bold">
+                            <span class="material-symbols-outlined text-sm">upload_file</span> Import CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-navy p-4 pixel-border border-gold/30">
+                        <div class="text-[10px] font-mono text-gold uppercase">Total Issued Codes</div>
+                        <div id="stat-codes-total" class="font-display font-black text-2xl text-white mt-1">0</div>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-green-500/30">
+                        <div class="text-[10px] font-mono text-green-300 uppercase">Available for Signup</div>
+                        <div id="stat-codes-available" class="font-display font-black text-2xl text-green-300 mt-1">0</div>
+                    </div>
+                    <div class="bg-navy p-4 pixel-border border-gold/30">
+                        <div class="text-[10px] font-mono text-gold uppercase">Redeemed / Activated</div>
+                        <div id="stat-codes-redeemed" class="font-display font-black text-2xl text-gold mt-1">0</div>
+                    </div>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 flex flex-col md:flex-row gap-3 justify-between items-center">
+                    <div class="w-full md:w-72">
+                        <input type="text" id="codes-search" oninput="window.AdminPortal.loadCodes()" placeholder="Search code, name, email..." class="pixel-input text-xs" />
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <select id="codes-status-filter" onchange="window.AdminPortal.loadCodes()" class="pixel-input text-xs w-44">
+                            <option value="all">All Statuses</option>
+                            <option value="available">Available (Unredeemed)</option>
+                            <option value="redeemed">Redeemed</option>
+                            <option value="revoked">Revoked</option>
+                        </select>
+                        <button onclick="window.AdminPortal.loadCodes()" class="pixel-btn-navy text-xs px-3 py-1.5 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">refresh</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b-2 border-navy-light/40 text-[10px] font-mono text-gold uppercase bg-navy-darkest/50">
+                                <th class="p-3">Access Code</th>
+                                <th class="p-3">Associated Student</th>
+                                <th class="p-3">Wave</th>
+                                <th class="p-3">Event</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="codes-table-body">
+                            <!-- Injected by window.AdminPortal.loadCodes() -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: SESSIONS & SCHEDULE -->
+            <section id="view-sessions-admin" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">TRAINING SESSIONS & WORKSHOPS</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Schedule live training sessions, attach Google Meet links, and provide preparation problem sets.</p>
+                    </div>
+                    <button onclick="window.AdminPortal.openNewSessionModal()" class="pixel-btn-gold bg-gold text-ink text-xs px-4 py-2 font-bold font-label flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">add</span> Schedule New Session
+                    </button>
+                </div>
+
+                <!-- Sessions List -->
+                <div id="admin-sessions-list" class="space-y-4">
+                    <!-- Injected by window.AdminPortal.loadSessions() -->
+                </div>
+            </section>
+
+            <!-- VIEW: ATTENDANCE MANAGEMENT -->
+            <section id="view-attendance-admin" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">SESSION ATTENDANCE TRACKER</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Record and audit student attendance. Track percentages per Wave and per session.</p>
+                    </div>
+                    <button onclick="window.AdminPortal.saveAllAttendance()" class="pixel-btn-gold bg-gold text-ink text-xs px-4 py-2 font-bold font-label flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">save</span> Save Attendance Changes
+                    </button>
+                </div>
+
+                <!-- Session Selector & Stats -->
+                <div class="bg-navy p-4 pixel-border border-navy-light/40 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div class="w-full md:w-96">
+                        <label class="block text-[10px] font-mono text-gold uppercase mb-1">Select Session</label>
+                        <select id="attendance-session-select" onchange="window.AdminPortal.loadAttendanceView(this.value)" class="pixel-input text-xs">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-6 w-full md:w-auto">
+                        <div class="text-center">
+                            <div class="text-[10px] font-mono text-cream-dark/60 uppercase">Present</div>
+                            <div id="stat-attendance-present" class="font-display font-black text-xl text-green-300">0</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-[10px] font-mono text-cream-dark/60 uppercase">Absent</div>
+                            <div id="stat-attendance-absent" class="font-display font-black text-xl text-red-300">0</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-[10px] font-mono text-cream-dark/60 uppercase">Attendance Rate</div>
+                            <div id="stat-attendance-rate" class="font-display font-black text-xl text-gold">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-navy pixel-border border-navy-light/40 overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b-2 border-navy-light/40 text-[10px] font-mono text-gold uppercase bg-navy-darkest/50">
+                                <th class="p-3">Student Name</th>
+                                <th class="p-3">Wave</th>
+                                <th class="p-3">Codeforces Handle</th>
+                                <th class="p-3">Attendance</th>
+                                <th class="p-3">Audit Note</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-table-body">
+                            <!-- Injected by window.AdminPortal.fetchSessionAttendance() -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VIEW: MENTORS & DIRECT FEEDBACK -->
+            <section id="view-mentors-admin" class="space-y-6 hidden">
+                <div>
+                    <h1 class="font-display font-black text-2xl text-white">MENTOR COMMUNICATION & FEEDBACK</h1>
+                    <p class="font-body text-xs text-cream-dark/70">Broadcast announcements to the community or send targeted feedback and problem recommendations to students.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Broadcast Announcement -->
+                    <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                        <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">campaign</span> Broadcast Announcement
+                        </h3>
+                        <form onsubmit="window.AdminPortal.postMentorAnnouncement(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-label text-gold uppercase font-bold mb-1">Title</label>
+                                <input type="text" id="mentor-broadcast-title" class="pixel-input" placeholder="e.g. Wave 1 Training Session Rescheduled" />
+                            </div>
+                            <div>
+                                <label class="block font-label text-gold uppercase font-bold mb-1">Announcement Content *</label>
+                                <textarea id="mentor-broadcast-content" rows="4" class="pixel-input" required placeholder="Type community announcement..."></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="pixel-btn-gold bg-gold text-ink font-bold px-4 py-2 flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">send</span> Broadcast Announcement
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Direct Student Feedback -->
+                    <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4">
+                        <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">rate_review</span> Send Direct Student Feedback
+                        </h3>
+                        <form onsubmit="window.AdminPortal.sendDirectFeedback(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-label text-gold uppercase font-bold mb-1">Select Student *</label>
+                                <select id="mentor-student-select" class="pixel-input" required>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-label text-gold uppercase font-bold mb-1">Feedback & Notes *</label>
+                                <textarea id="mentor-feedback-content" rows="3" class="pixel-input" required placeholder="Personal advice, progress review, or weak topics to practice..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-label text-gold uppercase font-bold mb-1">Recommended Problems (comma separated)</label>
+                                <input type="text" id="mentor-feedback-problems" class="pixel-input" placeholder="e.g. 71A, 4A, 158A" />
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="pixel-btn-gold bg-gold text-ink font-bold px-4 py-2 flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">send</span> Send Private Feedback
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Recent Announcements & Feedback History -->
+                <div class="space-y-4">
+                    <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">history</span> Recent Announcements & Messages
+                    </h3>
+                    <div id="admin-mentors-feed" class="space-y-3">
+                        <!-- Injected by window.AdminPortal.loadMentorsView() -->
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -1306,6 +1613,137 @@
         </div>
     </div>
 
+    <!-- CSV IMPORT MODAL -->
+    <div id="csv-import-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-navy p-4 sm:p-6 max-w-2xl w-[94%] max-h-[90vh] overflow-y-auto pixel-border border-gold space-y-4 my-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-display font-bold text-base sm:text-lg text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-gold">upload_file</span>
+                    Import Student Wave Codes from CSV
+                </h3>
+                <button onclick="window.AdminPortal.closeCsvModal()" class="text-cream-dark/60 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <p class="text-cream-dark/70">
+                    Paste CSV records below. Required header fields: <code class="text-gold font-mono">full_name, email, wave, code</code>.
+                    Existing email records and duplicate codes are detected and skipped.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Target Event</label>
+                        <select id="csv-event-id" class="pixel-input">
+                            <option value="orientation-session-2026">Orientation Session 2026</option>
+                            <option value="wave-training-2026">Wave Training 2026</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Default Wave (Fallback)</label>
+                        <select id="csv-default-wave" class="pixel-input">
+                            <option value="Wave 1">Wave 1 (Beginner)</option>
+                            <option value="Wave 2">Wave 2 (Intermediate)</option>
+                            <option value="Wave 3">Wave 3 (Advanced)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">CSV Text / File Content</label>
+                    <textarea id="csv-text-input" rows="6" class="pixel-input font-mono text-[11px]" placeholder="full_name,email,wave,code&#10;Ahmed Ali,ahmed@example.com,Wave 1,NUSC-OS26-XYZ12&#10;Sara Nour,sara@example.com,Wave 2,NUSC-PAR26-ABC34"></textarea>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button type="button" onclick="window.AdminPortal.previewCsv()" class="pixel-btn-navy text-xs px-3 py-1.5 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">visibility</span> Preview & Validate
+                    </button>
+                    <span id="csv-preview-summary" class="text-[11px] text-cream-dark/60"></span>
+                </div>
+
+                <!-- Preview Table Container -->
+                <div id="csv-preview-container" class="hidden max-h-48 overflow-y-auto pixel-border border-navy-light/40">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-navy-light/40 text-[10px] font-mono text-gold uppercase bg-navy-darkest">
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Email</th>
+                                <th class="p-2">Wave</th>
+                                <th class="p-2">Code</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="csv-preview-tbody"></tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                    <button type="button" onclick="window.AdminPortal.closeCsvModal()" class="pixel-btn-navy px-4 py-2">Cancel</button>
+                    <button id="csv-commit-btn" type="button" disabled onclick="window.AdminPortal.commitCsvImport()" class="pixel-btn-gold bg-gold text-ink font-bold px-4 py-2 disabled:opacity-40">Confirm & Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SESSION CREATE / EDIT MODAL -->
+    <div id="session-editor-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-navy p-4 sm:p-6 max-w-lg w-[94%] max-h-[90vh] overflow-y-auto pixel-border border-gold space-y-4 my-auto">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 id="session-modal-title" class="font-display font-bold text-base sm:text-lg text-white">SCHEDULE NEW SESSION</h3>
+                <button onclick="window.AdminPortal.closeSessionModal()" class="text-cream-dark/60 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="window.AdminPortal.saveSession(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="session-form-id" />
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Session Title *</label>
+                    <input type="text" id="session-form-title" class="pixel-input" required placeholder="e.g. Graph Theory & Shortest Paths" />
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Description</label>
+                    <textarea id="session-form-desc" rows="2" class="pixel-input" placeholder="Overview of topics and objectives..."></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Date & Time *</label>
+                        <input type="datetime-local" id="session-form-date" class="pixel-input" required />
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Duration (minutes)</label>
+                        <input type="number" id="session-form-duration" value="90" min="15" max="360" class="pixel-input" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Wave Target</label>
+                        <select id="session-form-wave" class="pixel-input">
+                            <option value="All">All Waves</option>
+                            <option value="Wave 1">Wave 1</option>
+                            <option value="Wave 2">Wave 2</option>
+                            <option value="Wave 3">Wave 3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label text-gold uppercase font-bold mb-1">Speaker / Mentor Name</label>
+                        <input type="text" id="session-form-speaker" class="pixel-input" placeholder="e.g. Cassidy" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Google Meet / Virtual Link</label>
+                    <input type="url" id="session-form-meet" class="pixel-input" placeholder="https://meet.google.com/..." />
+                </div>
+                <div>
+                    <label class="block font-label text-gold uppercase font-bold mb-1">Preparation Materials / Slides</label>
+                    <input type="text" id="session-form-prep" class="pixel-input" placeholder="Link to slides, notes, or reading" />
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                    <button type="button" onclick="window.AdminPortal.closeSessionModal()" class="pixel-btn-navy px-4 py-2">Cancel</button>
+                    <button type="submit" class="pixel-btn-gold bg-gold text-ink font-bold px-4 py-2">Save Session</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Central Data Store & Auth Logic -->
     <script src="/js/data-store.js"></script>
 
@@ -1361,7 +1799,7 @@
                 const hash = window.location.hash || '#dashboard';
                 const [route, query] = hash.split('?');
                 
-                const views = ['dashboard', 'applications', 'applicant-detail', 'participants', 'events', 'registrations', 'questions', 'settings'];
+                const views = ['dashboard', 'applications', 'applicant-detail', 'participants', 'events', 'registrations', 'questions', 'settings', 'students', 'codes', 'sessions-admin', 'attendance-admin', 'mentors-admin'];
                 views.forEach(v => {
                     const el = document.getElementById('view-' + v);
                     if (el) el.classList.add('hidden');
@@ -1412,6 +1850,38 @@
                     document.getElementById('view-settings').classList.remove('hidden');
                     document.querySelector('.nav-item[data-view="settings"]').classList.add('active');
                     document.getElementById('top-title').textContent = 'SETTINGS';
+                } else if (route === '#students') {
+                    document.getElementById('view-students').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="students"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'STUDENT PORTAL DIRECTORY';
+                    if (window.AdminPortal) window.AdminPortal.loadStudents();
+                } else if (route === '#codes') {
+                    document.getElementById('view-codes').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="codes"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'ACCESS CODES & CSV IMPORT';
+                    if (window.AdminPortal) window.AdminPortal.loadCodes();
+                } else if (route === '#sessions-admin') {
+                    document.getElementById('view-sessions-admin').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="sessions-admin"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'TRAINING SESSIONS';
+                    if (window.AdminPortal) window.AdminPortal.loadSessions();
+                } else if (route === '#attendance-admin') {
+                    document.getElementById('view-attendance-admin').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="attendance-admin"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'SESSION ATTENDANCE TRACKER';
+                    const params = new URLSearchParams(query || '');
+                    const sessId = params.get('sessionId');
+                    if (window.AdminPortal) window.AdminPortal.loadAttendanceView(sessId);
+                } else if (route === '#mentors-admin') {
+                    document.getElementById('view-mentors-admin').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="mentors-admin"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'MENTOR COMMUNICATION';
+                    if (window.AdminPortal) window.AdminPortal.loadMentorsView();
                 }
             }
 
@@ -2769,5 +3239,7 @@
 
         })();
     </script>
+    <!-- Admin Portal Student Platform Extension -->
+    <script src="/js/admin-portal.js"></script>
 </body>
 </html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sessions & Timeline | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+            <!-- Header -->
+            <div class="bg-navy pixel-border-gold p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block mb-1">TRAINING CALENDAR</span>
+                    <h1 class="font-display font-black text-2xl sm:text-3xl text-white">SESSIONS & TIMELINE</h1>
+                    <p class="text-xs text-cream-dark/70 font-body mt-0.5">Live workshops, contest debriefs, and algorithmic practice schedules.</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <label class="text-xs text-cream-dark/70 uppercase font-display font-bold">Filter:</label>
+                    <select id="timeline-filter" class="bg-navy-darkest text-gold text-xs border border-gold/40 px-3 py-2 outline-none font-minecraft">
+                        <option value="all">All Sessions</option>
+                        <option value="upcoming">Upcoming Only</option>
+                        <option value="completed">Completed Past</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sessions List Container -->
+            <div id="sessions-container" class="space-y-4">
+                <div class="p-8 text-center text-cream-dark/50 text-xs">Loading training sessions...</div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('sessions');
+
+            const container = document.getElementById('sessions-container');
+            const filterSelect = document.getElementById('timeline-filter');
+            let allSessions = [];
+
+            filterSelect.addEventListener('change', render);
+
+            async function load() {
+                try {
+                    const res = await PortalAuth.fetchWithAuth('/api/portal/sessions');
+                    if (!res.ok) throw new Error('Failed to load sessions.');
+                    const data = await res.json();
+                    allSessions = data.sessions || [];
+                    render();
+                } catch (e) {
+                    container.innerHTML = `<div class="p-8 text-center text-red-400 text-xs">${e.message || 'Error loading sessions.'}</div>`;
+                }
+            }
+
+            function render() {
+                const filter = filterSelect.value;
+                const filtered = allSessions.filter(s => {
+                    if (filter === 'upcoming') return s.timelineGroup === 'upcoming';
+                    if (filter === 'completed') return s.timelineGroup === 'completed';
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div class="p-12 text-center bg-navy pixel-border border-white/10 space-y-2">
+                            <span class="material-symbols-outlined text-4xl text-cream-dark/30">event_busy</span>
+                            <p class="text-sm font-display text-white">No sessions match this filter.</p>
+                            <p class="text-xs text-cream-dark/60 font-body">Check back soon for new training announcements.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = filtered.map(s => {
+                    const sDate = new Date(s.session_date);
+                    const isUpcoming = s.timelineGroup === 'upcoming';
+                    const dateFormatted = sDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                    const timeFormatted = sDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+                    let statusBadge = `<span class="bg-navy-darkest text-gold text-[10px] font-minecraft px-2 py-0.5 border border-gold/40 uppercase">Upcoming</span>`;
+                    if (s.timelineGroup === 'completed') {
+                        statusBadge = `<span class="bg-gray-800 text-cream-dark/60 text-[10px] font-minecraft px-2 py-0.5 border border-white/20 uppercase">Completed</span>`;
+                    } else if (s.status === 'cancelled') {
+                        statusBadge = `<span class="bg-red-950 text-red-300 text-[10px] font-minecraft px-2 py-0.5 border border-red-500/40 uppercase">Cancelled</span>`;
+                    }
+
+                    let attendancePill = '';
+                    if (s.myAttendanceStatus === 'present') {
+                        attendancePill = `<span class="inline-flex items-center gap-1 text-[11px] text-green-400 font-bold"><span class="material-symbols-outlined text-sm">verified</span> Attended</span>`;
+                    } else if (s.myAttendanceStatus === 'absent') {
+                        attendancePill = `<span class="inline-flex items-center gap-1 text-[11px] text-red-400 font-bold"><span class="material-symbols-outlined text-sm">cancel</span> Absent</span>`;
+                    }
+
+                    return `
+                        <div class="bg-navy pixel-border ${isUpcoming ? 'border-gold/60' : 'border-white/20'} p-5 sm:p-6 space-y-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/10 pb-3">
+                                <div class="flex items-center gap-2">
+                                    ${statusBadge}
+                                    <span class="text-[11px] bg-navy-darkest text-cream-dark/80 px-2 py-0.5 font-display font-bold uppercase border border-white/10">${s.sessionType}</span>
+                                    <span class="text-[11px] text-gold font-minecraft">${s.wave}</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    ${attendancePill}
+                                    <span class="text-xs font-mono text-cream-dark/80">${dateFormatted} &bull; ${timeFormatted} (${s.durationMinutes}m)</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h3 class="font-display font-black text-lg text-white">${s.title}</h3>
+                                ${s.description ? `<p class="font-body text-xs text-cream-dark/80 leading-relaxed">${s.description}</p>` : ''}
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-cream-dark/80 font-body">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-gold text-base">person</span>
+                                    <span>Instructor / Speaker: <strong class="text-white">${s.speakerName || 'ICPC NUSC Coach'}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-gold text-base">location_on</span>
+                                    <span>${s.location || 'Online Google Meet'}</span>
+                                </div>
+                            </div>
+
+                            ${s.prepMaterials ? `
+                                <div class="p-3 bg-navy-darkest border border-gold/30 text-xs space-y-1">
+                                    <strong class="font-display text-gold uppercase text-[11px] block">Preparation & Reading:</strong>
+                                    <p class="font-body text-cream-dark/80 text-[11px]">${s.prepMaterials}</p>
+                                </div>
+                            ` : ''}
+
+                            ${s.meetingLink ? `
+                                <div class="pt-2 flex flex-wrap gap-3">
+                                    <a href="${s.meetingLink}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-gold text-ink font-display font-black text-xs uppercase pixel-btn-gold hover:bg-gold-light transition-colors flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-base">video_call</span>
+                                        <span>JOIN LIVE MEETING</span>
+                                    </a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            load();
+        });
+    </script>
+</body>
+</html>

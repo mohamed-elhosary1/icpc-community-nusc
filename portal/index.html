@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Portal | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+        .pixel-card {
+            background-color: #002e69;
+            border: 2px solid rgba(254, 165, 32, 0.3);
+            box-shadow: 3px 3px 0px 0px #00122e;
+            transition: all 0.2s ease;
+        }
+        .pixel-card:hover {
+            border-color: #fea520;
+            box-shadow: 5px 5px 0px 0px #00122e;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+            <!-- Welcome & Key Status Banner -->
+            <div class="bg-gradient-to-r from-navy to-navy-dark border-2 border-gold/40 p-6 sm:p-8 relative overflow-hidden pixel-shadow-gold">
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-navy-darkest px-3 py-1 border border-gold/40 text-gold text-xs font-minecraft uppercase mb-2">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            <span id="student-wave-badge">Wave 1 Student</span>
+                        </div>
+                        <h1 class="font-display font-black text-2xl sm:text-3xl text-white">
+                            WELCOME BACK, <span id="student-first-name" class="text-gold">STUDENT</span>!
+                        </h1>
+                        <p class="text-xs sm:text-sm text-cream-dark/80 mt-1 font-body">
+                            Together we code, together we win. Here is your competitive training summary.
+                        </p>
+                    </div>
+
+                    <!-- Next Session Countdown Pill -->
+                    <div id="next-session-pill" class="bg-navy-darkest p-4 border border-gold/40 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-3xl text-gold" style="font-variation-settings:'FILL' 1">schedule</span>
+                        <div>
+                            <span class="text-[10px] text-cream-dark/60 font-minecraft uppercase tracking-wider block">NEXT LIVE SESSION</span>
+                            <strong id="next-session-title" class="text-white text-xs sm:text-sm font-display block">Dynamic Programming I</strong>
+                            <span id="next-session-time" class="text-[11px] text-gold font-mono">Saturday @ 9:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric Cards Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Total Solved -->
+                <div class="pixel-card p-5 space-y-1">
+                    <div class="flex items-center justify-between text-cream-dark/70 text-xs font-label uppercase font-bold">
+                        <span>Total Solved</span>
+                        <span class="material-symbols-outlined text-gold text-lg">check_circle</span>
+                    </div>
+                    <div id="metric-solved" class="text-3xl sm:text-4xl font-black font-display text-white">0</div>
+                    <span class="text-[11px] text-green-400 font-mono flex items-center gap-1">
+                        <span id="metric-weekly-solved">0</span> solved this week
+                    </span>
+                </div>
+
+                <!-- CF Rating -->
+                <div class="pixel-card p-5 space-y-1">
+                    <div class="flex items-center justify-between text-cream-dark/70 text-xs font-label uppercase font-bold">
+                        <span>Codeforces Rating</span>
+                        <span class="material-symbols-outlined text-gold text-lg">military_tech</span>
+                    </div>
+                    <div id="metric-rating" class="text-3xl sm:text-4xl font-black font-display text-gold">0</div>
+                    <span id="metric-rank" class="text-[11px] text-cream-dark/60 font-mono uppercase">Unrated</span>
+                </div>
+
+                <!-- Attendance Rate -->
+                <div class="pixel-card p-5 space-y-1">
+                    <div class="flex items-center justify-between text-cream-dark/70 text-xs font-label uppercase font-bold">
+                        <span>Session Attendance</span>
+                        <span class="material-symbols-outlined text-gold text-lg">fact_check</span>
+                    </div>
+                    <div id="metric-attendance" class="text-3xl sm:text-4xl font-black font-display text-white">100%</div>
+                    <span id="metric-attended-sessions" class="text-[11px] text-cream-dark/60 font-mono">0 / 0 sessions</span>
+                </div>
+
+                <!-- Wave Ranking -->
+                <div class="pixel-card p-5 space-y-1">
+                    <div class="flex items-center justify-between text-cream-dark/70 text-xs font-label uppercase font-bold">
+                        <span>Wave Rank</span>
+                        <span class="material-symbols-outlined text-gold text-lg">leaderboard</span>
+                    </div>
+                    <div id="metric-wave-rank" class="text-3xl sm:text-4xl font-black font-display text-white">#--</div>
+                    <a href="/portal/leaderboard" class="text-[11px] text-gold hover:underline font-display font-bold uppercase block">
+                        View Standings &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Two Columns: Actionable Recommendations & Latest Mentor Notice -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Actionable Next Steps (7 cols) -->
+                <div class="lg:col-span-7 bg-navy pixel-border border-white/20 p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">lightbulb</span>
+                            <span>Recommended Next Steps</span>
+                        </h3>
+                        <span class="text-[10px] font-minecraft text-cream-dark/50 uppercase">Personalized</span>
+                    </div>
+
+                    <div id="recommendations-container" class="space-y-3">
+                        <p class="text-xs text-cream-dark/60">Loading next steps...</p>
+                    </div>
+                </div>
+
+                <!-- Right: Mentor Announcements & Quick Actions (5 cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Mentor Card -->
+                    <div class="bg-navy pixel-border border-gold/40 p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">campaign</span>
+                                <span>Mentor Announcement</span>
+                            </h3>
+                            <a href="/portal/mentors" class="text-[11px] text-gold hover:underline font-bold uppercase">All &rarr;</a>
+                        </div>
+
+                        <div id="announcement-box" class="space-y-2">
+                            <div class="p-3 bg-navy-darkest border border-white/10 text-xs space-y-1">
+                                <strong id="announcement-title" class="text-gold block font-display">Welcome to ICPC Training Season</strong>
+                                <p id="announcement-content" class="text-cream-dark/80 font-body text-[11px] leading-relaxed">
+                                    Make sure your Codeforces handle is connected to appear on our weekly leaderboard. Check the sessions timeline for upcoming workshop links.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="/portal/community" class="w-full py-2.5 bg-navy-darkest border border-gold/40 text-gold hover:bg-gold hover:text-ink font-display font-bold text-xs uppercase flex items-center justify-center gap-2 transition-colors">
+                                <span class="material-symbols-outlined text-sm">chat</span>
+                                <span>Join Community Chat</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Codeforces Quick Status -->
+                    <div id="cf-quick-box" class="p-5 bg-navy-darkest border border-white/20 text-xs space-y-3">
+                        <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block">CODEFORCES STATUS</span>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg text-cream-dark/60">code</span>
+                                <span id="quick-cf-handle" class="font-mono font-bold text-white">Not Connected</span>
+                            </div>
+                            <a href="/onboarding/codeforces" class="text-gold font-bold hover:underline font-display uppercase text-[11px]">
+                                Settings &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('overview');
+
+            document.getElementById('student-first-name').textContent = (user.fullName || 'Student').split(' ')[0].toUpperCase();
+            document.getElementById('student-wave-badge').textContent = `${user.wave || 'Wave 1'} Student`;
+
+            // Load Dashboard Metrics
+            try {
+                const res = await PortalAuth.fetchWithAuth('/api/portal/dashboard');
+                if (res.ok) {
+                    const data = await res.json();
+
+                    // CF Metrics
+                    if (data.codeforces) {
+                        document.getElementById('metric-solved').textContent = data.codeforces.solvedCount || 0;
+                        document.getElementById('metric-weekly-solved').textContent = data.codeforces.weeklySolved || 0;
+                        document.getElementById('metric-rating').textContent = data.codeforces.rating || 0;
+                        document.getElementById('metric-rank').textContent = `${data.codeforces.rank || 'Unrated'} (Max: ${data.codeforces.maxRating || 0})`;
+                    }
+
+                    // Attendance Metrics
+                    if (data.attendance) {
+                        document.getElementById('metric-attendance').textContent = `${data.attendance.percentage}%`;
+                        document.getElementById('metric-attended-sessions').textContent = `${data.attendance.attended} / ${data.attendance.totalScheduled} sessions`;
+                    }
+
+                    // Next Session
+                    if (data.nextSession) {
+                        document.getElementById('next-session-title').textContent = data.nextSession.title;
+                        const sDate = new Date(data.nextSession.session_date);
+                        document.getElementById('next-session-time').textContent = sDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    }
+
+                    // Announcement
+                    if (data.announcement) {
+                        document.getElementById('announcement-title').textContent = data.announcement.title || 'Mentor Announcement';
+                        document.getElementById('announcement-content').textContent = data.announcement.content;
+                    }
+
+                    // Quick CF handle
+                    const quickHandleEl = document.getElementById('quick-cf-handle');
+                    if (data.student && data.student.codeforcesHandle) {
+                        quickHandleEl.textContent = `@${data.student.codeforcesHandle} ${data.student.cfVerified ? '✓' : ''}`;
+                    }
+
+                    // Recommendations
+                    const recContainer = document.getElementById('recommendations-container');
+                    if (data.recommendations && data.recommendations.length > 0) {
+                        recContainer.innerHTML = data.recommendations.map(r => `
+                            <a href="${r.link}" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-gold text-xl group-hover:scale-110 transition-transform">${r.icon || 'arrow_forward'}</span>
+                                    <div>
+                                        <strong class="text-white text-xs block font-display">${r.title}</strong>
+                                        <span class="text-[11px] text-cream-dark/60 block font-body">${r.description}</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-xs text-cream-dark/40 group-hover:text-gold transition-colors">arrow_forward</span>
+                            </a>
+                        `).join('');
+                    } else {
+                        recContainer.innerHTML = `<p class="text-xs text-cream-dark/60">You are all caught up for this week! Keep solving practice problems.</p>`;
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading dashboard:', err);
+            }
+        });
+    </script>
+</body>
+</html>

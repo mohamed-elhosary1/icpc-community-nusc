@@ -404,6 +404,10 @@
             <a href="#resources" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Resources</a>
             <a href="#leaderboard" class="font-label text-sm text-ink-light hover:text-navy transition-colors">Stats</a>
             <a href="#faq" class="font-label text-sm text-ink-light hover:text-navy transition-colors">FAQ</a>
+            <a href="/login" id="nav-portal-btn" class="font-label text-xs px-3.5 py-2 border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold transition-all flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">login</span>
+                <span>Student Portal</span>
+            </a>
             <button class="join-btn bg-gold text-ink font-label font-bold text-xs px-4 py-2 pixel-btn-gold flex items-center gap-2">
                 <img src="assets/Objects/Bedroom/Trophy.png" class="pixel-art w-4 h-4" alt="Trophy" />
                 JOIN US NOW
@@ -432,6 +436,10 @@
         <a href="#resources" class="mobile-nav-link font-display font-bold text-lg text-navy">Knowledge Base</a>
         <a href="#leaderboard" class="mobile-nav-link font-display font-bold text-lg text-navy">Leaderboard</a>
         <a href="#faq" class="mobile-nav-link font-display font-bold text-lg text-navy">FAQ</a>
+        <a href="/login" id="mobile-nav-portal-btn" class="font-display font-bold text-base px-6 py-2.5 border-2 border-navy text-navy hover:bg-navy hover:text-white w-full flex items-center justify-center gap-2 mt-1">
+            <span class="material-symbols-outlined text-base">login</span>
+            <span>Student Portal</span>
+        </a>
         <button class="join-btn bg-gold text-ink font-display font-black text-base px-6 py-3 pixel-btn-gold mt-2 flex items-center gap-2 w-full justify-center">
             <img src="assets/Objects/Bedroom/Trophy.png" class="pixel-art w-5 h-5" alt="Trophy" />
             JOIN US NOW
@@ -1337,6 +1345,24 @@
         initJourneyNodes();
         initFAQ();
         initModal();
+
+        try {
+            const sess = localStorage.getItem('nusc_student_session');
+            if (sess) {
+                const navBtn = document.getElementById('nav-portal-btn');
+                const mobBtn = document.getElementById('mobile-nav-portal-btn');
+                if (navBtn) {
+                    navBtn.href = '/portal';
+                    const label = navBtn.querySelector('span:last-child');
+                    if (label) label.textContent = 'My Portal';
+                }
+                if (mobBtn) {
+                    mobBtn.href = '/portal';
+                    const label = mobBtn.querySelector('span:last-child');
+                    if (label) label.textContent = 'My Portal';
+                }
+            }
+        } catch(e) {}
     }
 
     if (document.readyState === 'loading') {

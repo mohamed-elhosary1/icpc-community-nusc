@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Progress | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+        .pixel-card {
+            background-color: #002e69;
+            border: 2px solid rgba(254, 165, 32, 0.3);
+            box-shadow: 3px 3px 0px 0px #00122e;
+        }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+            <!-- Header -->
+            <div class="bg-navy pixel-border-gold p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="font-minecraft text-[10px] text-gold uppercase tracking-wider block mb-1">PERFORMANCE ANALYTICS</span>
+                    <h1 class="font-display font-black text-2xl sm:text-3xl text-white">MY PROBLEM-SOLVING PROGRESS</h1>
+                    <p class="text-xs text-cream-dark/70 font-body mt-0.5">Real synchronization from your Codeforces handle and training logs.</p>
+                </div>
+
+                <button type="button" id="refresh-stats-btn" class="bg-navy-darkest border border-gold/40 text-gold hover:text-white px-4 py-2 font-display font-bold text-xs uppercase flex items-center gap-2 cursor-pointer transition-colors">
+                    <span class="material-symbols-outlined text-sm" id="sync-icon">sync</span>
+                    <span id="sync-text">Refresh Codeforces</span>
+                </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="pixel-card p-5 space-y-1">
+                    <span class="text-cream-dark/60 text-[11px] font-label uppercase font-bold block">Total Solved</span>
+                    <div id="p-total-solved" class="text-3xl sm:text-4xl font-black font-display text-white">0</div>
+                    <span class="text-[10px] text-cream-dark/50 font-mono">Unique accepted problems</span>
+                </div>
+                <div class="pixel-card p-5 space-y-1">
+                    <span class="text-cream-dark/60 text-[11px] font-label uppercase font-bold block">Solved This Week</span>
+                    <div id="p-weekly-solved" class="text-3xl sm:text-4xl font-black font-display text-green-400">0</div>
+                    <span class="text-[10px] text-cream-dark/50 font-mono">Last 7 days activity</span>
+                </div>
+                <div class="pixel-card p-5 space-y-1">
+                    <span class="text-cream-dark/60 text-[11px] font-label uppercase font-bold block">Current Rating</span>
+                    <div id="p-rating" class="text-3xl sm:text-4xl font-black font-display text-gold">0</div>
+                    <span id="p-rank" class="text-[10px] text-cream-dark/50 font-mono uppercase">Unrated</span>
+                </div>
+                <div class="pixel-card p-5 space-y-1">
+                    <span class="text-cream-dark/60 text-[11px] font-label uppercase font-bold block">Peak Rating</span>
+                    <div id="p-max-rating" class="text-3xl sm:text-4xl font-black font-display text-cyan-400">0</div>
+                    <span class="text-[10px] text-cream-dark/50 font-mono">All-time highest</span>
+                </div>
+            </div>
+
+            <!-- Recent Submissions Table -->
+            <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gold">history</span>
+                        <span>Recent Submissions</span>
+                    </h3>
+                    <span id="sync-time-badge" class="text-[10px] font-mono text-cream-dark/50">Last synced: Just now</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-navy-darkest text-cream-dark/60 font-minecraft text-[10px] uppercase tracking-wider border-b border-white/10">
+                            <tr>
+                                <th class="py-2.5 px-3">Problem</th>
+                                <th class="py-2.5 px-3">Difficulty</th>
+                                <th class="py-2.5 px-3 text-center">Verdict</th>
+                                <th class="py-2.5 px-3 text-right">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissions-body" class="divide-y divide-white/10 font-body">
+                            <tr>
+                                <td colspan="4" class="text-center py-6 text-cream-dark/50">Loading submissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('progress');
+
+            const refreshBtn = document.getElementById('refresh-stats-btn');
+            const syncIcon = document.getElementById('sync-icon');
+            const syncText = document.getElementById('sync-text');
+            const tbody = document.getElementById('submissions-body');
+            const syncBadge = document.getElementById('sync-time-badge');
+
+            async function loadStats(forceRefresh = false) {
+                if (!user.codeforcesHandle) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center py-8 space-y-2">
+                                <p class="text-cream-dark/70 text-xs">No Codeforces account connected yet.</p>
+                                <a href="/onboarding/codeforces" class="inline-block mt-2 px-4 py-2 bg-gold text-ink font-display font-black text-xs uppercase pixel-btn-gold">
+                                    Connect Handle &rarr;
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                if (forceRefresh) {
+                    syncIcon.classList.add('animate-spin');
+                    syncText.textContent = 'Syncing...';
+                }
+
+                try {
+                    const res = await PortalAuth.fetchWithAuth(`/api/codeforces/stats?handle=${encodeURIComponent(user.codeforcesHandle)}`);
+                    if (!res.ok) throw new Error('Could not fetch Codeforces statistics.');
+
+                    const data = await res.json();
+                    const s = data.stats || {};
+
+                    document.getElementById('p-total-solved').textContent = s.solved_count || 0;
+                    document.getElementById('p-weekly-solved').textContent = s.weekly_solved || 0;
+                    document.getElementById('p-rating').textContent = s.rating || 0;
+                    document.getElementById('p-rank').textContent = s.rank || 'Unrated';
+                    document.getElementById('p-max-rating').textContent = s.max_rating || 0;
+
+                    if (s.last_synced_at) {
+                        syncBadge.textContent = 'Last synced: ' + new Date(s.last_synced_at).toLocaleTimeString();
+                    }
+
+                    const subs = s.recent_submissions || [];
+                    if (subs.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-cream-dark/50">No recent submissions found.</td></tr>`;
+                    } else {
+                        tbody.innerHTML = subs.map(sub => {
+                            const isOk = sub.verdict === 'OK';
+                            const verdictBadge = isOk 
+                                ? `<span class="bg-green-500/20 text-green-400 border border-green-500 px-2 py-0.5 rounded font-minecraft text-[9px] uppercase">ACCEPTED</span>`
+                                : `<span class="bg-red-500/20 text-red-400 border border-red-500 px-2 py-0.5 rounded font-minecraft text-[9px] uppercase">${sub.verdict || 'REJECTED'}</span>`;
+
+                            const link = sub.contestId && sub.index 
+                                ? `https://codeforces.com/contest/${sub.contestId}/problem/${sub.index}`
+                                : '#';
+
+                            const subTime = sub.time ? new Date(sub.time * 1000).toLocaleDateString() : '';
+
+                            return `
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-2.5 px-3">
+                                        <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gold font-bold">
+                                            ${sub.contestId ? sub.contestId + sub.index + ' - ' : ''}${sub.name}
+                                        </a>
+                                    </td>
+                                    <td class="py-2.5 px-3 font-mono text-gold">${sub.rating || '---'}</td>
+                                    <td class="py-2.5 px-3 text-center">${verdictBadge}</td>
+                                    <td class="py-2.5 px-3 text-right font-mono text-cream-dark/60 text-[11px]">${subTime}</td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-red-400 text-xs">${e.message}</td></tr>`;
+                } finally {
+                    syncIcon.classList.remove('animate-spin');
+                    syncText.textContent = 'Refresh Codeforces';
+                }
+            }
+
+            refreshBtn.addEventListener('click', () => loadStats(true));
+            loadStats();
+        });
+    </script>
+</body>
+</html>

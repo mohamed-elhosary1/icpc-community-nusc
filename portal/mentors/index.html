@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mentors & Feedback | ICPC Community NUSC</title>
+    <meta name="theme-color" content="#001a41" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy': '#002e69',
+                        'navy-light': '#004494',
+                        'navy-dark': '#001a41',
+                        'navy-darkest': '#00122e',
+                        'gold': '#fea520',
+                        'gold-light': '#ffddb9',
+                        'gold-dark': '#865300',
+                        'red-accent': '#920907',
+                        'cream': '#fbf9f5',
+                        'cream-dark': '#f5f3ef',
+                        'ink': '#1b1c1a',
+                    },
+                    fontFamily: {
+                        'minecraft': ['MinecraftArabic', '"Press Start 2P"', 'Silkscreen', 'monospace'],
+                        'display': ['Outfit', 'sans-serif'],
+                        'body': ['Plus Jakarta Sans', 'sans-serif'],
+                        'label': ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'MinecraftArabic';
+            src: url('/fonts/minecraft-ten-arabic.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .pixel-art { image-rendering: pixelated; }
+        .pixel-border { border: 2px solid #1b1c1a; }
+        .pixel-border-gold { border: 2px solid #fea520; }
+        .pixel-shadow-gold { box-shadow: 4px 4px 0px 0px #fea520; }
+
+        .bg-pixel-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23004494' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-navy-darkest font-body text-cream min-h-screen flex selection:bg-gold selection:text-navy">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside id="portal-sidebar" class="hidden lg:flex w-64 bg-navy-dark border-r-2 border-navy-light/40 flex-col justify-between flex-shrink-0 z-30 min-h-screen sticky top-0"></aside>
+
+    <!-- MOBILE DRAWER -->
+    <div id="portal-drawer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-grow flex flex-col min-w-0 min-h-screen bg-pixel-grid">
+        <!-- TOP APP BAR -->
+        <header id="portal-header" class="h-16 bg-navy-dark/95 backdrop-blur border-b-2 border-navy-light/40 px-6 flex items-center justify-between z-20 sticky top-0"></header>
+
+        <!-- PAGE BODY -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
+
+            <!-- Assigned Mentor Header Card -->
+            <div class="bg-navy pixel-border-gold p-6 flex flex-col sm:flex-row items-center gap-6">
+                <div class="w-20 h-20 bg-navy-darkest border-2 border-gold rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 pixel-shadow-gold">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdDSXRwoLr7_6ZT2w9ac0W9EX9KZbVHd25e_T4U3bGOyw4biruty7T5e1NIQd_TcQftKvl3T6j0yZ13FdSI9c8WVYzBu0CZrseQnNbJmwoKrfqls9xBihJRNDEnT8xWegEnOek4uVd0H0w1n3MxsebhgQLT5ENEq5_9QEaXFrvLHLHbL5_Bvjh7J2KJULA2zUQL3fyh_wMTBHRBFh8OjrsM7KPnngiPTUFGVaKw5qy7W1sbmNasqgKrEaTM_mzbwklZA" class="w-full h-full object-cover" alt="Coach Abdel Aleem Ahmed" />
+                </div>
+                <div class="space-y-1 text-center sm:text-left flex-grow">
+                    <div class="inline-flex items-center gap-2 bg-navy-darkest px-2.5 py-0.5 border border-gold/40 text-gold text-[10px] font-minecraft uppercase">
+                        <span>HEAD COACH & MENTOR</span>
+                    </div>
+                    <h1 class="font-display font-black text-2xl text-white">Coach Abdel Aleem Ahmed</h1>
+                    <p class="text-xs text-cream-dark/80 font-body">Coach Academy &bull; ICPC World Finalist &bull; Senior Competitive Programming Mentor</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <a href="/portal/community" class="px-5 py-2.5 bg-gold text-ink font-display font-black text-xs uppercase pixel-btn-gold inline-flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">chat</span>
+                        <span>Ask in Community</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Two Columns: Announcements & Personal Feedback -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Announcements (6 cols) -->
+                <div class="lg:col-span-6 bg-navy pixel-border border-white/20 p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gold">campaign</span>
+                            <span>Community Announcements</span>
+                        </h3>
+                    </div>
+
+                    <div id="announcements-container" class="space-y-3">
+                        <div class="p-6 text-center text-cream-dark/50 text-xs">Loading announcements...</div>
+                    </div>
+                </div>
+
+                <!-- Personal Feedback & Recommended Problems (6 cols) -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="bg-navy pixel-border border-white/20 p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">feedback</span>
+                                <span>Personal Feedback</span>
+                            </h3>
+                            <span class="text-[10px] font-minecraft text-cream-dark/50 uppercase">Private</span>
+                        </div>
+
+                        <div id="feedback-container" class="space-y-3">
+                            <div class="p-6 text-center text-cream-dark/50 text-xs">Loading feedback...</div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Practice Problems Card -->
+                    <div class="bg-navy pixel-border border-gold/40 p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <h3 class="font-display font-black text-sm uppercase text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">assignment</span>
+                                <span>Weekly Recommended Problems</span>
+                            </h3>
+                            <span class="text-[10px] font-minecraft text-gold uppercase">Coach Pick</span>
+                        </div>
+
+                        <div class="space-y-2 text-xs font-body">
+                            <a href="https://codeforces.com/problemset/problem/4/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
+                                <div>
+                                    <strong class="text-white block font-display">CF 4A - Watermelon</strong>
+                                    <span class="text-[11px] text-cream-dark/60 font-body">Basic logic and parity check</span>
+                                </div>
+                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
+                            </a>
+
+                            <a href="https://codeforces.com/problemset/problem/71/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
+                                <div>
+                                    <strong class="text-white block font-display">CF 71A - Way Too Long Words</strong>
+                                    <span class="text-[11px] text-cream-dark/60 font-body">String manipulation & abbreviations</span>
+                                </div>
+                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
+                            </a>
+
+                            <a href="https://codeforces.com/problemset/problem/231/A" target="_blank" rel="noopener noreferrer" class="p-3 bg-navy-darkest border border-white/10 hover:border-gold flex items-center justify-between transition-colors block">
+                                <div>
+                                    <strong class="text-white block font-display">CF 231A - Team</strong>
+                                    <span class="text-[11px] text-cream-dark/60 font-body">Count condition threshold</span>
+                                </div>
+                                <span class="text-gold font-mono font-bold">800 &rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/portal-auth.js"></script>
+    <script src="/js/portal-layout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await PortalAuth.requireAuth();
+            if (!user) return;
+
+            initPortalLayout('mentors');
+
+            const announcementsContainer = document.getElementById('announcements-container');
+            const feedbackContainer = document.getElementById('feedback-container');
+
+            try {
+                const res = await PortalAuth.fetchWithAuth('/api/portal/mentors');
+                if (!res.ok) throw new Error('Could not load mentor communication.');
+
+                const data = await res.json();
+                const announcements = data.announcements || [];
+                const personal = data.personalFeedback || [];
+
+                // Render announcements
+                if (announcements.length === 0) {
+                    announcementsContainer.innerHTML = `<p class="text-cream-dark/50 text-xs py-4">No announcements published yet.</p>`;
+                } else {
+                    announcementsContainer.innerHTML = announcements.map(a => `
+                        <div class="p-4 bg-navy-darkest border border-white/10 space-y-2">
+                            <div class="flex justify-between items-center text-[10px] text-cream-dark/50">
+                                <span class="font-minecraft text-gold uppercase">${a.type || 'ANNOUNCEMENT'}</span>
+                                <span class="font-mono">${new Date(a.created_at).toLocaleDateString()}</span>
+                            </div>
+                            <h4 class="font-display font-bold text-white text-sm">${a.title || 'Community Update'}</h4>
+                            <p class="font-body text-xs text-cream-dark/80 leading-relaxed">${a.content}</p>
+                        </div>
+                    `).join('');
+                }
+
+                // Render personal feedback
+                if (personal.length === 0) {
+                    feedbackContainer.innerHTML = `
+                        <div class="p-6 bg-navy-darkest border border-white/10 text-center space-y-2">
+                            <span class="material-symbols-outlined text-3xl text-cream-dark/30">drafts</span>
+                            <p class="text-xs text-cream-dark/60">No private feedback from mentors yet. Check back after your next contest or practice session!</p>
+                        </div>
+                    `;
+                } else {
+                    feedbackContainer.innerHTML = personal.map(f => `
+                        <div class="p-4 bg-navy-darkest border border-gold/40 space-y-2">
+                            <div class="flex justify-between items-center text-[10px]">
+                                <span class="font-minecraft text-gold uppercase">DIRECT FEEDBACK</span>
+                                <span class="font-mono text-cream-dark/50">${new Date(f.created_at).toLocaleDateString()}</span>
+                            </div>
+                            ${f.title ? `<h4 class="font-display font-bold text-white text-sm">${f.title}</h4>` : ''}
+                            <p class="font-body text-xs text-cream-dark/80 leading-relaxed">${f.content}</p>
+                        </div>
+                    `).join('');
+                }
+
+            } catch (err) {
+                announcementsContainer.innerHTML = `<p class="text-red-400 text-xs">${err.message}</p>`;
+                feedbackContainer.innerHTML = `<p class="text-red-400 text-xs">${err.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
