@@ -114,7 +114,7 @@ async function runTests() {
     // 2. Test Auth Flow: Invalid credentials
     console.log('\n--- 2. Testing Auth API (/api/auth/login) ---');
     try {
-        const loginHandler = require('./api/auth/login');
+        const loginHandler = require('./api/_auth/login');
 
         // Bad login
         const badLogin = createMockReqRes('POST', '/api/auth/login', { username: 'cassidy', password: 'wrongpassword' });
@@ -131,7 +131,7 @@ async function runTests() {
         var adminToken = goodRes.data.token;
 
         // Verify token endpoint
-        const verifyHandler = require('./api/auth/verify');
+        const verifyHandler = require('./api/_auth/verify');
         const verifyGood = createMockReqRes('GET', '/api/auth/verify', null, { 'authorization': `Bearer ${adminToken}` });
         await verifyHandler(verifyGood.req, verifyGood.res);
         assert(verifyGood.getResult().status === 200, 'GET /api/auth/verify accepts valid admin token with 200');
@@ -146,7 +146,7 @@ async function runTests() {
     // 3. Test Participants Endpoint
     console.log('\n--- 3. Testing Participants API (/api/participants) ---');
     try {
-        const participantsHandler = require('./api/participants');
+        const participantsHandler = require('./api/_participants');
 
         // Unauthorized admin GET
         const unauthGet = createMockReqRes('GET', '/api/participants');
@@ -192,7 +192,7 @@ async function runTests() {
     // 4. Test Event Registrations Lockout (Must be 403)
     console.log('\n--- 4. Testing Event Registrations API (/api/registrations) ---');
     try {
-        const registrationsHandler = require('./api/registrations');
+        const registrationsHandler = require('./api/_registrations');
 
         // Test POST (Must be blocked 403)
         const postReg = createMockReqRes('POST', '/api/registrations', {
@@ -219,7 +219,7 @@ async function runTests() {
     // 5. Test Applications Endpoint
     console.log('\n--- 5. Testing Applications API (/api/applications) ---');
     try {
-        const appsHandler = require('./api/applications');
+        const appsHandler = require('./api/_applications');
 
         // POST (Organizing team recruitment closed 403)
         const postApp = createMockReqRes('POST', '/api/applications', { fullName: 'Applicant', email: 'app@nusc.eg' });
@@ -237,7 +237,7 @@ async function runTests() {
     // 6. Test Stats API
     console.log('\n--- 6. Testing Stats API (/api/stats) ---');
     try {
-        const statsHandler = require('./api/stats');
+        const statsHandler = require('./api/_stats');
         const getStats = createMockReqRes('GET', '/api/stats');
         await statsHandler(getStats.req, getStats.res);
         const statsRes = getStats.getResult();
@@ -250,7 +250,7 @@ async function runTests() {
     // 7. Test Student Portal Auth & Registration Code Validation
     console.log('\n--- 7. Testing Student Portal Code Validation (/api/auth/validate-code) ---');
     try {
-        const validateCodeHandler = require('./api/auth/validate-code');
+        const validateCodeHandler = require('./api/_auth/validate-code');
 
         // Test invalid/fake code
         const fakeReq = createMockReqRes('POST', '/api/auth/validate-code', { code: 'NUSC-INVALID-99999' });
@@ -276,7 +276,7 @@ async function runTests() {
     console.log('\n--- 8. Testing Student Login API (/api/auth/student-login) ---');
     let studentAuthToken = '';
     try {
-        const studentLoginHandler = require('./api/auth/student-login');
+        const studentLoginHandler = require('./api/_auth/student-login');
 
         // Bad student login
         const badStudentLogin = createMockReqRes('POST', '/api/auth/student-login', { email: 'nonexistent@student.com', password: 'wrong' });
@@ -291,7 +291,7 @@ async function runTests() {
         studentAuthToken = adminLoginRes.data.token;
 
         // Test /api/auth/me
-        const meHandler = require('./api/auth/me');
+        const meHandler = require('./api/_auth/me');
         const meReq = createMockReqRes('GET', '/api/auth/me', null, { 'authorization': `Bearer ${studentAuthToken}` });
         await meHandler(meReq.req, meReq.res);
         const meRes = meReq.getResult();
@@ -304,35 +304,35 @@ async function runTests() {
     console.log('\n--- 9. Testing Portal APIs (Dashboard, Leaderboard, Sessions, Mentors) ---');
     try {
         // Dashboard
-        const dashHandler = require('./api/portal/dashboard');
+        const dashHandler = require('./api/_portal/dashboard');
         const dashReq = createMockReqRes('GET', '/api/portal/dashboard', null, { 'authorization': `Bearer ${studentAuthToken}` });
         await dashHandler(dashReq.req, dashReq.res);
         const dashRes = dashReq.getResult();
         assert(dashRes.status === 200 && dashRes.data.success, 'GET /api/portal/dashboard returns student overview with 200');
 
         // Leaderboard
-        const lbHandler = require('./api/portal/leaderboard');
+        const lbHandler = require('./api/_portal/leaderboard');
         const lbReq = createMockReqRes('GET', '/api/portal/leaderboard?type=all_time&wave=All');
         await lbHandler(lbReq.req, lbReq.res);
         const lbRes = lbReq.getResult();
         assert(lbRes.status === 200 && Array.isArray(lbRes.data.rankings), 'GET /api/portal/leaderboard returns calculated rankings array with 200', `Total ranked: ${lbRes.data.rankings ? lbRes.data.rankings.length : 0}`);
 
         // Sessions
-        const sessionsHandler = require('./api/portal/sessions');
+        const sessionsHandler = require('./api/_portal/sessions');
         const sessReq = createMockReqRes('GET', '/api/portal/sessions', null, { 'authorization': `Bearer ${studentAuthToken}` });
         await sessionsHandler(sessReq.req, sessReq.res);
         const sessRes = sessReq.getResult();
         assert(sessRes.status === 200 && Array.isArray(sessRes.data.sessions), 'GET /api/portal/sessions returns timeline with 200');
 
         // Mentors
-        const mentorsHandler = require('./api/portal/mentors');
+        const mentorsHandler = require('./api/_portal/mentors');
         const mentorsReq = createMockReqRes('GET', '/api/portal/mentors', null, { 'authorization': `Bearer ${studentAuthToken}` });
         await mentorsHandler(mentorsReq.req, mentorsReq.res);
         const mentorsRes = mentorsReq.getResult();
         assert(mentorsRes.status === 200 && Array.isArray(mentorsRes.data.announcements), 'GET /api/portal/mentors returns mentor announcements and feedback with 200');
 
         // Chat
-        const chatHandler = require('./api/portal/chat');
+        const chatHandler = require('./api/_portal/chat');
         const chatReq = createMockReqRes('GET', '/api/portal/chat?channel=general', null, { 'authorization': `Bearer ${studentAuthToken}` });
         await chatHandler(chatReq.req, chatReq.res);
         const chatRes = chatReq.getResult();
@@ -345,21 +345,21 @@ async function runTests() {
     console.log('\n--- 10. Testing Admin Portal Endpoints (Students, Codes, Sessions CRUD) ---');
     try {
         // Admin Students List
-        const adminStudentsHandler = require('./api/admin/students');
+        const adminStudentsHandler = require('./api/_admin/students');
         const stuReq = createMockReqRes('GET', '/api/admin/students', null, { 'authorization': `Bearer ${adminToken}` });
         await adminStudentsHandler(stuReq.req, stuReq.res);
         const stuRes = stuReq.getResult();
         assert(stuRes.status === 200 && Array.isArray(stuRes.data.students), 'GET /api/admin/students returns student roster with 200');
 
         // Admin Codes List
-        const adminCodesHandler = require('./api/admin/codes');
+        const adminCodesHandler = require('./api/_admin/codes');
         const codesReq = createMockReqRes('GET', '/api/admin/codes?eventId=All', null, { 'authorization': `Bearer ${adminToken}` });
         await adminCodesHandler(codesReq.req, codesReq.res);
         const codesRes = codesReq.getResult();
         assert(codesRes.status === 200 && typeof codesRes.data.total === 'number', 'GET /api/admin/codes returns issued access codes with 200', `Total codes: ${codesRes.data.total}`);
 
         // Admin Session Creation & Deletion
-        const adminSessionsHandler = require('./api/admin/sessions');
+        const adminSessionsHandler = require('./api/_admin/sessions');
         const createSessReq = createMockReqRes('POST', '/api/admin/sessions', {
             title: 'Automated Test Workshop',
             sessionDate: new Date(Date.now() + 86400000).toISOString(),

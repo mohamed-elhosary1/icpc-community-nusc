@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api" }
+  ],
   "redirects": [
     { "source": "/events/(.*)", "destination": "/", "permanent": false },
     { "source": "/events", "destination": "/", "permanent": false }

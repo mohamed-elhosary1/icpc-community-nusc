@@ -33,49 +33,14 @@ const server = http.createServer(async (req, res) => {
     let pathname = decodeURIComponent(reqUrl.pathname);
 
     // 1. Route API Requests
-    if (pathname.startsWith('/api/')) {
-        const cleanApiPath = pathname.replace('/api/', '').replace(/\/$/, '');
-        
-        let handlerFile = null;
-        const candidateFiles = [
-            path.join(BASE_DIR, 'api', cleanApiPath + '.js'),
-            path.join(BASE_DIR, 'api', cleanApiPath, 'index.js'),
-            path.join(BASE_DIR, 'api', cleanApiPath)
-        ];
-
-        for (const cand of candidateFiles) {
-            try {
-                if (fs.existsSync(cand) && fs.statSync(cand).isFile()) {
-                    handlerFile = cand;
-                    break;
-                }
-            } catch (e) {}
-        }
-
-        // Legacy alias fallbacks
-        if (!handlerFile) {
-            if (cleanApiPath.startsWith('applications')) handlerFile = path.join(BASE_DIR, 'api', 'applications.js');
-            else if (cleanApiPath.startsWith('events')) handlerFile = path.join(BASE_DIR, 'api', 'events.js');
-            else if (cleanApiPath.startsWith('registrations')) handlerFile = path.join(BASE_DIR, 'api', 'registrations.js');
-            else if (cleanApiPath.startsWith('participants')) handlerFile = path.join(BASE_DIR, 'api', 'participants.js');
-            else if (cleanApiPath.startsWith('questions')) handlerFile = path.join(BASE_DIR, 'api', 'questions.js');
-            else if (cleanApiPath === 'stats') handlerFile = path.join(BASE_DIR, 'api', 'stats.js');
-        }
-
-        if (handlerFile) {
-            try {
-                // Clear require cache in development for instant hot-reload
-                delete require.cache[require.resolve(handlerFile)];
-                const handler = require(handlerFile);
-                return await handler(req, res);
-            } catch (err) {
-                console.error('API Error:', err);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                return res.end(JSON.stringify({ error: 'Internal server error', details: err.message }));
-            }
-        } else {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            return res.end(JSON.stringify({ error: 'API endpoint not found' }));
+    if (pathname.startsWith('/api')) {
+        try {
+            const apiGateway = require('./api/index');
+            return await apiGateway(req, res);
+        } catch (err) {
+            console.error('API Gateway Error:', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ error: 'Internal server error', details: err.message }));
         }
     }
 
