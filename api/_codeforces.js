@@ -1,7 +1,8 @@
 /**
  * ICPC NUSC — Codeforces Official API Integration Layer
  * Robust fetching, verification, caching, and problem-solving analytics.
- * Fully supports official Codeforces API Key and Secret SHA-512 authentication.
+ * Fully supports official Codeforces API Key and Secret SHA-512 authentication,
+ * plus Codeforces Group management, private group contests, and standings.
  */
 
 const crypto = require('crypto');
@@ -9,8 +10,10 @@ const crypto = require('crypto');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gpzwlxbmgpmydgywxtdo.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || 'sb_publishable_zbshKRcot5UDfjvtMJx4gQ_c9a9-of9';
 
-const CF_API_KEY = (process.env.CODEFORCES_API_KEY || '').trim();
-const CF_API_SECRET = (process.env.CODEFORCES_API_SECRET || '').trim();
+// In-memory runtime config cache
+let runtimeConfig = null;
+let lastConfigLoad = 0;
+const CONFIG_CACHE_TTL = 60 * 1000; // 1 minute
 
 function getHeaders() {
     return {
@@ -21,14 +24,57 @@ function getHeaders() {
 }
 
 /**
+ * Loads Codeforces API configuration from database or environment variables
+ */
+async function loadConfig() {
+    const now = Date.now();
+    if (runtimeConfig && (now - lastConfigLoad) < CONFIG_CACHE_TTL) {
+        return runtimeConfig;
+    }
+
+    let dbConfig = null;
+    try {
+        const url = `${SUPABASE_URL}/rest/v1/nusc_codeforces_cache?handle=eq.__cf_group_config__&select=*&limit=1`;
+        const res = await fetch(url, { headers: getHeaders() });
+        if (res.ok) {
+            const list = await res.json();
+            if (Array.isArray(list) && list.length > 0 && Array.isArray(list[0].recent_submissions)) {
+                // Stored as key-value pairs in recent_submissions
+                const map = {};
+                list[0].recent_submissions.forEach(item => {
+                    if (item && item.key) map[item.key] = item.value;
+                });
+                dbConfig = map;
+            }
+        }
+    } catch (e) {}
+
+    const apiKey = (dbConfig && dbConfig.api_key) || (process.env.CODEFORCES_API_KEY || '').trim();
+    const apiSecret = (dbConfig && dbConfig.api_secret) || (process.env.CODEFORCES_API_SECRET || '').trim();
+    const groupId = (dbConfig && dbConfig.group_id) || (process.env.CODEFORCES_GROUP_ID || '').trim();
+    const managerHandle = (dbConfig && dbConfig.manager_handle) || (process.env.CODEFORCES_MANAGER_HANDLE || '').trim();
+    const lastVerified = (dbConfig && dbConfig.last_verified) || null;
+
+    runtimeConfig = {
+        apiKey,
+        apiSecret,
+        groupId,
+        managerHandle,
+        lastVerified
+    };
+    lastConfigLoad = now;
+    return runtimeConfig;
+}
+
+/**
  * Builds an authorized Codeforces API URL according to the official spec:
  * https://codeforces.com/apiHelp
- * If CODEFORCES_API_KEY and CODEFORCES_API_SECRET are present, signs with SHA-512 apiSig.
+ * If apiKey and apiSecret are present, signs with SHA-512 apiSig.
  */
-function buildCodeforcesUrl(methodName, params = {}) {
+function buildCodeforcesUrl(methodName, params = {}, customAuth = null) {
     const allParams = { ...params };
-    const apiKey = (process.env.CODEFORCES_API_KEY || CF_API_KEY || '').trim();
-    const apiSecret = (process.env.CODEFORCES_API_SECRET || CF_API_SECRET || '').trim();
+    const apiKey = (customAuth && customAuth.apiKey) || (runtimeConfig && runtimeConfig.apiKey) || (process.env.CODEFORCES_API_KEY || '').trim();
+    const apiSecret = (customAuth && customAuth.apiSecret) || (runtimeConfig && runtimeConfig.apiSecret) || (process.env.CODEFORCES_API_SECRET || '').trim();
 
     if (apiKey && apiSecret) {
         allParams.apiKey = apiKey;
@@ -56,38 +102,183 @@ function buildCodeforcesUrl(methodName, params = {}) {
     return `https://codeforces.com/api/${methodName}?${query.toString()}`;
 }
 
-// In-memory rate-limiter & request lock
-const activeFetches = new Map();
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes cache
 
 const CodeforcesService = {
     buildCodeforcesUrl,
+    loadConfig,
 
-    hasApiCredentials: function () {
-        const apiKey = (process.env.CODEFORCES_API_KEY || CF_API_KEY || '').trim();
-        const apiSecret = (process.env.CODEFORCES_API_SECRET || CF_API_SECRET || '').trim();
-        return !!(apiKey && apiSecret);
+    /**
+     * Check if Codeforces API credentials are configured
+     */
+    hasApiCredentials: async function () {
+        const config = await loadConfig();
+        return !!(config.apiKey && config.apiSecret);
     },
 
     /**
-     * Test and verify Codeforces API credentials
+     * Safe client-facing view of Codeforces Configuration
      */
-    testApiCredentials: async function () {
-        if (!this.hasApiCredentials()) {
-            return { configured: false, valid: false, message: 'CODEFORCES_API_KEY or CODEFORCES_API_SECRET is not configured.' };
+    getGroupConfig: async function () {
+        const config = await loadConfig();
+        const maskedKey = config.apiKey ? (config.apiKey.length > 8 ? `${config.apiKey.slice(0, 4)}••••••••${config.apiKey.slice(-4)}` : '••••••••') : '';
+        return {
+            configured: !!(config.apiKey && config.apiSecret),
+            hasSecret: !!config.apiSecret,
+            apiKeyMasked: maskedKey,
+            groupId: config.groupId || '',
+            groupUrl: config.groupId ? `https://codeforces.com/group/${config.groupId}` : '',
+            managerHandle: config.managerHandle || '',
+            lastVerified: config.lastVerified
+        };
+    },
+
+    /**
+     * Save Codeforces API & Group configuration into database
+     */
+    saveGroupConfig: async function ({ apiKey, apiSecret, groupId, managerHandle }) {
+        const current = await loadConfig();
+        const newApiKey = apiKey !== undefined ? (apiKey || '').trim() : current.apiKey;
+        const newApiSecret = apiSecret !== undefined ? (apiSecret || '').trim() : current.apiSecret;
+        const newGroupId = groupId !== undefined ? (groupId || '').trim() : current.groupId;
+        const newManager = managerHandle !== undefined ? (managerHandle || '').trim() : current.managerHandle;
+
+        const submissions = [
+            { key: 'api_key', value: newApiKey },
+            { key: 'api_secret', value: newApiSecret },
+            { key: 'group_id', value: newGroupId },
+            { key: 'manager_handle', value: newManager },
+            { key: 'last_verified', value: new Date().toISOString() }
+        ];
+
+        const record = {
+            handle: '__cf_group_config__',
+            rating: 0,
+            max_rating: 0,
+            rank: 'Config',
+            solved_count: 0,
+            weekly_solved: 0,
+            monthly_solved: 0,
+            solved_problem_ids: [],
+            recent_submissions: submissions,
+            last_synced_at: new Date().toISOString()
+        };
+
+        const upsertUrl = `${SUPABASE_URL}/rest/v1/nusc_codeforces_cache`;
+        const res = await fetch(upsertUrl, {
+            method: 'POST',
+            headers: Object.assign({}, getHeaders(), { 'Prefer': 'resolution=merge-duplicates' }),
+            body: JSON.stringify(record)
+        });
+
+        if (!res.ok) {
+            const err = await res.text();
+            throw new Error(`Failed to save Codeforces config: ${err}`);
         }
+
+        // Invalidate in-memory cache
+        runtimeConfig = {
+            apiKey: newApiKey,
+            apiSecret: newApiSecret,
+            groupId: newGroupId,
+            managerHandle: newManager,
+            lastVerified: new Date().toISOString()
+        };
+        lastConfigLoad = Date.now();
+
+        return this.getGroupConfig();
+    },
+
+    /**
+     * Test and verify Codeforces API credentials live
+     */
+    testApiCredentials: async function (customAuth = null) {
+        let auth = customAuth;
+        if (!auth) {
+            const config = await loadConfig();
+            auth = {
+                apiKey: config.apiKey,
+                apiSecret: config.apiSecret,
+                managerHandle: config.managerHandle
+            };
+        }
+
+        if (!auth.apiKey || !auth.apiSecret) {
+            return {
+                configured: false,
+                valid: false,
+                message: 'Codeforces API Key and Secret are not configured.'
+            };
+        }
+
         try {
-            const testUrl = buildCodeforcesUrl('user.info', { handles: 'tourist' });
+            // Test query on user.info for manager handle or tourist
+            const targetHandle = auth.managerHandle || 'tourist';
+            const testUrl = buildCodeforcesUrl('user.info', { handles: targetHandle }, auth);
             const res = await fetch(testUrl, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
             const data = await res.json();
-            if (data.status === 'OK') {
-                return { configured: true, valid: true, message: 'Codeforces API credentials verified successfully.' };
+
+            if (data.status === 'OK' && Array.isArray(data.result) && data.result.length > 0) {
+                const user = data.result[0];
+                return {
+                    configured: true,
+                    valid: true,
+                    message: `Verified successfully! Codeforces authenticated via SHA-512 signature.`,
+                    testedUser: {
+                        handle: user.handle,
+                        rating: user.rating || 0,
+                        rank: user.rank || 'Unrated',
+                        organization: user.organization || 'None'
+                    }
+                };
             } else {
-                return { configured: true, valid: false, message: data.comment || 'Codeforces API rejected signature or key.' };
+                return {
+                    configured: true,
+                    valid: false,
+                    message: data.comment || 'Codeforces API rejected the signature or credentials.'
+                };
             }
         } catch (e) {
-            return { configured: true, valid: false, message: e.message };
+            return {
+                configured: true,
+                valid: false,
+                message: e.message || 'Error connecting to Codeforces API.'
+            };
         }
+    },
+
+    /**
+     * Fetch standings for a group contest
+     * Uses manager authentication (asManager=true) to retrieve full standings including group-only and unofficial rows
+     */
+    getGroupStandings: async function (contestId, options = {}) {
+        await loadConfig();
+        if (!contestId) throw new Error('contestId is required');
+
+        const params = {
+            contestId: String(contestId),
+            from: options.from || 1,
+            count: options.count || 100,
+            showUnofficial: options.showUnofficial !== false ? 'true' : 'false'
+        };
+
+        if (options.asManager !== false && (runtimeConfig && runtimeConfig.apiKey)) {
+            params.asManager = 'true';
+        }
+
+        const url = buildCodeforcesUrl('contest.standings', params);
+        const res = await fetch(url, { headers: { 'User-Agent': 'ICPC-NUSC-Platform/1.0' } });
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Codeforces contest.standings failed (${res.status}): ${text}`);
+        }
+
+        const data = await res.json();
+        if (data.status !== 'OK') {
+            throw new Error(data.comment || 'Failed to fetch contest standings.');
+        }
+
+        return data.result;
     },
 
     /**
@@ -96,6 +287,7 @@ const CodeforcesService = {
     getUserInfo: async function (rawHandle) {
         if (!rawHandle) return null;
         const handle = rawHandle.trim();
+        await loadConfig();
 
         // 1. Check database cache
         const cacheUrl = `${SUPABASE_URL}/rest/v1/nusc_codeforces_cache?handle=ilike.${encodeURIComponent(handle)}&select=*&limit=1`;
@@ -124,7 +316,7 @@ const CodeforcesService = {
                 if (res.status === 400) {
                     throw new Error(`Codeforces handle "${handle}" not found.`);
                 }
-                if (cached) return cached; // Fallback to stale cache if CF is down or rate limited
+                if (cached) return cached;
                 throw new Error(`Codeforces API returned error status ${res.status}.`);
             }
 
@@ -216,12 +408,12 @@ const CodeforcesService = {
 
     /**
      * Verify handle ownership via Challenge Token
-     * Checks if verification token appears in user's firstName, organization, or city on Codeforces
      */
     verifyOwnership: async function (handle, token) {
         if (!handle || !token) {
             return { verified: false, reason: 'Handle and verification token are required.' };
         }
+        await loadConfig();
 
         try {
             const cfUrl = buildCodeforcesUrl('user.info', { handles: handle.trim() });
@@ -238,7 +430,6 @@ const CodeforcesService = {
             const u = data.result[0];
             const cleanToken = token.trim().toUpperCase();
 
-            // Search in profile fields where users can place their verification token
             const fieldsToInspect = [
                 u.firstName || '',
                 u.lastName || '',

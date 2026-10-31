@@ -407,6 +407,30 @@ async function runTests() {
         // Cleanup test env
         delete process.env.CODEFORCES_API_KEY;
         delete process.env.CODEFORCES_API_SECRET;
+
+        // Test GET /api/codeforces/group
+        const cfGroupHandler = require('./api/_codeforces_api/group');
+        const cfGroupReq = createMockReqRes('GET', '/api/codeforces/group');
+        await cfGroupHandler(cfGroupReq.req, cfGroupReq.res);
+        const cfGroupRes = cfGroupReq.getResult();
+        assert(cfGroupRes.status === 200 && cfGroupRes.data.success, 'GET /api/codeforces/group returns group configuration payload with 200');
+
+        // Test GET /api/admin/codeforces
+        const adminCfHandler = require('./api/_admin/codeforces');
+        const adminCfReq = createMockReqRes('GET', '/api/admin/codeforces', null, { 'authorization': `Bearer ${adminToken}` });
+        await adminCfHandler(adminCfReq.req, adminCfReq.res);
+        const adminCfRes = adminCfReq.getResult();
+        assert(adminCfRes.status === 200 && adminCfRes.data.success, 'GET /api/admin/codeforces returns status & health with 200');
+
+        // Test POST /api/admin/codeforces with bad credentials test
+        const adminCfTestReq = createMockReqRes('POST', '/api/admin/codeforces', {
+            action: 'test',
+            apiKey: 'invalid_key',
+            apiSecret: 'invalid_secret'
+        }, { 'authorization': `Bearer ${adminToken}` });
+        await adminCfHandler(adminCfTestReq.req, adminCfTestReq.res);
+        const adminCfTestRes = adminCfTestReq.getResult();
+        assert(adminCfTestRes.status === 200 && adminCfTestRes.data.success && adminCfTestRes.data.result.valid === false, 'POST /api/admin/codeforces gracefully flags invalid credentials in verification check without crashing');
     } catch (e) {
         assert(false, 'Codeforces API builder test failed', e.message);
     }

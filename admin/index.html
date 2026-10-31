@@ -305,6 +305,10 @@
                     <span class="material-symbols-outlined text-lg">supervisor_account</span>
                     Mentors & Feedback
                 </a>
+                <a href="#cf-settings" class="nav-item" data-view="cf-settings">
+                    <span class="material-symbols-outlined text-lg">terminal</span>
+                    Codeforces Group & API
+                </a>
             </nav>
         </div>
 
@@ -1425,6 +1429,123 @@
                 </div>
             </section>
 
+            <!-- VIEW: CODEFORCES GROUP & API INTEGRATION -->
+            <section id="view-cf-settings" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-display font-black text-2xl text-white">CODEFORCES GROUP &amp; API INTEGRATION</h1>
+                        <p class="font-body text-xs text-cream-dark/70">Connect official Codeforces API credentials with SHA-512 authentication to manage group standings and track members.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="cf-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1 bg-navy-darkest text-cream-dark/60 border border-white/20 font-minecraft text-[10px] uppercase tracking-wider">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span> CHECKING...
+                        </span>
+                        <a id="cf-group-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden pixel-btn-navy text-xs font-display font-bold px-3 py-1.5 flex items-center gap-1">
+                            Open Group ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Configuration Form (7 cols) -->
+                    <div class="lg:col-span-7 bg-navy p-6 pixel-border border-gold/40 space-y-5">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">key</span> API &amp; Group Credentials
+                            </h3>
+                            <span id="cf-last-verified" class="text-[10px] font-mono text-cream-dark/50"></span>
+                        </div>
+
+                        <form id="cf-settings-form" onsubmit="window.AdminPortal.saveCodeforcesSettings(event)" class="space-y-4 text-xs font-body">
+                            <div>
+                                <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Codeforces Group ID / Code</label>
+                                <input type="text" id="cf-group-id" placeholder="e.g. MWSDmqGsZm or nusc-icpc" class="pixel-input text-xs font-mono" />
+                                <p class="text-[10px] text-cream-dark/50 mt-1">Found in your group URL: <code>codeforces.com/group/<strong>[GROUP_ID]</strong></code></p>
+                            </div>
+
+                            <div>
+                                <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Group Manager / Coach Handle</label>
+                                <input type="text" id="cf-manager-handle" placeholder="e.g. coach_ahmed or tourist" class="pixel-input text-xs font-mono" />
+                                <p class="text-[10px] text-cream-dark/50 mt-1">The Codeforces username of the coach or manager who generated the API key.</p>
+                            </div>
+
+                            <div>
+                                <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Codeforces API Key</label>
+                                <input type="text" id="cf-api-key" placeholder="Enter 32-character key" class="pixel-input text-xs font-mono" autocomplete="off" />
+                                <p class="text-[10px] text-cream-dark/50 mt-1">Generated from <a href="https://codeforces.com/settings/api" target="_blank" rel="noopener noreferrer" class="text-gold underline">codeforces.com/settings/api</a>.</p>
+                            </div>
+
+                            <div>
+                                <label class="block font-label text-xs text-gold uppercase tracking-wider font-bold mb-1">Codeforces API Secret</label>
+                                <div class="relative">
+                                    <input type="password" id="cf-api-secret" placeholder="Enter 40-character secret" class="pixel-input text-xs font-mono pr-10" autocomplete="new-password" />
+                                    <button type="button" onclick="window.AdminPortal.toggleCfSecretVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-cream-dark/50 hover:text-white" title="Show/Hide">
+                                        <span class="material-symbols-outlined text-base" id="cf-secret-visibility-icon">visibility</span>
+                                    </button>
+                                </div>
+                                <p class="text-[10px] text-cream-dark/50 mt-1">Stored securely on the server and used only to generate HMAC SHA-512 signatures.</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 pt-3 border-t border-white/10">
+                                <button type="button" id="cf-test-btn" onclick="window.AdminPortal.testCodeforcesConnection()" class="pixel-btn-navy text-xs font-display font-bold px-4 py-2 flex items-center gap-1.5 cursor-pointer">
+                                    <span class="material-symbols-outlined text-sm">wifi_tethering</span> Test Live Connection
+                                </button>
+                                <button type="submit" id="cf-save-btn" class="pixel-btn-gold bg-gold text-ink font-display font-black text-xs px-5 py-2 flex items-center gap-1.5 cursor-pointer ml-auto">
+                                    <span class="material-symbols-outlined text-sm">save</span> Save &amp; Connect
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Live Diagnostic Output -->
+                        <div id="cf-test-result" class="hidden"></div>
+                    </div>
+
+                    <!-- Right: Step-by-Step Instructions & Capabilities (5 cols) -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <!-- Instructions Card -->
+                        <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4 text-xs font-body">
+                            <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">help</span> How to Get Your API Key
+                            </h3>
+                            <ol class="space-y-3 list-decimal list-inside text-cream-dark/80 leading-relaxed">
+                                <li>
+                                    <strong class="text-white">Sign in to Codeforces</strong> with the account that is an <strong>Owner or Manager</strong> of your Codeforces Group.
+                                </li>
+                                <li>
+                                    Navigate to: <br/>
+                                    <a href="https://codeforces.com/settings/api" target="_blank" rel="noopener noreferrer" class="text-gold font-mono hover:underline text-[11px] block mt-0.5">https://codeforces.com/settings/api ↗</a>
+                                </li>
+                                <li>
+                                    Click <span class="text-white font-bold bg-navy-darkest px-1.5 py-0.5 border border-white/20">Add API key</span>, enter a name (e.g. <span class="text-gold">ICPC-NUSC-Portal</span>), and confirm.
+                                </li>
+                                <li>
+                                    Copy both the <strong>Key</strong> and <strong>Secret</strong> into the form on the left.
+                                </li>
+                                <li>
+                                    Find your group URL (e.g. <code>codeforces.com/group/MWSDmqGsZm</code>) and copy the Group ID.
+                                </li>
+                                <li>
+                                    Click <strong class="text-gold">"Save &amp; Connect"</strong> and verify the green status indicator!
+                                </li>
+                            </ol>
+                        </div>
+
+                        <!-- Sync Operations Card -->
+                        <div class="bg-navy p-6 pixel-border border-navy-light/40 space-y-4 text-xs font-body">
+                            <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-gold">sync</span> Batch Synchronization
+                            </h3>
+                            <p class="text-cream-dark/70 leading-relaxed">
+                                Query Codeforces for all community members to refresh ratings, peak ratings, and weekly solved problems count into the local cache.
+                            </p>
+                            <button type="button" id="cf-sync-students-btn" onclick="window.AdminPortal.syncAllStudents()" class="w-full pixel-btn-navy text-xs font-display font-bold py-2.5 flex items-center justify-center gap-2 cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">sync</span> Sync All Students Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -1799,7 +1920,7 @@
                 const hash = window.location.hash || '#dashboard';
                 const [route, query] = hash.split('?');
                 
-                const views = ['dashboard', 'applications', 'applicant-detail', 'participants', 'events', 'registrations', 'questions', 'settings', 'students', 'codes', 'sessions-admin', 'attendance-admin', 'mentors-admin'];
+                const views = ['dashboard', 'applications', 'applicant-detail', 'participants', 'events', 'registrations', 'questions', 'settings', 'students', 'codes', 'sessions-admin', 'attendance-admin', 'mentors-admin', 'cf-settings'];
                 views.forEach(v => {
                     const el = document.getElementById('view-' + v);
                     if (el) el.classList.add('hidden');
@@ -1882,6 +2003,12 @@
                     if (ni) ni.classList.add('active');
                     document.getElementById('top-title').textContent = 'MENTOR COMMUNICATION';
                     if (window.AdminPortal) window.AdminPortal.loadMentorsView();
+                } else if (route === '#cf-settings') {
+                    document.getElementById('view-cf-settings').classList.remove('hidden');
+                    const ni = document.querySelector('.nav-item[data-view="cf-settings"]');
+                    if (ni) ni.classList.add('active');
+                    document.getElementById('top-title').textContent = 'CODEFORCES GROUP & API INTEGRATION';
+                    if (window.AdminPortal) window.AdminPortal.loadCodeforcesSettings();
                 }
             }
 

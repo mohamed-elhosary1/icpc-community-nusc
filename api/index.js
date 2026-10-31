@@ -27,6 +27,7 @@ const ROUTE_MAP = {
 
     'codeforces/link': require('./_codeforces_api/link'),
     'codeforces/stats': require('./_codeforces_api/stats'),
+    'codeforces/group': require('./_codeforces_api/group'),
 
     'admin/students': require('./_admin/students'),
     'admin/codes': require('./_admin/codes'),
@@ -34,6 +35,7 @@ const ROUTE_MAP = {
     'admin/attendance': require('./_admin/attendance'),
     'admin/mentors': require('./_admin/mentors'),
     'admin/chat': require('./_admin/chat'),
+    'admin/codeforces': require('./_admin/codeforces'),
 
     'applications': require('./_applications'),
     'events': require('./_events'),

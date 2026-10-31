@@ -1035,6 +1035,228 @@ window.AdminPortal = (function() {
         }
     }
 
+    // =========================================================================
+    // 6. CODEFORCES GROUP & OFFICIAL API INTEGRATION
+    // =========================================================================
+    async function loadCodeforcesSettings() {
+        const statusBadge = document.getElementById('cf-status-badge');
+        const groupIdInput = document.getElementById('cf-group-id');
+        const managerHandleInput = document.getElementById('cf-manager-handle');
+        const apiKeyInput = document.getElementById('cf-api-key');
+        const apiSecretInput = document.getElementById('cf-api-secret');
+        const groupLinkEl = document.getElementById('cf-group-link');
+        const lastVerifiedEl = document.getElementById('cf-last-verified');
+
+        try {
+            const res = await fetch('/api/admin/codeforces', { headers: getAdminAuthHeaders() });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            const cfg = data.config || {};
+            const health = data.health || {};
+
+            if (groupIdInput) groupIdInput.value = cfg.groupId || '';
+            if (managerHandleInput) managerHandleInput.value = cfg.managerHandle || '';
+            if (apiKeyInput) {
+                apiKeyInput.value = '';
+                apiKeyInput.placeholder = cfg.apiKeyMasked ? `Saved: ${cfg.apiKeyMasked}` : 'Enter 32-character key';
+            }
+            if (apiSecretInput) {
+                apiSecretInput.value = '';
+                apiSecretInput.placeholder = cfg.hasSecret ? '••••••••••••••••••••••••••••••••••••••••' : 'Enter 40-character secret';
+            }
+
+            if (groupLinkEl) {
+                if (cfg.groupId) {
+                    groupLinkEl.href = cfg.groupUrl || `https://codeforces.com/group/${cfg.groupId}`;
+                    groupLinkEl.textContent = `Open Group (${cfg.groupId}) ↗`;
+                    groupLinkEl.classList.remove('hidden');
+                } else {
+                    groupLinkEl.classList.add('hidden');
+                }
+            }
+
+            if (statusBadge) {
+                if (health.valid) {
+                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-green-950/80 text-green-300 border border-green-500/60 font-minecraft text-[10px] uppercase tracking-wider';
+                    statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> CONNECTED &amp; VERIFIED';
+                } else if (cfg.configured) {
+                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-amber-950/80 text-amber-300 border border-amber-500/60 font-minecraft text-[10px] uppercase tracking-wider';
+                    statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400"></span> CREDENTIALS INVALID';
+                } else {
+                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-navy-darkest text-cream-dark/60 border border-white/20 font-minecraft text-[10px] uppercase tracking-wider';
+                    statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-gray-500"></span> NOT CONFIGURED';
+                }
+            }
+
+            if (lastVerifiedEl) {
+                lastVerifiedEl.textContent = cfg.lastVerified ? `Last verified: ${new Date(cfg.lastVerified).toLocaleString()}` : '';
+            }
+
+        } catch (e) {
+            console.error('Failed to load Codeforces settings:', e);
+        }
+    }
+
+    async function testCodeforcesConnection() {
+        const testBtn = document.getElementById('cf-test-btn');
+        const resultContainer = document.getElementById('cf-test-result');
+        const apiKey = document.getElementById('cf-api-key')?.value.trim();
+        const apiSecret = document.getElementById('cf-api-secret')?.value.trim();
+        const managerHandle = document.getElementById('cf-manager-handle')?.value.trim();
+
+        if (testBtn) {
+            testBtn.disabled = true;
+            testBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Testing with Codeforces...';
+        }
+
+        try {
+            const res = await fetch('/api/admin/codeforces', {
+                method: 'POST',
+                headers: getAdminAuthHeaders(),
+                body: JSON.stringify({
+                    action: 'test',
+                    apiKey,
+                    apiSecret,
+                    managerHandle
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Test request failed.');
+
+            const resObj = data.result || {};
+            if (resultContainer) {
+                resultContainer.classList.remove('hidden');
+                if (resObj.valid) {
+                    resultContainer.className = 'p-4 bg-green-950/40 border border-green-500/60 text-green-200 text-xs space-y-2';
+                    resultContainer.innerHTML = `
+                        <div class="flex items-center gap-2 font-bold text-green-400">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span>Codeforces API Connection Successful!</span>
+                        </div>
+                        <p class="font-body">${escapeHTML(resObj.message)}</p>
+                        ${resObj.testedUser ? `
+                            <div class="flex flex-wrap gap-4 pt-1 font-mono text-[11px] text-cream-dark/80">
+                                <span>Handle: <strong class="text-white">${escapeHTML(resObj.testedUser.handle)}</strong></span>
+                                <span>Rating: <strong class="text-gold">${resObj.testedUser.rating}</strong></span>
+                                <span>Rank: <strong class="text-cyan-300 uppercase">${escapeHTML(resObj.testedUser.rank)}</strong></span>
+                            </div>
+                        ` : ''}
+                    `;
+                } else {
+                    resultContainer.className = 'p-4 bg-red-950/40 border border-red-500/60 text-red-200 text-xs space-y-2';
+                    resultContainer.innerHTML = `
+                        <div class="flex items-center gap-2 font-bold text-red-400">
+                            <span class="material-symbols-outlined text-lg">error</span>
+                            <span>Codeforces API Test Failed</span>
+                        </div>
+                        <p class="font-body">${escapeHTML(resObj.message)}</p>
+                        <p class="text-[11px] text-cream-dark/60">Tip: Check that you copied the complete API Key and Secret without leading/trailing spaces from codeforces.com/settings/api.</p>
+                    `;
+                }
+            }
+        } catch (e) {
+            if (resultContainer) {
+                resultContainer.classList.remove('hidden');
+                resultContainer.className = 'p-4 bg-red-950/40 border border-red-500/60 text-red-200 text-xs space-y-2';
+                resultContainer.innerHTML = `
+                    <div class="flex items-center gap-2 font-bold text-red-400">
+                        <span class="material-symbols-outlined text-lg">error</span>
+                        <span>Connection Error</span>
+                    </div>
+                    <p class="font-body">${escapeHTML(e.message)}</p>
+                `;
+            }
+        } finally {
+            if (testBtn) {
+                testBtn.disabled = false;
+                testBtn.innerHTML = '<span class="material-symbols-outlined text-sm">wifi_tethering</span> Test Live Connection';
+            }
+        }
+    }
+
+    async function saveCodeforcesSettings(e) {
+        if (e) e.preventDefault();
+        const saveBtn = document.getElementById('cf-save-btn');
+        const groupId = document.getElementById('cf-group-id')?.value.trim();
+        const managerHandle = document.getElementById('cf-manager-handle')?.value.trim();
+        const apiKey = document.getElementById('cf-api-key')?.value.trim();
+        const apiSecret = document.getElementById('cf-api-secret')?.value.trim();
+
+        if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Saving...';
+        }
+
+        try {
+            const res = await fetch('/api/admin/codeforces', {
+                method: 'POST',
+                headers: getAdminAuthHeaders(),
+                body: JSON.stringify({
+                    action: 'save',
+                    groupId,
+                    managerHandle,
+                    apiKey,
+                    apiSecret
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to save settings.');
+
+            showToast('Codeforces settings saved successfully!');
+            await loadCodeforcesSettings();
+        } catch (err) {
+            showToast(err.message, true);
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Save &amp; Connect';
+            }
+        }
+    }
+
+    async function syncAllStudents() {
+        const syncBtn = document.getElementById('cf-sync-students-btn');
+        if (syncBtn) {
+            syncBtn.disabled = true;
+            syncBtn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> Syncing Students...';
+        }
+
+        try {
+            const res = await fetch('/api/admin/codeforces', {
+                method: 'POST',
+                headers: getAdminAuthHeaders(),
+                body: JSON.stringify({ action: 'sync-all' })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Sync failed.');
+
+            showToast(data.message || 'All students synced from Codeforces!');
+        } catch (e) {
+            showToast(e.message, true);
+        } finally {
+            if (syncBtn) {
+                syncBtn.disabled = false;
+                syncBtn.innerHTML = '<span class="material-symbols-outlined text-sm">sync</span> Sync All Students Now';
+            }
+        }
+    }
+
+    function toggleCfSecretVisibility() {
+        const input = document.getElementById('cf-api-secret');
+        const icon = document.getElementById('cf-secret-visibility-icon');
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (icon) icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            if (icon) icon.textContent = 'visibility';
+        }
+    }
+
     // Public API
     return {
         loadStudents,
@@ -1067,6 +1289,12 @@ window.AdminPortal = (function() {
         loadMentorsView,
         postMentorAnnouncement,
         sendDirectFeedback,
-        deleteMentorItem
+        deleteMentorItem,
+
+        loadCodeforcesSettings,
+        testCodeforcesConnection,
+        saveCodeforcesSettings,
+        syncAllStudents,
+        toggleCfSecretVisibility
     };
 })();
