@@ -23,13 +23,14 @@ module.exports = async (req, res) => {
     try {
         const urlObj = new URL(req.url, 'http://localhost');
         const handle = urlObj.searchParams.get('handle');
+        const refresh = urlObj.searchParams.get('refresh') === 'true';
 
         if (!handle) {
             res.writeHead ? res.writeHead(400, { 'Content-Type': 'application/json' }) : res.status(400);
             return res.end ? res.end(JSON.stringify({ error: 'Codeforces handle parameter is required.' })) : res.send();
         }
 
-        const data = await CodeforcesService.getUserInfo(handle);
+        const data = await CodeforcesService.getUserInfo(handle, refresh);
         if (!data) {
             res.writeHead ? res.writeHead(404, { 'Content-Type': 'application/json' }) : res.status(404);
             return res.end ? res.end(JSON.stringify({ error: 'Codeforces statistics could not be loaded.' })) : res.send();

@@ -46,9 +46,11 @@ module.exports = async (req, res) => {
             return res.end ? res.end(JSON.stringify({ error: 'Student record not found.' })) : res.send();
         }
 
-        // Parallel queries: CF stats, upcoming sessions, attendance, mentor feedback
+        const effectiveHandle = student.codeforces_handle || (student.role === 'admin' ? 'Cassidy233' : null);
+
+        // Parallel queries: CF stats, upcoming sessions, attendance, mentor feedback, wave members
         const [cfStats, sessionsRes, attendanceRes, feedbackRes] = await Promise.all([
-            student.codeforces_handle ? CodeforcesService.getUserInfo(student.codeforces_handle).catch(() => null) : Promise.resolve(null),
+            effectiveHandle ? CodeforcesService.getUserInfo(effectiveHandle).catch(() => null) : Promise.resolve(null),
             fetch(`${SUPABASE_URL}/rest/v1/nusc_sessions?order=session_date.asc&limit=5`, { headers: getHeaders() }).catch(() => null),
             fetch(`${SUPABASE_URL}/rest/v1/nusc_attendance?student_id=eq.${encodeURIComponent(student.id)}&select=status`, { headers: getHeaders() }).catch(() => null),
             fetch(`${SUPABASE_URL}/rest/v1/nusc_mentor_feedback?or=(student_id.eq.${encodeURIComponent(student.id)},student_id.is.null)&order=created_at.desc&limit=5`, { headers: getHeaders() }).catch(() => null)
@@ -57,6 +59,42 @@ module.exports = async (req, res) => {
         const allSessions = (sessionsRes && sessionsRes.ok) ? await sessionsRes.json() : [];
         const attendanceList = (attendanceRes && attendanceRes.ok) ? await attendanceRes.json() : [];
         const feedbackList = (feedbackRes && feedbackRes.ok) ? await feedbackRes.json() : [];
+
+        // Calculate Wave Rank among community members
+        let waveRank = 1;
+        let totalInWave = 1;
+        try {
+            const studentWave = student.wave || 'Wave 1';
+            const [waveUsersRes, cacheRes] = await Promise.all([
+                fetch(`${SUPABASE_URL}/rest/v1/nusc_users?wave=eq.${encodeURIComponent(studentWave)}&status=eq.active&select=id,codeforces_handle`, { headers: getHeaders() }),
+                fetch(`${SUPABASE_URL}/rest/v1/nusc_codeforces_cache?select=handle,solved_count,rating`, { headers: getHeaders() })
+            ]);
+
+            const waveUsers = waveUsersRes.ok ? await waveUsersRes.json() : [];
+            const cacheList = cacheRes.ok ? await cacheRes.json() : [];
+            totalInWave = waveUsers.length || 1;
+
+            const cMap = new Map();
+            cacheList.forEach(c => { if (c.handle) cMap.set(c.handle.toLowerCase(), c); });
+
+            const myHandle = (effectiveHandle || '').toLowerCase();
+            const myCache = cMap.get(myHandle);
+            const mySolved = myCache ? (myCache.solved_count || 0) : (cfStats ? (cfStats.solved_count || cfStats.solvedCount || 0) : 0);
+            const myRating = myCache ? (myCache.rating || 0) : (cfStats ? (cfStats.rating || 0) : 0);
+            const myScore = (mySolved * 10) + Math.round(myRating * 0.2);
+
+            let rankCount = 1;
+            for (const u of waveUsers) {
+                if (u.id === student.id) continue;
+                const uH = (u.codeforces_handle || '').toLowerCase();
+                const uCache = cMap.get(uH);
+                const uSolved = uCache ? (uCache.solved_count || 0) : 0;
+                const uRating = uCache ? (uCache.rating || 0) : 0;
+                const uScore = (uSolved * 10) + Math.round(uRating * 0.2);
+                if (uScore > myScore) rankCount++;
+            }
+            waveRank = rankCount;
+        } catch (e) {}
 
         const totalSessions = allSessions.length;
         const attendedSessions = attendanceList.filter(a => a.status === 'present').length;
@@ -70,7 +108,7 @@ module.exports = async (req, res) => {
 
         // Recommendations based on level / CF stats
         const recommendations = [];
-        if (!student.codeforces_handle) {
+        if (!effectiveHandle) {
             recommendations.push({
                 type: 'action',
                 title: 'Connect your Codeforces Account',
@@ -78,7 +116,7 @@ module.exports = async (req, res) => {
                 link: '/onboarding/codeforces',
                 icon: 'link'
             });
-        } else if (!student.cf_verified) {
+        } else if (!student.cf_verified && student.role !== 'admin') {
             recommendations.push({
                 type: 'action',
                 title: 'Verify Handle Ownership',
@@ -114,7 +152,7 @@ module.exports = async (req, res) => {
                 link: assignedProblem.url || '/portal/mentors',
                 icon: 'assignment'
             });
-        } else if (student.codeforces_handle) {
+        } else if (effectiveHandle) {
             recommendations.push({
                 type: 'practice',
                 title: 'Practice on Codeforces',
@@ -131,22 +169,29 @@ module.exports = async (req, res) => {
                 id: student.id,
                 fullName: student.full_name,
                 email: student.email,
-                wave: student.wave,
+                wave: student.wave || 'Wave 1',
                 role: student.role,
                 faculty: student.faculty,
-                codeforcesHandle: student.codeforces_handle,
+                codeforcesHandle: effectiveHandle,
                 cfVerified: student.cf_verified,
                 cfVerificationToken: student.cf_verification_token,
                 avatarUrl: student.avatar_url
             },
-            codeforces: cfStats || {
-                rating: 0,
-                maxRating: 0,
-                rank: 'Unrated',
-                solvedCount: 0,
-                weeklySolved: 0,
-                monthlySolved: 0
+            codeforces: {
+                rating: cfStats ? (cfStats.rating || 0) : 0,
+                maxRating: cfStats ? (cfStats.max_rating || cfStats.maxRating || 0) : 0,
+                max_rating: cfStats ? (cfStats.max_rating || cfStats.maxRating || 0) : 0,
+                rank: cfStats ? (cfStats.rank || 'Unrated') : 'Unrated',
+                solvedCount: cfStats ? (cfStats.solved_count || cfStats.solvedCount || 0) : 0,
+                solved_count: cfStats ? (cfStats.solved_count || cfStats.solvedCount || 0) : 0,
+                weeklySolved: cfStats ? (cfStats.weekly_solved || cfStats.weeklySolved || 0) : 0,
+                weekly_solved: cfStats ? (cfStats.weekly_solved || cfStats.weeklySolved || 0) : 0,
+                monthlySolved: cfStats ? (cfStats.monthly_solved || cfStats.monthlySolved || 0) : 0,
+                monthly_solved: cfStats ? (cfStats.monthly_solved || cfStats.monthlySolved || 0) : 0,
+                recentSubmissions: (cfStats && cfStats.recent_submissions) ? cfStats.recent_submissions : []
             },
+            waveRank,
+            totalInWave,
             attendance: {
                 totalScheduled: totalSessions,
                 attended: attendedSessions,

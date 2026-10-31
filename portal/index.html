@@ -247,10 +247,22 @@
 
                     // CF Metrics
                     if (data.codeforces) {
-                        document.getElementById('metric-solved').textContent = data.codeforces.solvedCount || 0;
-                        document.getElementById('metric-weekly-solved').textContent = data.codeforces.weeklySolved || 0;
-                        document.getElementById('metric-rating').textContent = data.codeforces.rating || 0;
-                        document.getElementById('metric-rank').textContent = `${data.codeforces.rank || 'Unrated'} (Max: ${data.codeforces.maxRating || 0})`;
+                        const solved = data.codeforces.solvedCount ?? data.codeforces.solved_count ?? 0;
+                        const weekly = data.codeforces.weeklySolved ?? data.codeforces.weekly_solved ?? 0;
+                        const rating = data.codeforces.rating ?? 0;
+                        const maxRating = data.codeforces.maxRating ?? data.codeforces.max_rating ?? 0;
+                        const rank = data.codeforces.rank || 'Unrated';
+
+                        document.getElementById('metric-solved').textContent = solved;
+                        document.getElementById('metric-weekly-solved').textContent = weekly;
+                        document.getElementById('metric-rating').textContent = rating;
+                        document.getElementById('metric-rank').textContent = `${rank} (Max: ${maxRating})`;
+                    }
+
+                    // Wave Rank Metric
+                    const waveRankEl = document.getElementById('metric-wave-rank');
+                    if (waveRankEl) {
+                        waveRankEl.textContent = `#${data.waveRank || 1} / ${data.totalInWave || 1}`;
                     }
 
                     // Attendance Metrics

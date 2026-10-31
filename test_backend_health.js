@@ -409,14 +409,8 @@ async function runTests() {
         assert(unsignedUrl.includes('https://codeforces.com/api/user.info?handles=tourist'), 'CodeforcesService builds standard public API URL');
 
         // Test with mock credentials to verify SHA-512 signature generation
-        process.env.CODEFORCES_API_KEY = 'test_key';
-        process.env.CODEFORCES_API_SECRET = 'test_secret';
-        const signedUrl = CodeforcesService.buildCodeforcesUrl('user.info', { handles: 'tourist' });
+        const signedUrl = CodeforcesService.buildCodeforcesUrl('user.info', { handles: 'tourist' }, { apiKey: 'test_key', apiSecret: 'test_secret' });
         assert(signedUrl.includes('apiKey=test_key') && signedUrl.includes('apiSig='), 'CodeforcesService signs URL with apiKey and SHA-512 apiSig');
-
-        // Cleanup test env
-        delete process.env.CODEFORCES_API_KEY;
-        delete process.env.CODEFORCES_API_SECRET;
 
         // Test GET /api/codeforces/group
         const cfGroupHandler = require('./api/_codeforces_api/group');

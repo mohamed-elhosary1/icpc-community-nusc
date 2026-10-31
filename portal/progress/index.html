@@ -188,7 +188,8 @@
                 }
 
                 try {
-                    const res = await PortalAuth.fetchWithAuth(`/api/codeforces/stats?handle=${encodeURIComponent(user.codeforcesHandle)}`);
+                    const url = `/api/codeforces/stats?handle=${encodeURIComponent(user.codeforcesHandle)}${forceRefresh ? '&refresh=true' : ''}`;
+                    const res = await PortalAuth.fetchWithAuth(url);
                     if (!res.ok) throw new Error('Could not fetch Codeforces statistics.');
 
                     const data = await res.json();

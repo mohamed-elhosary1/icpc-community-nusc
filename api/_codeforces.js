@@ -284,7 +284,7 @@ const CodeforcesService = {
     /**
      * Fetch user profile from Codeforces API with fallback to cache
      */
-    getUserInfo: async function (rawHandle) {
+    getUserInfo: async function (rawHandle, forceRefresh = false) {
         if (!rawHandle) return null;
         const handle = rawHandle.trim();
         await loadConfig();
@@ -303,7 +303,7 @@ const CodeforcesService = {
         } catch (e) {}
 
         const now = Date.now();
-        if (cached && cached.last_synced_at && (now - new Date(cached.last_synced_at).getTime()) < CACHE_TTL_MS) {
+        if (!forceRefresh && cached && cached.last_synced_at && (now - new Date(cached.last_synced_at).getTime()) < CACHE_TTL_MS) {
             return cached;
         }
 
