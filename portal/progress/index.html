@@ -194,12 +194,16 @@
 
                     const data = await res.json();
                     const s = data.stats || {};
+                    const totalSolved = s.solved_count ?? s.solvedCount ?? 0;
+                    const weeklySolved = s.weekly_solved ?? s.weeklySolved ?? 0;
+                    const rating = s.rating || 0;
+                    const maxRating = s.max_rating ?? s.maxRating ?? 0;
 
-                    document.getElementById('p-total-solved').textContent = s.solved_count || 0;
-                    document.getElementById('p-weekly-solved').textContent = s.weekly_solved || 0;
-                    document.getElementById('p-rating').textContent = s.rating || 0;
-                    document.getElementById('p-rank').textContent = s.rank || 'Unrated';
-                    document.getElementById('p-max-rating').textContent = s.max_rating || 0;
+                    document.getElementById('p-total-solved').textContent = totalSolved;
+                    document.getElementById('p-weekly-solved').textContent = weeklySolved;
+                    document.getElementById('p-rating').textContent = rating > 0 ? rating : 'Unrated';
+                    document.getElementById('p-rank').textContent = (rating > 0 || (s.rank && s.rank !== 'Unrated' && s.rank !== 'Config')) ? (s.rank || 'Unrated') : 'Unrated in Contests';
+                    document.getElementById('p-max-rating').textContent = maxRating > 0 ? maxRating : '---';
 
                     if (s.last_synced_at) {
                         syncBadge.textContent = 'Last synced: ' + new Date(s.last_synced_at).toLocaleTimeString();

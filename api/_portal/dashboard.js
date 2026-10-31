@@ -96,11 +96,14 @@ module.exports = async (req, res) => {
             waveRank = rankCount;
         } catch (e) {}
 
-        const totalSessions = allSessions.length;
-        const attendedSessions = attendanceList.filter(a => a.status === 'present').length;
-        const attendancePct = totalSessions > 0 ? Math.round((attendedSessions / totalSessions) * 100) : 100;
-
         const now = new Date();
+        const completedSessions = allSessions.filter(s => s.status === 'completed' || new Date(s.session_date) <= now);
+        const totalCompleted = completedSessions.length;
+        const attendedSessions = attendanceList.filter(a => a.status === 'present').length;
+        const excusedSessions = attendanceList.filter(a => a.status === 'excused').length;
+        const accountableSessions = Math.max(0, totalCompleted - excusedSessions);
+        const attendancePct = accountableSessions > 0 ? Math.round((attendedSessions / accountableSessions) * 100) : 100;
+
         const nextSession = allSessions.find(s => new Date(s.session_date) >= now) || allSessions[0] || null;
 
         const latestAnnouncement = feedbackList.find(f => f.type === 'announcement') || feedbackList[0] || null;
@@ -193,9 +196,9 @@ module.exports = async (req, res) => {
             waveRank,
             totalInWave,
             attendance: {
-                totalScheduled: totalSessions,
+                totalScheduled: totalCompleted,
                 attended: attendedSessions,
-                absences: Math.max(0, totalSessions - attendedSessions),
+                absences: Math.max(0, totalCompleted - attendedSessions - excusedSessions),
                 percentage: attendancePct
             },
             nextSession,

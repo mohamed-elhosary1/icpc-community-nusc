@@ -255,8 +255,8 @@
 
                         document.getElementById('metric-solved').textContent = solved;
                         document.getElementById('metric-weekly-solved').textContent = weekly;
-                        document.getElementById('metric-rating').textContent = rating;
-                        document.getElementById('metric-rank').textContent = `${rank} (Max: ${maxRating})`;
+                        document.getElementById('metric-rating').textContent = rating > 0 ? rating : 'Unrated';
+                        document.getElementById('metric-rank').textContent = rating > 0 ? `${rank} (Max: ${maxRating})` : (rank && rank !== 'Unrated' && rank !== 'Config' ? rank : 'Unrated in Contests');
                     }
 
                     // Wave Rank Metric
@@ -268,7 +268,8 @@
                     // Attendance Metrics
                     if (data.attendance) {
                         document.getElementById('metric-attendance').textContent = `${data.attendance.percentage}%`;
-                        document.getElementById('metric-attended-sessions').textContent = `${data.attendance.attended} / ${data.attendance.totalScheduled} sessions`;
+                        const total = data.attendance.totalScheduled || 0;
+                        document.getElementById('metric-attended-sessions').textContent = total === 0 ? 'No sessions held yet' : `${data.attendance.attended} / ${total} sessions`;
                     }
 
                     // Next Session
