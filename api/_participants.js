@@ -7,6 +7,17 @@
 const DB = require('./_db');
 const CloudDB = require('./_cloud');
 
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gpzwlxbmgpmydgywxtdo.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_KEY || 'sb_publishable_zbshKRcot5UDfjvtMJx4gQ_c9a9-of9';
+
+function getHeaders() {
+    return {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+    };
+}
+
 const ALLOWED_FACULTIES = [
     'Computers and AI',
     'Science',
@@ -91,12 +102,32 @@ module.exports = async (req, res) => {
         if (!session) return;
 
         try {
-            const list = await CloudDB.getParticipants();
+            const [list, cacheRes] = await Promise.all([
+                CloudDB.getParticipants(),
+                fetch(`${SUPABASE_URL}/rest/v1/nusc_codeforces_cache?select=*`, { headers: getHeaders() })
+            ]);
+            const cache = cacheRes.ok ? await cacheRes.json() : [];
+            const cfMap = new Map();
+            cache.forEach(c => {
+                if (c.handle) cfMap.set(c.handle.toLowerCase(), c);
+            });
+
+            const enriched = list.map(p => {
+                const h = (p.codeforces_handle || '').trim().toLowerCase();
+                const cf = h ? cfMap.get(h) : null;
+                return {
+                    ...p,
+                    cf_rating: cf ? (cf.rating || 0) : null,
+                    cf_rank: cf ? (cf.rank || 'Unrated') : null,
+                    cf_solved: cf ? (cf.solved_count || 0) : null
+                };
+            });
+
             res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
             const out = JSON.stringify({
                 success: true,
-                participants: list,
-                count: list.length
+                participants: enriched,
+                count: enriched.length
             });
             res.end ? res.end(out) : res.send(out);
         } catch (err) {

@@ -259,7 +259,17 @@ async function runTests() {
 
         // Test with real participant or orientation code from live database
         const allRegs = await CloudDB.getEventRegistrations();
-        const unredeemed = allRegs.find(r => !r.is_redeemed);
+        const existingUsersRes = await fetch(`${process.env.SUPABASE_URL || 'https://gpzwlxbmgpmydgywxtdo.supabase.co'}/rest/v1/nusc_users?select=email,registration_code`, {
+            headers: {
+                'apikey': process.env.SUPABASE_KEY || 'sb_publishable_zbshKRcot5UDfjvtMJx4gQ_c9a9-of9',
+                'Authorization': `Bearer ${process.env.SUPABASE_KEY || 'sb_publishable_zbshKRcot5UDfjvtMJx4gQ_c9a9-of9'}`
+            }
+        });
+        const existingUsers = existingUsersRes.ok ? await existingUsersRes.json() : [];
+        const userEmails = new Set(existingUsers.map(u => (u.email || '').toLowerCase().trim()));
+        const userCodes = new Set(existingUsers.map(u => (u.registration_code || '').toLowerCase().trim()));
+
+        const unredeemed = allRegs.find(r => !r.is_redeemed && r.registration_id && r.email && !userEmails.has(r.email.toLowerCase().trim()) && !userCodes.has(r.registration_id.toLowerCase().trim()));
         if (unredeemed) {
             const validReq = createMockReqRes('POST', '/api/auth/validate-code', { code: unredeemed.registration_id });
             await validateCodeHandler(validReq.req, validReq.res);

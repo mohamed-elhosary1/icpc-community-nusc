@@ -110,14 +110,22 @@ window.AdminPortal = (function() {
                                    'border-green-400 text-green-300 bg-green-900/30';
             
             const cfStatusHtml = s.codeforcesHandle ? `
-                <div class="flex items-center gap-1.5">
-                    <a href="https://codeforces.com/profile/${encodeURIComponent(s.codeforcesHandle)}" target="_blank" class="text-gold hover:underline font-mono text-xs font-bold">
-                        ${escapeHTML(s.codeforcesHandle)}
-                    </a>
-                    ${s.cfVerified 
-                        ? `<span class="px-1.5 py-0.5 text-[9px] bg-green-900/40 text-green-300 border border-green-500/50 rounded" title="Verified">VERIFIED</span>`
-                        : `<span class="px-1.5 py-0.5 text-[9px] bg-amber-900/40 text-amber-300 border border-amber-500/50 rounded" title="Pending Challenge Token: ${escapeHTML(s.cfVerificationToken || '')}">PENDING</span>`
-                    }
+                <div class="flex flex-col gap-0.5">
+                    <div class="flex items-center gap-1.5">
+                        <a href="https://codeforces.com/profile/${encodeURIComponent(s.codeforcesHandle)}" target="_blank" class="text-gold hover:underline font-mono text-xs font-bold">
+                            ${escapeHTML(s.codeforcesHandle)}
+                        </a>
+                        ${s.cfVerified 
+                            ? `<span class="px-1.5 py-0.5 text-[9px] bg-green-900/40 text-green-300 border border-green-500/50 rounded" title="Verified">VERIFIED</span>`
+                            : `<span class="px-1.5 py-0.5 text-[9px] bg-amber-900/40 text-amber-300 border border-amber-500/50 rounded" title="Pending Challenge Token: ${escapeHTML(s.cfVerificationToken || '')}">PENDING</span>`
+                        }
+                    </div>
+                    ${(s.rating || s.solvedCount) ? `
+                        <div class="text-[10px] text-cream-dark/60 font-mono">
+                            <span class="${s.rating >= 1200 ? 'text-green-400 font-bold' : 'text-cream-dark/80'}">${escapeHTML(s.rank || 'Unrated')} (${s.rating || 0})</span>
+                            &bull; <span>${s.solvedCount || 0} solved</span>
+                        </div>
+                    ` : ''}
                 </div>
             ` : `<span class="text-cream-dark/40 text-xs italic">Not linked</span>`;
 

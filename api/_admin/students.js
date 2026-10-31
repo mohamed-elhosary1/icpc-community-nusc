@@ -57,27 +57,45 @@ module.exports = async (req, res) => {
                 queryUrl += `&or=(full_name.ilike.${s},email.ilike.${s},registration_code.ilike.${s},codeforces_handle.ilike.${s})`;
             }
 
-            const resUsers = await fetch(queryUrl, { headers: getHeaders() });
+            const [resUsers, resCache] = await Promise.all([
+                fetch(queryUrl, { headers: getHeaders() }),
+                fetch(`${SUPABASE_URL}/rest/v1/nusc_codeforces_cache?select=*`, { headers: getHeaders() })
+            ]);
+
             const users = resUsers.ok ? await resUsers.json() : [];
+            const cache = resCache.ok ? await resCache.json() : [];
+
+            const cfMap = new Map();
+            cache.forEach(c => {
+                if (c.handle) cfMap.set(c.handle.toLowerCase(), c);
+            });
 
             // Don't expose password hashes or salts to frontend
-            const safeUsers = users.map(u => ({
-                id: u.id,
-                fullName: u.full_name,
-                email: u.email,
-                phone: u.phone,
-                role: u.role,
-                wave: u.wave,
-                faculty: u.faculty,
-                academicYear: u.academic_year,
-                registrationCode: u.registration_code,
-                codeforcesHandle: u.codeforces_handle,
-                cfVerified: u.cf_verified,
-                cfVerificationToken: u.cf_verification_token,
-                status: u.status,
-                createdAt: u.created_at,
-                lastLoginAt: u.last_login_at
-            }));
+            const safeUsers = users.map(u => {
+                const cf = u.codeforces_handle ? cfMap.get(u.codeforces_handle.toLowerCase()) : null;
+                return {
+                    id: u.id,
+                    fullName: u.full_name,
+                    email: u.email,
+                    phone: u.phone,
+                    role: u.role,
+                    wave: u.wave,
+                    faculty: u.faculty,
+                    academicYear: u.academic_year,
+                    registrationCode: u.registration_code,
+                    codeforcesHandle: u.codeforces_handle,
+                    cfVerified: u.cf_verified,
+                    cfVerificationToken: u.cf_verification_token,
+                    rating: cf ? (cf.rating || 0) : 0,
+                    maxRating: cf ? (cf.max_rating || 0) : 0,
+                    rank: cf ? (cf.rank || 'Unrated') : 'Unrated',
+                    solvedCount: cf ? (cf.solved_count || 0) : 0,
+                    weeklySolved: cf ? (cf.weekly_solved || 0) : 0,
+                    status: u.status,
+                    createdAt: u.created_at,
+                    lastLoginAt: u.last_login_at
+                };
+            });
 
             res.writeHead ? res.writeHead(200, { 'Content-Type': 'application/json' }) : res.status(200);
             res.end ? res.end(JSON.stringify({ success: true, count: safeUsers.length, students: safeUsers })) : res.send();
